@@ -5,8 +5,9 @@
   "dependencies": {
     "@craco/craco": "^6.4.2",
     "@mui/icons-material": "^5.2.0",
-    "@mui/material": "^5.2.1",
+    "@mui/material": "^5.2.2",
     "@mui/styled-engine-sc": "^5.1.0",
+    "@mui/styles": "^5.2.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -70,6 +71,7 @@
     "prettier": "^2.5.0"
   },
   "resolutions": {
-    "babel-loader": "8.1.0"
+    "babel-loader": "8.1.0",
+    "@mui/styled-engine": "^5.1.0"
   }
 }

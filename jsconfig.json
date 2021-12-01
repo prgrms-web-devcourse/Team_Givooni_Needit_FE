@@ -3,7 +3,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "assets/*": ["./src/assets/*"]
+      "assets/*": ["./src/assets/*"],
+      "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"]
     }
-  }
+  },
+  "exclude": ["node_modules/"]
 }
