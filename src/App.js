@@ -9,6 +9,7 @@ import {
   Schedule,
   Notify,
   Writes,
+  Gps,
 } from "./pages";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/notify" element={<Notify />} />
         <Route path="/writes" element={<Writes />} />
+        <Route path="/Gps" element={<Gps />} />
       </Routes>
       <br />
       <Link to="login">login</Link>
