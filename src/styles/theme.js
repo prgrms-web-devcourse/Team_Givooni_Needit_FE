@@ -3,14 +3,37 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      light: "#E69225",
+      light: "#FFB85E",
       main: "#FD9F28",
-      dark: "#CC8221",
+      dark: "#E69225",
+    },
+    white: {
+      main: "#FFFFFF",
+      dark: "#F6F6F6",
+    },
+    black: {
+      main: "#000000",
     },
     gray: {
       light: "#F6F6F6",
       main: "#E8E8E8",
       dark: "#9E9E9E",
+    },
+    placeholder: {
+      main: "#BDBDBD",
+    },
+    gray_dark: {
+      light: "#BDBDBD",
+      main: "#9E9E9E",
+      dark: "#8E8E8E",
+    },
+    like: {
+      light: "#FF6A6A",
+      main: "#FF5151",
+      dark: "#E04242",
+    },
+    transparent: {
+      main: "#FFFFFF0",
     },
   },
   typography: {
