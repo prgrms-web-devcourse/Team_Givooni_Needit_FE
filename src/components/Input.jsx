@@ -1,4 +1,3 @@
-import theme from "@/styles/theme";
 import { IconButton, TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import { InputAdornment } from "@mui/material";
@@ -13,9 +12,8 @@ const types = {
   Phone: "Phone",
 };
 
-const palette = theme.palette;
 let color = "#000000";
-let backgroundColor = "primary";
+let backgroundColor = "transparent";
 let border = null;
 
 const Input = ({
@@ -27,32 +25,24 @@ const Input = ({
 }) => {
   switch (type) {
     case "text":
-      color = palette.grey;
-      backgroundColor = "";
       break;
 
     case "message":
-      color = palette.grey;
-      backgroundColor = "";
       width = "15rem";
       placeholder = "메세지를 입력해주세요!";
       break;
 
     case "searchSmall":
-      color = palette.grey;
-      backgroundColor = "";
+      placeholder = "Search";
       width = "7rem";
       break;
 
     case "searchFull":
-      color = palette.primary;
-      backgroundColor = "";
+      placeholder = "Search";
       width = "15rem";
       break;
 
     case "Phone":
-      color = palette.primary;
-      backgroundColor = "";
       width = "4.3rem";
       break;
   }
@@ -66,7 +56,7 @@ const Input = ({
             ? placeholder
             : type === "searchSmall" || type === "searchFull"
             ? "Search"
-            : type.toUpperCase()
+            : type
         }
         size="small"
         color="primary"
@@ -76,6 +66,7 @@ const Input = ({
           color: color,
           backgroundColor: backgroundColor,
           border: border,
+          borderRadius: ".4rem",
         }}
         InputProps={
           type === "searchSmall" || type === "searchFull"
