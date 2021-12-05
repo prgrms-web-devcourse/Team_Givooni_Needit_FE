@@ -34,8 +34,6 @@ const Nav = () => {
     setAnchorEl(null);
   };
 
-  const marginX = -1.5;
-
   return (
     <Box
       sx={{
@@ -60,7 +58,7 @@ const Nav = () => {
           onClick={handleClick}
           label="게시판"
           icon={<MenuIcon />}
-          sx={{ mx: marginX }}
+          sx={{ minWidth: "60px", p: 0.5 }}
         />
 
         <Menu
@@ -131,28 +129,28 @@ const Nav = () => {
           to="/writes"
           label="글작성"
           icon={<BorderColorIcon />}
-          sx={{ mx: marginX }}
+          sx={{ minWidth: "60px", p: 0.5 }}
         />
         <BottomNavigationAction
           component={Link}
           to="/schedule"
           label="예약관리"
           icon={<CalendarTodayIcon />}
-          sx={{ mx: marginX }}
+          sx={{ minWidth: "60px", p: 0.5 }}
         />
         <BottomNavigationAction
           component={Link}
           to="/message"
           label="채팅"
           icon={<MessageIcon />}
-          sx={{ mx: marginX }}
+          sx={{ minWidth: "60px", p: 0.5 }}
         />
         <BottomNavigationAction
           component={Link}
           to="/username"
           label="내정보"
           icon={<AccountCircleIcon />}
-          sx={{ mx: marginX }}
+          sx={{ minWidth: "60px", p: 0.5 }}
         />
       </BottomNavigation>
     </Box>
