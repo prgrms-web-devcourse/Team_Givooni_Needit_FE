@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { TextField, Box, Modal, Button } from "@mui/material";
-// import { Event as EventIcon } from "@mui/icons-material";
+import { Event as EventIcon } from "@mui/icons-material";
 import { LocalizationProvider, MobileDateTimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import BaseButton from "@/components/BaseButton";
@@ -12,9 +12,24 @@ const Scheduler = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const schedulerConfirm = () => {
+    console.log(value);
+    value && handleClose();
+  };
+
   return (
-    <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+    <Box>
+      <Button
+        onClick={handleOpen}
+        sx={{
+          maxWidth: "30px",
+          maxHeight: "30px",
+          minWidth: "30px",
+          minHeight: "30px",
+        }}
+      >
+        <EventIcon />
+      </Button>
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
@@ -55,14 +70,14 @@ const Scheduler = () => {
                   m: 1,
                 }}
               >
-                <BaseButton text="확인" func={() => console.log("확인!")} />
+                <BaseButton text="확인" func={schedulerConfirm} />
                 <BaseButton text="취소" type={1} func={handleClose} />
               </Box>
             </Box>
           </LocalizationProvider>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 };
 
