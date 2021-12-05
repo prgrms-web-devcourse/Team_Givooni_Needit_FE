@@ -38,6 +38,26 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: ["Spoqa Han Sans Neo", "sans-serif"].join(","),
+    h3: {
+      fontSize: 32,
+      fontWeight: 700,
+      lineHeight: 1.5,
+    },
+    h4: {
+      fontSize: 24,
+      fontWeight: 700,
+      lineHeight: 1.5,
+    },
+    h5: {
+      fontSize: 20,
+      fontWeight: 700,
+      lineHeight: 1.5,
+    },
+    h6: {
+      fontSize: 16,
+      fontWeight: 700,
+      lineHeight: 1.5,
+    },
     subtitle1: {
       fontSize: 16,
       fontWeight: 500,
