@@ -1,42 +1,68 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { TextField, Stack, Box } from "@mui/material";
+import { TextField, Box, Modal, Button } from "@mui/material";
 // import { Event as EventIcon } from "@mui/icons-material";
-import { LocalizationProvider, DateTimePicker } from "@mui/lab";
+import { LocalizationProvider, MobileDateTimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import BaseButton from "@/components/BaseButton";
 
 const Scheduler = () => {
-  const [clearedDate, setClearedDate] = React.useState(null);
-  console.log(clearedDate);
+  const [value, setValue] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Stack spacing={3}>
-        <DateTimePicker
-          clearable
-          value={clearedDate}
-          onChange={(newValue) => setClearedDate(newValue)}
-          renderInput={(params) => (
+    <div>
+      <Button onClick={handleOpen}>Open modal</Button>
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: "90%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            borderRadius: 3,
+          }}
+        >
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Box>
-              <TextField
-                {...params}
-                sx={{ display: "flex", m: 1 }}
-                inputProps={{ placeholder: "약속시간을 입력해주세요!" }}
+              <MobileDateTimePicker
+                value={value}
+                onChange={(newValue) => {
+                  setValue(newValue);
+                }}
+                label="약속을 정해주세요!"
+                onError={console.log}
+                minDate={new Date("2021-12-01T00:00")}
+                inputFormat="yyyy/MM/dd hh:mm a"
+                mask="___/__/__ __:__ _M"
+                renderInput={(params) => (
+                  <TextField
+                    sx={{ width: "90%", mx: "5%", my: 1 }}
+                    {...params}
+                  />
+                )}
               />
-              <Box sx={{ display: "flex", gap: "10px", m: 1 }}>
-                <BaseButton text="수락" func={() => console.log("클릭!")} />
-                <BaseButton
-                  text="거절"
-                  type={1}
-                  func={() => console.log("클릭!")}
-                />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                  m: 1,
+                }}
+              >
+                <BaseButton text="확인" func={() => console.log("확인!")} />
+                <BaseButton text="취소" type={1} func={handleClose} />
               </Box>
             </Box>
-          )}
-        />
-      </Stack>
-    </LocalizationProvider>
+          </LocalizationProvider>
+        </Box>
+      </Modal>
+    </div>
   );
 };
 
