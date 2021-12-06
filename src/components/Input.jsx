@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { InputAdornment } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import theme from "@/styles/theme";
-import { useState } from "react";
 
 const types = {
   Text: "text",
@@ -27,8 +26,6 @@ const Input = ({
   height,
   ...props
 }) => {
-  const [showPassword, setshowPassword] = useState(false);
-
   switch (type) {
     case "text":
       break;
@@ -89,27 +86,6 @@ const Input = ({
                     <IconButton>
                       <Search />
                     </IconButton>
-                  </InputAdornment>
-                ),
-              }
-            : type === "Password"
-            ? {
-                endAdornment: (
-                  <InputAdornment
-                    sx={{
-                      "&:hover": {
-                        cursor: "pointer",
-                      },
-                    }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setshowPassword(!showPassword);
-                      type = "text";
-                    }}
-                  >
-                    <div style={{ color: theme.palette.primary.main }}>
-                      Show
-                    </div>
                   </InputAdornment>
                 ),
               }
