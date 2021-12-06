@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "need it",
+  "name": "need it",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,14 +8,19 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "logo180.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "180x180"
     },
     {
-      "src": "logo512.png",
+      "src": "need-it-dark.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "150x150"
+    },
+    {
+      "src": "need-it-bright.png",
+      "type": "image/png",
+      "sizes": "150x150"
     }
   ],
   "start_url": ".",
