@@ -126,16 +126,16 @@ const Nav = () => {
         </Menu>
         <BottomNavigationAction
           component={Link}
-          to="/writes"
-          label="글작성"
-          icon={<BorderColorIcon />}
+          to="/schedule"
+          label="예약관리"
+          icon={<CalendarTodayIcon />}
           sx={{ minWidth: "60px", p: 0.5 }}
         />
         <BottomNavigationAction
           component={Link}
-          to="/schedule"
-          label="예약관리"
-          icon={<CalendarTodayIcon />}
+          to="/writes"
+          label="글작성"
+          icon={<BorderColorIcon />}
           sx={{ minWidth: "60px", p: 0.5 }}
         />
         <BottomNavigationAction
