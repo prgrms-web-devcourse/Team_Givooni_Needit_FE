@@ -2,6 +2,8 @@ import { IconButton, TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import { InputAdornment } from "@mui/material";
 import { Search } from "@mui/icons-material";
+import theme from "@/styles/theme";
+import { useState } from "react";
 
 const types = {
   Text: "text",
@@ -10,10 +12,12 @@ const types = {
   SearchFull: "searchFull",
   SignUp: "signUp",
   Phone: "Phone",
+  Email: "Email",
+  Password: "Password",
 };
 
 let color = "#000000";
-let backgroundColor = "transparent";
+let backgroundColor = theme.palette.gray.light;
 let border = null;
 
 const Input = ({
@@ -23,6 +27,8 @@ const Input = ({
   height,
   ...props
 }) => {
+  const [showPassword, setshowPassword] = useState(false);
+
   switch (type) {
     case "text":
       break;
@@ -39,7 +45,8 @@ const Input = ({
 
     case "searchFull":
       placeholder = "Search";
-      width = "15rem";
+      width = "90vw";
+      backgroundColor = theme.palette.gray.light;
       break;
 
     case "Phone":
@@ -82,6 +89,27 @@ const Input = ({
                     <IconButton>
                       <Search />
                     </IconButton>
+                  </InputAdornment>
+                ),
+              }
+            : type === "Password"
+            ? {
+                endAdornment: (
+                  <InputAdornment
+                    sx={{
+                      "&:hover": {
+                        cursor: "pointer",
+                      },
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setshowPassword(!showPassword);
+                      type = "text";
+                    }}
+                  >
+                    <div style={{ color: theme.palette.primary.main }}>
+                      Show
+                    </div>
                   </InputAdornment>
                 ),
               }
