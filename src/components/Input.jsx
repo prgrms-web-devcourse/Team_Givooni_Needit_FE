@@ -75,6 +75,7 @@ const Input = ({
         InputProps={
           type === "searchSmall" || type === "searchFull"
             ? {
+                style: { height: "2.1rem", fontSize: "1rem" },
                 startAdornment: (
                   <InputAdornment
                     sx={{
