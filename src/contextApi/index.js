@@ -21,13 +21,16 @@ function contextReducer(state, action) {
       return { ...state, selectedPost: nextState };
     case "setCenter":
       return { ...state, selectedCenter: nextState };
-    case "RemoveTag":
+    case "removeTag":
       return {
         ...state,
-        selectedTags: state.filter((tag) => tag.id !== nextState),
+        selectedTags: state.selectedTags.filter((tag) => tag.id !== nextState),
       };
-    case "AddTag":
-      return { ...state, selectedTags: state.concat({ id: nextState }) };
+    case "addTag":
+      return {
+        ...state,
+        selectedTags: [...state.selectedTags, { id: nextState }],
+      };
     case "setTown":
       return { ...state, selectedTown: nextState };
     case "setCurrentPage":
