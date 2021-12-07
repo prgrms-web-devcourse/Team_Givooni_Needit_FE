@@ -1,9 +1,10 @@
+import theme from "@/styles/theme";
 import { useEffect, useState } from "react";
 /*global kakao*/
 const Gps = () => {
   const [latitude, setLatitude] = useState("37.566826");
   const [longitude, setLongitude] = useState("126.9786567");
-  const [address, setAddress] = useState("서울 중구 태평로1가 31");
+  const [address, setAddress] = useState("서울 중구 태평로1가");
 
   const kakaomap = () => {
     useEffect(() => {
@@ -11,7 +12,7 @@ const Gps = () => {
         const container = document.getElementById("map-container"),
           options = {
             center: new kakao.maps.LatLng(latitude, longitude),
-            level: 2,
+            level: 3,
             scrollwheel: true,
             draggable: true,
           };
@@ -58,7 +59,10 @@ const Gps = () => {
         let coord = new kakao.maps.LatLng(lat, long);
         let callback = function (result, status) {
           if (status === kakao.maps.services.Status.OK) {
-            setAddress(result[0].address.address_name);
+            setAddress(
+              result[0].address.address_name.split(" ").slice(0, 2).join(" ")
+            );
+            console.log(result);
           }
         };
 
@@ -71,12 +75,27 @@ const Gps = () => {
   kakaomap();
 
   return (
-    <div>
+    <div
+      style={{
+        height: "62vh",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
       <div
         id="map-container"
-        style={{ height: "600px", width: "500px", borderRadius: "12.8px" }}
+        style={{
+          height: "120vw",
+          width: "90vw",
+          maxWidth: "420px",
+          maxHeight: "560px",
+          borderRadius: "12.8px",
+        }}
       ></div>
-      <div>현재 위치 : {address}</div>
+      <div style={{ color: theme.palette.gray.dark }}>{address}</div>
     </div>
   );
 };
