@@ -1,12 +1,10 @@
 import Avatar from "@mui/material/Avatar";
-
 import AvatarGroup from "@mui/material/AvatarGroup";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
-
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
+import useAsync from "../utils/hooks/useAsync";
 
 const useStyles = makeStyles({
   avatar: ({ width, height }) => ({
@@ -14,6 +12,9 @@ const useStyles = makeStyles({
     height: `${height}px!important`,
   }),
 });
+
+const wait = (timeToDelay) =>
+  new Promise((resolve) => setTimeout(resolve, timeToDelay));
 
 //dummy Data
 const dataArr = [
@@ -56,19 +57,17 @@ const dataArr = [
 
 // 사이즈 크기 자유롭게
 
+async function getUsers() {
+  await wait(1000);
+  return dataArr;
+}
+
 const Profile = ({ max, width, height }) => {
   const classes = useStyles({ width, height });
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [state, refetch] = useAsync(getUsers, []);
+  const { loading, data: users, error } = state; // state.data 를 users 키워드로 조회
 
-  //초기 api 실행
-  useEffect(async () => {
-    await setTimeout(() => {
-      setLoading(false);
-      // api로 부터 받아온 댓글 사용자 데이터 넣기
-      setData(dataArr);
-    }, 3000);
-  }, []);
+  console.log(max, width, height, refetch);
 
   //Avatar 태그 클릭시 이벤트
   const clickAvatarHandler = (id) => {
@@ -76,30 +75,30 @@ const Profile = ({ max, width, height }) => {
     console.log(id);
   };
 
+  if (loading)
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress style={{ color: "#FD9F28", width, height }} />
+      </Box>
+    );
+  if (error) return <div>에러가 발생했습니다</div>;
+  if (!users) return null;
   return (
     <>
-      {loading ? (
-        <>
-          <Box sx={{ display: "flex" }}>
-            <CircularProgress style={{ color: "#FD9F28", width, height }} />
-          </Box>
-        </>
-      ) : (
-        <AvatarGroup max={max} classes={{ avatar: classes.avatar }}>
-          {data.map(({ name, image, id }) => {
-            return (
-              <Avatar
-                key={id + Math.random()}
-                alt={name}
-                src={image}
-                onClick={() => {
-                  clickAvatarHandler(id);
-                }}
-              />
-            );
-          })}
-        </AvatarGroup>
-      )}
+      <AvatarGroup max={max} classes={{ avatar: classes.avatar }}>
+        {users.map(({ name, image, id }) => {
+          return (
+            <Avatar
+              key={id + Math.random()}
+              alt={name}
+              src={image}
+              onClick={() => {
+                clickAvatarHandler(id);
+              }}
+            />
+          );
+        })}
+      </AvatarGroup>{" "}
     </>
   );
 };
