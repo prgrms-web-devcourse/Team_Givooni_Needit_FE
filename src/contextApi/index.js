@@ -13,6 +13,8 @@ const initialState = {
 function contextReducer(state, action) {
   const { nextState, type } = action;
   switch (type) {
+    case "initTags":
+      return { ...state, selectedTags: [] };
     case "setLoginUser":
       return { ...state, loginUser: nextState };
     case "setUser":

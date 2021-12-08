@@ -1,9 +1,14 @@
 import { StateContext, DispatchContext } from "./index";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Toggle from "@/components/Toggle";
 function Test() {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
+  useEffect(() => {
+    dispatch({
+      type: "initTags",
+    });
+  }, []);
   const handleLoginUser = (e) => {
     dispatch({
       type: "setLoginUser",
