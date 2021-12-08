@@ -1,4 +1,4 @@
-import Writes from "@/components/page/Writes/Writes";
+import Writes from "@/components/domain/Writes/Writes";
 const WritesPage = () => {
   return <Writes />;
 };
