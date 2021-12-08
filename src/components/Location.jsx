@@ -246,7 +246,11 @@ const area = {
 
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import ButtonUnstyled, {
+  buttonUnstyledClasses,
+} from "@mui/base/ButtonUnstyled";
+import { styled } from "@mui/system";
+
 import Modal from "@mui/material/Modal";
 import Grid from "@mui/material/Grid";
 
@@ -262,31 +266,83 @@ const style = {
   p: 4,
 };
 
+const CustomButtonRoot = styled("button")`
+  background-color: #fd9f28;
+  padding: 15px 20px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  transition: all 200ms ease;
+  cursor: pointer;
+  box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 0 rgba(0, 127, 255, 0);
+  border: none;
+
+  &:hover {
+    background-color: #9e9e9e;
+  }
+
+  &.${buttonUnstyledClasses.active} {
+    background-color: #9e9e9e;
+  }
+
+  &.${buttonUnstyledClasses.focusVisible} {
+    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1),
+      0 0 0 5px rgba(0, 127, 255, 0.5);
+    outline: none;
+  }
+
+  &.${buttonUnstyledClasses.disabled} {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: 0 0 0 0 rgba(0, 127, 255, 0);
+  }
+`;
+
+function CustomButton(props) {
+  return <ButtonUnstyled {...props} component={CustomButtonRoot} />;
+}
+
 export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
   const [city, setCity] = React.useState([]);
+  const [mainCity, setMainCity] = React.useState("");
   const handleOpen = (t) => {
     setOpen(true);
     setCity(area[t]);
+    setMainCity(t);
   };
-  const handleClose = () => setOpen(false);
+  const handleClose = (t) => {
+    setOpen(false);
+    console.log(`${mainCity} ${t}`);
+  };
 
   const areaArr = Object.keys(area);
 
   return (
     <div>
       <Box sx={{ flexGrow: 1 }} style={{ width: 300 }}>
-        <Grid container spacing={2} columns={16}>
+        <Grid
+          container
+          rowSpacing={2}
+          columnSpacing={4}
+          columns={16}
+          justifyContent="center"
+          alignItems="center"
+        >
           {areaArr.map((val, i) => (
             <Grid item xs={8} key={i}>
-              <Button
+              <CustomButton
+                style={{ width: 160 }}
                 onClick={(e) => {
                   handleOpen(e.target.textContent);
                 }}
                 key={i}
               >
                 {val}
-              </Button>
+              </CustomButton>
+
               <Modal
                 open={open}
                 onClose={handleClose}
@@ -294,10 +350,24 @@ export default function BasicModal() {
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                  <Grid container spacing={2} columns={16}>
+                  <Grid
+                    container
+                    spacing={2}
+                    columns={16}
+                    justifyContent="center"
+                    alignItems="center"
+                  >
                     {city.map((val, i) => (
                       <Grid item xs={8} key={i}>
-                        <div key={i}>{val}</div>
+                        <CustomButton
+                          key={i}
+                          style={{ width: 100 }}
+                          onClick={(e) => {
+                            handleClose(e.target.textContent);
+                          }}
+                        >
+                          {val}
+                        </CustomButton>
                       </Grid>
                     ))}
                   </Grid>
