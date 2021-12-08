@@ -1,7 +1,7 @@
 import { StateContext, DispatchContext } from "./index";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
+import Toggle from "@/components/Toggle";
 function Test() {
-  const [tag, setTag] = useState(0);
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
   const handleLoginUser = (e) => {
@@ -40,21 +40,6 @@ function Test() {
       nextState: e.target.value,
     });
   };
-  const changeTagId = (e) => {
-    setTag(e.target.value);
-  };
-  const handleAddTag = () => {
-    dispatch({
-      type: "addTag",
-      nextState: tag,
-    });
-  };
-  const handleRemoveTag = () => {
-    dispatch({
-      type: "removeTag",
-      nextState: tag,
-    });
-  };
   return (
     <>
       <p>로그인 유저변경</p>
@@ -69,22 +54,32 @@ function Test() {
       <input type="text" onChange={handleSelectedTown} />
       <p>최근 페이지변경</p>
       <input type="text" onChange={handleCurrentPage} />
-      <p>추가할 태그 id</p>
-      <input type="text" onChange={changeTagId} />
-      <button onClick={handleAddTag}>태그 추가</button>
-      <button onClick={handleRemoveTag}>태그 삭제</button>
+      <br />
+      <br />
+      <Toggle id="1" text="1번태그" toggleOn={false} />
+      <Toggle id="2" text="2번태그" toggleOn={false} />
+      <Toggle id="3" text="3번태그" toggleOn={false} />
+      <Toggle id="4" text="4번태그" toggleOn={false} />
+      <Toggle id="5" text="5번태그" toggleOn={false} />
+      <Toggle id="6" text="6번태그" toggleOn={false} />
+      <Toggle id="7" text="7번태그" toggleOn={false} />
+      <Toggle id="8" text="8번태그" toggleOn={false} />
+      <br />
+      <br />
       <div>{`로그인한 유저 : ${state.loginUser}`}</div>
       <div>{`선택된 유저 : ${state.selectedUser}`}</div>
       <div>{`선택된 포스트 : ${state.selectedPost}`}</div>
       <div>{`선택된 센터 : ${state.selectedCenter}`}</div>
-      <div>선택된 태그들</div>
-      <ul>
-        {state.selectedTags.map((tag) => (
-          <li key={tag.id}>${tag.id}</li>
-        ))}
-      </ul>
       <div>{`선택된 동네 : ${state.selectedTown}`}</div>
       <div>{`최근 페이지 : ${state.currentPage}`}</div>
+      <ul style={{ display: "flex" }}>
+        <span>선택된 태그들 : </span>
+        {state.selectedTags.map((tag) => (
+          <li style={{ margin: 4 }} key={tag.id}>
+            {tag.id},
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
