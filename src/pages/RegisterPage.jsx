@@ -28,6 +28,21 @@ const AlignContainer = styled.div`
 
 const RegisterPage = () => {
   const [isCenter, setIsCenter] = useState(false);
+  // const [centerValidated, setCenterValidated] = useState(false);
+  const [centerInfo, setCenterInfo] = useState({
+    businesses: [
+      {
+        b_no: "0000000000",
+        start_dt: "20000101",
+        p_nm: "홍길동",
+        p_nm2: "홍길동",
+        b_nm: "(주)테스트",
+        corp_no: "0000000000000",
+        b_sector: "",
+        b_type: "",
+      },
+    ],
+  });
 
   const validationSchema = !isCenter
     ? yup.object({
