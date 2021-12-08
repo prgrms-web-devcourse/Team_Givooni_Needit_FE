@@ -6,6 +6,7 @@ const PasswordInput = ({ ...props }) => {
   const [showPassword, setshowPassword] = useState(false);
   return (
     <TextField
+      {...props}
       type={showPassword ? "text" : "password"}
       placeholder="Password"
       size="small"
@@ -26,7 +27,6 @@ const PasswordInput = ({ ...props }) => {
               e.preventDefault();
               setshowPassword(!showPassword);
             }}
-            {...props}
           >
             <div style={{ color: theme.palette.primary.main }}>Show</div>
           </InputAdornment>

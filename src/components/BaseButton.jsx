@@ -9,6 +9,7 @@ const BaseButton = ({
   height = 50,
   type,
   func,
+  ...props
 }) => {
   const pallete = theme.palette;
   let color = "#ffffff";
@@ -50,6 +51,7 @@ const BaseButton = ({
         }}
         onClick={func}
         type={type}
+        {...props}
       >
         {text}
       </Button>
