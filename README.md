@@ -75,7 +75,7 @@ src
 │
 ├─components
 │  ├─base
-│  └─page
+│  └─domain
 │      ├─Center
 │      ├─Login
 │      ├─Member
@@ -85,6 +85,7 @@ src
 │      ├─Schedule
 │      ├─Username
 │      └─Writes
+├── contexts
 │
 ├─hooks
 │      index.js
