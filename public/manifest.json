@@ -11,16 +11,6 @@
       "src": "logo180.png",
       "type": "image/png",
       "sizes": "180x180"
-    },
-    {
-      "src": "need-it-dark.png",
-      "type": "image/png",
-      "sizes": "150x150"
-    },
-    {
-      "src": "need-it-bright.png",
-      "type": "image/png",
-      "sizes": "150x150"
     }
   ],
   "start_url": ".",
