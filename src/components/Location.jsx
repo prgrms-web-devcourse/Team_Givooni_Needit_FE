@@ -244,140 +244,114 @@ const area = {
   제주도: ["서귀포시", "제주시", "남제주군", "북제주군"],
 };
 
-import * as React from "react";
-import Box from "@mui/material/Box";
-import ButtonUnstyled, {
-  buttonUnstyledClasses,
-} from "@mui/base/ButtonUnstyled";
-import { styled } from "@mui/system";
+import styled from "styled-components";
+import { useState } from "react";
 
-import Modal from "@mui/material/Modal";
-import Grid from "@mui/material/Grid";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
-const CustomButtonRoot = styled("button")`
-  background-color: #fd9f28;
-  padding: 15px 20px;
-  border-radius: 10px;
-  color: #fff;
-  font-weight: 600;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  transition: all 200ms ease;
-  cursor: pointer;
-  box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 0 rgba(0, 127, 255, 0);
-  border: none;
-
-  &:hover {
-    background-color: #9e9e9e;
-  }
-
-  &.${buttonUnstyledClasses.active} {
-    background-color: #9e9e9e;
-  }
-
-  &.${buttonUnstyledClasses.focusVisible} {
-    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1),
-      0 0 0 5px rgba(0, 127, 255, 0.5);
-    outline: none;
-  }
-
-  &.${buttonUnstyledClasses.disabled} {
-    opacity: 0.5;
-    cursor: not-allowed;
-    box-shadow: 0 0 0 0 rgba(0, 127, 255, 0);
-  }
+const GridArea = styled.div`
+  width: 300px;
+  border: 4px solid;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  align-items: center;
 `;
 
-function CustomButton(props) {
-  return <ButtonUnstyled {...props} component={CustomButtonRoot} />;
-}
+const GridAreaItem = styled.button`
+  background-color: #fd9f28;
+  width: 100px;
+  height: 50px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 10px;
+  display: table-cell;
+  color: white;
+`;
 
-export default function BasicModal() {
-  const [open, setOpen] = React.useState(false);
-  const [city, setCity] = React.useState([]);
-  const [mainCity, setMainCity] = React.useState("");
-  const handleOpen = (t) => {
-    setOpen(true);
-    setCity(area[t]);
-    setMainCity(t);
-  };
-  const handleClose = (t) => {
-    setOpen(false);
-    console.log(`${mainCity} ${t}`);
-  };
+const CustomModal = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
 
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  background-color: rgba(0, 0, 0, 0.4);
+`;
+
+const CustomModalBody = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 400px;
+  height: 600px;
+
+  padding: 40px;
+
+  text-align: center;
+
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+  transform: translateX(-50%) translateY(-50%);
+`;
+
+const Location = () => {
   const areaArr = Object.keys(area);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const clickHandler = (mainArea) => {
+    console.log(area[mainArea]);
+    setIsModalOpen(true);
+  };
+
+  const clickModalHandler = () => {
+    setIsModalOpen(false);
+  };
+
+  const clickModalBodyHandler = () => {
+    setIsModalOpen(false);
+  };
+
+  if (isModalOpen)
+    return (
+      <CustomModal
+        className="modal"
+        onClick={(e) => {
+          clickModalHandler(e);
+        }}
+      >
+        <CustomModalBody
+          onClick={(e) => {
+            clickModalBodyHandler(e);
+          }}
+        >
+          Modal
+        </CustomModalBody>
+      </CustomModal>
+    );
 
   return (
-    <div>
-      <Box sx={{ flexGrow: 1 }} style={{ width: 300 }}>
-        <Grid
-          container
-          rowSpacing={2}
-          columnSpacing={4}
-          columns={16}
-          justifyContent="center"
-          alignItems="center"
-        >
-          {areaArr.map((val, i) => (
-            <Grid item xs={8} key={i}>
-              <CustomButton
-                style={{ width: 160 }}
-                onClick={(e) => {
-                  handleOpen(e.target.textContent);
-                }}
-                key={i}
-              >
-                {val}
-              </CustomButton>
-
-              <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={style}>
-                  <Grid
-                    container
-                    spacing={2}
-                    columns={16}
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    {city.map((val, i) => (
-                      <Grid item xs={8} key={i}>
-                        <CustomButton
-                          key={i}
-                          style={{ width: 100 }}
-                          onClick={(e) => {
-                            handleClose(e.target.textContent);
-                          }}
-                        >
-                          {val}
-                        </CustomButton>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Box>
-              </Modal>
-              <div></div>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    </div>
+    <>
+      <GridArea>
+        {areaArr.map((t, i) => (
+          <GridAreaItem
+            key={i}
+            onClick={(e) => {
+              clickHandler(e.target.textContent);
+            }}
+          >
+            <p style={{ verticalAlign: "center" }}>{t}</p>
+          </GridAreaItem>
+        ))}
+      </GridArea>
+    </>
   );
-}
+};
+
+export default Location;
