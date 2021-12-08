@@ -1,4 +1,4 @@
-import Notify from "@/components/page/Notify";
+import Notify from "@/components/page/Notify/Notify";
 const NotifyPage = () => {
   return <Notify />;
 };

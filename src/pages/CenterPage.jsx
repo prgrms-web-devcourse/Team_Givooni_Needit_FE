@@ -1,4 +1,4 @@
-import Center from "@/components/page/Center.jsx";
+import Center from "@/components/page/Center/Center.jsx";
 const CenterPage = () => {
   return <Center />;
 };
