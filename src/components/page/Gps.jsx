@@ -1,10 +1,12 @@
 import theme from "@/styles/theme";
 import { useEffect, useState } from "react";
+
 /*global kakao*/
+
 const Gps = () => {
   const [latitude, setLatitude] = useState("37.566826");
   const [longitude, setLongitude] = useState("126.9786567");
-  const [address, setAddress] = useState("서울 중구 태평로1가");
+  const [address, setAddress] = useState("서울특별시 중구 세종대로 110");
 
   const kakaomap = () => {
     useEffect(() => {
@@ -55,18 +57,16 @@ const Gps = () => {
 
       function getAddress(lat, long) {
         let geocoder = new kakao.maps.services.Geocoder();
-
         let coord = new kakao.maps.LatLng(lat, long);
         let callback = function (result, status) {
           if (status === kakao.maps.services.Status.OK) {
             setAddress(
-              result[0].address.address_name.split(" ").slice(0, 2).join(" ")
+              result[0].region_1depth_name + " " + result[0].region_2depth_name
             );
-            console.log(result);
           }
         };
 
-        geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+        geocoder.coord2RegionCode(coord.getLng(), coord.getLat(), callback);
       }
       getAddress(latitude, longitude);
     }, [latitude, longitude]);
