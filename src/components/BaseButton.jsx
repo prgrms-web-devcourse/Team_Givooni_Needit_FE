@@ -49,6 +49,7 @@ const BaseButton = ({
           borderRadius: height,
         }}
         onClick={func}
+        type={type}
       >
         {text}
       </Button>

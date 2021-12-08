@@ -2,7 +2,7 @@ import { InputAdornment, TextField } from "@mui/material";
 import { useState } from "react";
 import theme from "@/styles/theme";
 
-const PasswordInput = () => {
+const PasswordInput = ({ ...props }) => {
   const [showPassword, setshowPassword] = useState(false);
   return (
     <TextField
@@ -26,6 +26,7 @@ const PasswordInput = () => {
               e.preventDefault();
               setshowPassword(!showPassword);
             }}
+            {...props}
           >
             <div style={{ color: theme.palette.primary.main }}>Show</div>
           </InputAdornment>
