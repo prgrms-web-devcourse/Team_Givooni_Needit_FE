@@ -74,22 +74,16 @@ const CustomModalBody = styled.div`
 const ModalAreaContainer = styled.div`
   overflow: scroll;
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   justify-content: center;
-  align-items: center;
-  justify-items: center;
-  align-items: center;
-  width: 330px;
-  height: 500px;
+  height: 80vh;
 `;
 
 const ModalAreaItem = styled.div`
   display: flex;
   width: 100px;
   height: 25px;
-  left: 10px;
-  top: calc(50% - 25px / 2);
 
   /* h5 */
 
