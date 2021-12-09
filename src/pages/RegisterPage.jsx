@@ -28,11 +28,12 @@ const AlignContainer = styled.div`
 
 const RegisterPage = () => {
   const [isCenter, setIsCenter] = useState(false);
-  // const [centerValidated, setCenterValidated] = useState(false);
+  const [centerValidated, setCenterValidated] = useState(false);
   const [centerName, setCenterName] = useState("홍길동");
   const [centerNum, setCenterNum] = useState("0000000000");
   const [centerDate, setCenterDate] = useState("20000101");
   const [validateStatus, setValidateStatus] = useState("");
+  const [myEmail, setEmail] = useState("");
 
   const axios = require("axios");
   const data = JSON.stringify({
@@ -62,12 +63,13 @@ const RegisterPage = () => {
   const validation = async () =>
     await axios(request)
       .then(function (response) {
-        setValidateStatus(JSON.stringify(response.data.data[0].valid)); // 유효한 정보인지 출력해보기
-        console.log(validateStatus);
+        setValidateStatus(
+          JSON.stringify(response.data.data[0].valid).replaceAll('"', "")
+        ); // 유효한 정보인지 출력해보기 & 일치 확인 위해 따옴표 제거
         console.log(response.data);
       })
-      .catch(function (error) {
-        alert(error);
+      .catch(function () {
+        alert("유효한 사업자 정보를 입력해주세요.");
       });
 
   const validationSchema = !isCenter
@@ -132,6 +134,10 @@ const RegisterPage = () => {
               id="email"
               name="email"
               onChange={formik.handleChange}
+              onKeyPress={(e) => {
+                console.log(e.target.value);
+                setEmail(e.target.value);
+              }}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
@@ -141,7 +147,7 @@ const RegisterPage = () => {
                 text="인증 요청"
                 width="6rem"
                 height="2.4rem"
-                onClick={() => console.log(`gg`)}
+                onClick={() => alert(myEmail)}
               />
             </div>
             {!isCenter ? (
@@ -189,17 +195,29 @@ const RegisterPage = () => {
                   type="개업 일자 / YYYYMMDD"
                   onChange={(e) => setCenterDate(e.target.value)}
                 />
-                <BaseButton
-                  text="기관 회원 인증"
-                  onClick={() => {
-                    validation();
-                    console.log(validateStatus === "02");
-                    if (validateStatus === "02")
-                      console.log("유효하지 않은 사업자 정보입니다.");
-                    else if (validateStatus === String("01"))
-                      console.log("유효한 사업자 정보입니다.");
+                <div
+                  style={{
+                    display: "grid",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: "1rem",
                   }}
-                />
+                >
+                  <BaseButton
+                    // button type submit 아니고 type="button" 으로 나오게 해야 됨
+                    type={centerValidated ? 0 : 3}
+                    text="기관 회원 인증"
+                    onClick={() => {
+                      validation();
+                      if (validateStatus === "02")
+                        alert("유효하지 않은 사업자 정보입니다.");
+                      else if (validateStatus === "01") {
+                        setCenterValidated(true);
+                        alert("유효한 사업자 정보입니다.");
+                      }
+                    }}
+                  />
+                </div>
               </>
             ) : undefined}
             <div
