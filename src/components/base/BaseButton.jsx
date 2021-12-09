@@ -7,15 +7,16 @@ const BaseButton = ({
   typography = "subtitle1",
   width = 150,
   height = 50,
-  type,
+  kind,
   func,
+  ...props
 }) => {
   const pallete = theme.palette;
   let color = "#ffffff";
   let backgroundColor = "primary";
   let border = null;
 
-  switch (type) {
+  switch (kind) {
     case 1:
       color = pallete.primary.main;
       backgroundColor = "white";
@@ -49,6 +50,7 @@ const BaseButton = ({
           borderRadius: height,
         }}
         onClick={func}
+        {...props}
       >
         {text}
       </Button>
@@ -61,7 +63,7 @@ BaseButton.propTypes = {
   typography: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
-  type: PropTypes.number,
+  kind: PropTypes.number,
   func: PropTypes.func,
 };
 
