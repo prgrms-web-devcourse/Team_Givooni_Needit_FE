@@ -29,20 +29,51 @@ const AlignContainer = styled.div`
 const RegisterPage = () => {
   const [isCenter, setIsCenter] = useState(false);
   // const [centerValidated, setCenterValidated] = useState(false);
-  const [centerInfo, setCenterInfo] = useState({
+  const [centerName, setCenterName] = useState("홍길동");
+  const [centerNum, setCenterNum] = useState("0000000000");
+  const [centerDate, setCenterDate] = useState("20000101");
+  const [validateStatus, setValidateStatus] = useState("");
+
+  console.log(centerDate + centerName + centerNum);
+
+  const axios = require("axios");
+  const data = JSON.stringify({
     businesses: [
       {
-        b_no: "0000000000",
-        start_dt: "20000101",
-        p_nm: "홍길동",
-        p_nm2: "홍길동",
-        b_nm: "(주)테스트",
-        corp_no: "0000000000000",
+        b_no: centerNum,
+        start_dt: centerDate,
+        p_nm: centerName,
+        p_nm2: "",
+        b_nm: "",
+        corp_no: "",
         b_sector: "",
         b_type: "",
       },
     ],
   });
+
+  const request = {
+    method: "post",
+    url: "https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=w2MOw0zoOwMPgsdLpEtEKNVazsFgDfbNOxMb%2FkMMierdPUgPmj1coM%2Bgf0w%2FvA3xP6OFm8bk0GnLLUgXRoU3qQ%3D%3D",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: data,
+  };
+
+  const validation = () =>
+    axios(request)
+      .then(function (response) {
+        setValidateStatus(JSON.stringify(response.data.data[0].valid)); // 유효한 정보인지 출력해보기
+        console.log(validateStatus);
+        if (validateStatus == "02")
+          console.log("유효하지 않은 사업자 정보입니다.");
+        else if (validateStatus == "01")
+          console.log("유효한 사업자 정보입니다.");
+      })
+      .catch(function (error) {
+        alert(error);
+      });
 
   const validationSchema = !isCenter
     ? yup.object({
@@ -151,9 +182,22 @@ const RegisterPage = () => {
                     formik.touched.centername && formik.errors.centername
                   }
                 />
-                <Input type="사업자 등록 번호" />
-                <Input type="대표자 성명" />
-                <Input type="개업 일자 / YYYYMMDD" />
+                <Input
+                  type="사업자 등록 번호"
+                  onChange={(e) => setCenterNum(e.target.value)}
+                />
+                <Input
+                  type="대표자 성명"
+                  onChange={(e) => setCenterName(e.target.value)}
+                />
+                <Input
+                  type="개업 일자 / YYYYMMDD"
+                  onChange={(e) => setCenterDate(e.target.value)}
+                />
+                <BaseButton
+                  text="기관 회원 인증"
+                  onClick={() => validation()}
+                />
               </>
             ) : undefined}
             <div
