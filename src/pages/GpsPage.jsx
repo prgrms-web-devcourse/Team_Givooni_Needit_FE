@@ -1,7 +1,7 @@
 import Gps from "@/components/page/Gps.jsx";
-import Header from "../components/Header";
+import Header from "@/components/base/Header";
 import styled from "styled-components";
-import BaseButton from "@/components/BaseButton";
+import BaseButton from "@/components/base/BaseButton";
 import theme from "@/styles/theme";
 
 const GpsContainer = styled.div`
