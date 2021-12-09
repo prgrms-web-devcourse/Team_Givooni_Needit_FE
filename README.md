@@ -13,12 +13,14 @@
 ## 📝 Git commit rule
 
 **Branch Convention**
+
 - 기능 / 이슈번호 / 컴포넌트 명 혹은 구현 내용
 - ex) feature/28/input-component
 - ex) feature/30/login-page
 - ex) docs/19/readme
 
 **Commit Message Convention**
+
 - feat : 새로운 기능에 대한 커밋
 - fix : 버그 수정에 대한 커밋
 - build : 빌드 관련 파일 수정에 대한 커밋
@@ -26,10 +28,11 @@
 - ci : CI관련 설정 수정에 대한 커밋
 - docs : 문서 수정에 대한 커밋
 - style : 코드 스타일 혹은 포맷 등에 관한 커밋
-- refactor :  코드 리팩토링에 대한 커밋
+- refactor : 코드 리팩토링에 대한 커밋
 - test : 테스트 코드 수정에 대한 커밋
 
 **Gitmoji Rule**
+
 - 🎉: 프로젝트 시작 Begin a project.
 - ✨: sparkles: 새 기능 Introduce new features.
 - 🐛: 버그 수정 Fix a bug.
@@ -45,32 +48,53 @@ ref.
 [Gitmoji 사용하기](https://treasurebear.tistory.com/70)
 
 **Pull Request Rule**
+
 - 깃모지 타입: 간단한 기능설명 (뒤에 내용은 한글로 설명)
 - ex)✨ feat: 포스트 페이지 렌더링 및 포스트 기본 기능 구현
 - [참고 링크](https://www.notion.so/backend-devcourse/12-f41327b8ca6b4ec69487af702393c922?p=66d80d8082994c79926307e527504c37)
+
 ## 📁 폴더 구조
 
 ```
-┌─node_modules
-├─.github
-├─.storybook
-├─public
-└─src
-    ├─api
-    │  └─services
-    │      ├─alarm
-    │      ├─chatting
-    │      ├─interest
-    │      ├─login
-    │      ├─register
-    │      ├─search
-    │      └─write
-    ├─components
-    │  └─page
-    ├─pages
-    ├─public
-    ├─stories
-    │  └─assets
-    └─utils
-        └─hooks
+src
+│  App.js
+│  index.js
+│
+├─api
+│  │  axios.js
+│  │
+│  └─services
+│      ├─alarm
+│      ├─chatting
+│      ├─interest
+│      ├─login
+│      ├─register
+│      ├─search
+│      └─write
+├─assets
+│
+├─components
+│  ├─base
+│  └─domain
+│      ├─Center
+│      ├─Login
+│      ├─Member
+│      ├─Message
+│      ├─Notify
+│      ├─Register
+│      ├─Schedule
+│      ├─Username
+│      └─Writes
+├── contexts
+│
+├─hooks
+│      index.js
+│
+├─pages
+│
+├─styles
+│      GlobalStyle.js
+│      theme.js
+│
+└─utils
 ```
