@@ -29,9 +29,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -62,19 +60,11 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.0",
-    "@storybook/addon-essentials": "^6.4.0",
-    "@storybook/addon-links": "^6.4.0",
-    "@storybook/node-logger": "^6.4.0",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.4.0",
     "craco-alias": "^3.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
-    "prettier": "^2.5.0",
-    "storybook-addon-material-ui": "^0.9.0-alpha.24",
-    "storybook-addon-mui-mode": "^0.0.14"
+    "prettier": "^2.5.0"
   },
   "resolutions": {
     "babel-loader": "8.1.0",
