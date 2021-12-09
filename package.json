@@ -16,13 +16,21 @@
     "axios": "^0.24.0",
     "date-fns": "^2.27.0",
     "dotenv": "^10.0.0",
+    "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",
     "react": "^17.0.2",
+    "react-daum-postcode": "^3.0.1",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.3",
+<<<<<<< HEAD
     "web-vitals": "^1.0.1"
+=======
+    "styled-reset": "^4.3.4",
+    "web-vitals": "^1.0.1",
+    "yup": "^0.32.11"
+>>>>>>> dd2870282f44c5b349f742e8545370ddfa37be3b
   },
   "scripts": {
     "start": "craco start",
