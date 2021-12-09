@@ -8,7 +8,7 @@ const BaseButton = ({
   width = 150,
   height = 50,
   btnType,
-  tag = "",
+  tag,
 }) => {
   const pallete = theme.palette;
   let color = "#ffffff";
