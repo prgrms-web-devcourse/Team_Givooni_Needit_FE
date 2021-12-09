@@ -1,14 +1,59 @@
 import area from "@/utils/const/LocationData";
-
+import RoomIcon from "@mui/icons-material/Room";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import styled from "styled-components";
 import { useState } from "react";
+
+const Main = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const MainAreaContainer = styled.div`
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  align-items: center;
+  width: 355px;
+`;
+
+const MainAreaItem = styled.div`
+  display: flex;
+  width: 160px;
+  height: 25px;
+  left: 10px;
+  top: calc(50% - 25px / 2);
+
+  /* h5 */
+
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 25px;
+  /* identical to box height */
+
+  /* mainColor */
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  justify-content: space-between;
+  margin: 30px;
+`;
 
 const CustomModal = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: block;
   background-color: rgba(0, 0, 0, 0.4);
 `;
@@ -17,8 +62,8 @@ const CustomModalBody = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 300px;
-  padding: 40px;
+  width: 330px;
+  padding: 20px;
   text-align: center;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
@@ -26,36 +71,8 @@ const CustomModalBody = styled.div`
   transform: translateX(-50%) translateY(-50%);
 `;
 
-const ModalGridArea = styled.div`
-  display: grid;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: center;
-  align-items: center;
-  justify-items: center;
-  align-items: center;
-`;
-
-const ModalGridAreaItem = styled.button`
-  background-color: #fd9f28;
-  width: 100px;
-  height: 50px;
-  border-radius: 10px;
-  text-align: center;
-  margin: 10px;
-  display: table-cell;
-  color: white;
-`;
-
-const GridGroup = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const GridArea = styled.div`
-  width: 300px;
-  border: 4px solid;
+const ModalAreaContainer = styled.div`
+  overflow: scroll;
   display: grid;
   grid-template-rows: repeat(2, 1fr);
   grid-template-columns: repeat(2, 1fr);
@@ -63,17 +80,36 @@ const GridArea = styled.div`
   align-items: center;
   justify-items: center;
   align-items: center;
+  width: 330px;
+  height: 500px;
 `;
 
-const GridAreaItem = styled.button`
-  background-color: #fd9f28;
+const ModalAreaItem = styled.div`
+  display: flex;
   width: 100px;
-  height: 50px;
-  border-radius: 10px;
-  text-align: center;
-  margin: 10px;
-  display: table-cell;
-  color: white;
+  height: 25px;
+  left: 10px;
+  top: calc(50% - 25px / 2);
+
+  /* h5 */
+
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 25px;
+  /* identical to box height */
+
+  /* mainColor */
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  justify-content: space-between;
+  color: #fd9f28;
+  padding: 10px;
 `;
 
 const Location = () => {
@@ -108,38 +144,41 @@ const Location = () => {
         }}
       >
         <CustomModalBody>
-          <ModalGridArea>
+          <ModalAreaContainer>
             {subArea.map((t, i) => (
-              <ModalGridAreaItem
+              <ModalAreaItem
                 key={i}
                 onClick={(e) => {
                   clickModalBodyHandler(e.target.textContent);
                 }}
               >
                 <p style={{ verticalAlign: "center" }}>{t}</p>
-              </ModalGridAreaItem>
+                <GpsFixedIcon />
+              </ModalAreaItem>
             ))}
-          </ModalGridArea>
+          </ModalAreaContainer>
         </CustomModalBody>
       </CustomModal>
     );
-
   return (
     <>
-      <GridGroup>
-        <GridArea>
-          {areaArr.map((t, i) => (
-            <GridAreaItem
-              key={i}
-              onClick={(e) => {
-                clickHandler(e.target.textContent);
-              }}
-            >
-              <p style={{ verticalAlign: "center" }}>{t}</p>
-            </GridAreaItem>
-          ))}
-        </GridArea>
-      </GridGroup>
+      <Main>
+        <MainAreaContainer>
+          {areaArr.map((val, i) => {
+            return (
+              <MainAreaItem
+                key={i}
+                onClick={(e) => {
+                  clickHandler(e.target.textContent);
+                }}
+              >
+                <p style={{ color: "#fd9f28" }}>{val}</p>
+                <RoomIcon style={{ color: "9E9E9E" }} />
+              </MainAreaItem>
+            );
+          })}
+        </MainAreaContainer>
+      </Main>
     </>
   );
 };
