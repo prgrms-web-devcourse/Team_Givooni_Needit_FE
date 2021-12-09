@@ -17,7 +17,6 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react", "prettier"],
-  ignorePatterns: ["/.storybook/*.jsx"],
   rules: {
     "prettier/prettier": [
       "error",
