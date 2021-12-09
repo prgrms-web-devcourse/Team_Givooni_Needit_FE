@@ -1,4 +1,4 @@
-import { Button, Chip } from "@mui/material";
+import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 import theme from "@/styles/theme";
 
@@ -8,7 +8,6 @@ const BaseButton = ({
   width = 150,
   height = 50,
   btnType,
-  chip = false,
   func,
 }) => {
   const pallete = theme.palette;
@@ -37,37 +36,22 @@ const BaseButton = ({
 
   return (
     <>
-      {!chip ? (
-        <Button
-          variant="contained"
-          color={backgroundColor}
-          disableElevation
-          sx={{
-            width: width,
-            height: height,
-            typography: typography,
-            color: color,
-            border: `solid 1px ${border}`,
-            borderRadius: height,
-          }}
-          onClick={func}
-        >
-          {text}
-        </Button>
-      ) : (
-        <Chip
-          label={text}
-          color={backgroundColor}
-          sx={{
-            width: width,
-            height: height,
-            typography: typography,
-            color: color,
-            border: `solid 1px ${border}`,
-            borderRadius: height,
-          }}
-        />
-      )}
+      <Button
+        variant="contained"
+        color={backgroundColor}
+        disableElevation
+        sx={{
+          width: width,
+          height: height,
+          typography: typography,
+          color: color,
+          border: `solid 1px ${border}`,
+          borderRadius: height,
+        }}
+        onClick={func}
+      >
+        {text}
+      </Button>
     </>
   );
 };
@@ -79,7 +63,6 @@ BaseButton.propTypes = {
   height: PropTypes.number,
   btnType: PropTypes.string,
   func: PropTypes.func,
-  chip: PropTypes.bool,
 };
 
 export default BaseButton;
