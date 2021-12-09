@@ -34,8 +34,6 @@ const RegisterPage = () => {
   const [centerDate, setCenterDate] = useState("20000101");
   const [validateStatus, setValidateStatus] = useState("");
 
-  console.log(centerDate + centerName + centerNum);
-
   const axios = require("axios");
   const data = JSON.stringify({
     businesses: [
@@ -61,15 +59,12 @@ const RegisterPage = () => {
     data: data,
   };
 
-  const validation = () =>
-    axios(request)
+  const validation = async () =>
+    await axios(request)
       .then(function (response) {
         setValidateStatus(JSON.stringify(response.data.data[0].valid)); // 유효한 정보인지 출력해보기
         console.log(validateStatus);
-        if (validateStatus == "02")
-          console.log("유효하지 않은 사업자 정보입니다.");
-        else if (validateStatus == "01")
-          console.log("유효한 사업자 정보입니다.");
+        console.log(response.data);
       })
       .catch(function (error) {
         alert(error);
@@ -196,7 +191,14 @@ const RegisterPage = () => {
                 />
                 <BaseButton
                   text="기관 회원 인증"
-                  onClick={() => validation()}
+                  onClick={() => {
+                    validation();
+                    console.log(validateStatus === "02");
+                    if (validateStatus === "02")
+                      console.log("유효하지 않은 사업자 정보입니다.");
+                    else if (validateStatus === String("01"))
+                      console.log("유효한 사업자 정보입니다.");
+                  }}
                 />
               </>
             ) : undefined}
