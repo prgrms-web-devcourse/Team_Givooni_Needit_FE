@@ -1,4 +1,4 @@
-import Member from "@/components/page/Member";
+import Member from "@/components/domain/Member/Member";
 const MemberPage = () => {
   return <Member />;
 };

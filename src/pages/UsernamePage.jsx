@@ -1,4 +1,4 @@
-import Username from "@/components/page/Username";
+import Username from "@/components/domain/Username/Username";
 const UsernamePage = () => {
   return <Username />;
 };
