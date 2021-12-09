@@ -16,22 +16,23 @@
     "cleave.js": "^1.6.0",
     "date-fns": "^2.27.0",
     "dotenv": "^10.0.0",
+    "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",
     "react": "^17.0.2",
+    "react-daum-postcode": "^3.0.1",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.3",
     "styled-reset": "^4.3.4",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -62,19 +63,11 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.0",
-    "@storybook/addon-essentials": "^6.4.0",
-    "@storybook/addon-links": "^6.4.0",
-    "@storybook/node-logger": "^6.4.0",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.4.0",
     "craco-alias": "^3.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
-    "prettier": "^2.5.0",
-    "storybook-addon-material-ui": "^0.9.0-alpha.24",
-    "storybook-addon-mui-mode": "^0.0.14"
+    "prettier": "^2.5.0"
   },
   "resolutions": {
     "babel-loader": "8.1.0",
