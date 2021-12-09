@@ -8,12 +8,21 @@ const BaseButton = ({
   width = 150,
   height = 50,
   btnType,
-  func,
+  tag = "",
 }) => {
   const pallete = theme.palette;
   let color = "#ffffff";
   let backgroundColor = "primary";
   let border = null;
+
+  const style = {
+    width: width,
+    height: height,
+    typography: typography,
+    color: color,
+    border: `solid 1px ${border}`,
+    borderRadius: height,
+  };
 
   switch (btnType) {
     case "white":
@@ -34,24 +43,39 @@ const BaseButton = ({
       break;
   }
 
+  switch (tag) {
+    case "primary":
+      backgroundColor = pallete.primary.main;
+      break;
+
+    case "gray_dark":
+      backgroundColor = pallete.gray.dark;
+      break;
+  }
+
   return (
     <>
-      <Button
-        variant="contained"
-        color={backgroundColor}
-        disableElevation
-        sx={{
-          width: width,
-          height: height,
-          typography: typography,
-          color: color,
-          border: `solid 1px ${border}`,
-          borderRadius: height,
-        }}
-        onClick={func}
-      >
-        {text}
-      </Button>
+      {tag ? (
+        <Button
+          sx={style}
+          disabled
+          style={{
+            color: color,
+            backgroundColor: backgroundColor,
+          }}
+        >
+          {text}
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          color={backgroundColor}
+          disableElevation
+          sx={style}
+        >
+          {text}
+        </Button>
+      )}
     </>
   );
 };
@@ -62,7 +86,7 @@ BaseButton.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   btnType: PropTypes.string,
-  func: PropTypes.func,
+  tag: PropTypes.string,
 };
 
 export default BaseButton;
