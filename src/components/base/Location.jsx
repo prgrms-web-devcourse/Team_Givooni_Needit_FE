@@ -72,7 +72,7 @@ const CustomModalBody = styled.div`
 `;
 
 const ModalAreaContainer = styled.div`
-  overflow: scroll;
+  overflow-y: scroll;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(10, 1fr);
