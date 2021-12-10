@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { Box, Avatar, Typography, IconButton } from "@mui/material";
 import theme from "@/styles/theme";
@@ -17,7 +17,8 @@ const DUMMY = {
   data: {
     id: 1, // 기부글 식별자
     title: "기부",
-    content: "기부할래요 기부할래요? 기부할래요!",
+    content:
+      "기부할래요 기부할래요? 기부할래요! 기부할래요 기부할래요 기부할래요? 기부할래요! 기부할래요",
     category: "물품나눔",
     quality: "보통",
     status: "기부진행",
@@ -53,6 +54,7 @@ const DUMMY = {
 const PostCard = () => {
   let DUMMY_LIKE = [2, 3];
   const [like, setLike] = useState(DUMMY_LIKE.includes(DUMMY.data.memberId));
+  const [overflow, setoverflow] = useState(false);
   const [more, setMore] = useState(false);
 
   const UserLike = (id) => {
@@ -65,6 +67,13 @@ const PostCard = () => {
   const moreContents = () => {
     setMore(!more);
   };
+
+  const checkOver = useRef();
+  useEffect(() => {
+    checkOver.current?.scrollHeight > 48
+      ? setoverflow(true)
+      : setoverflow(false);
+  });
 
   console.log(DUMMY);
   return (
@@ -149,12 +158,14 @@ const PostCard = () => {
               </Box>
             ) : (
               <Box sx={{ display: "flex" }}>
-                <EllipsisContentContainer>
+                <EllipsisContentContainer ref={checkOver}>
                   {DUMMY.data.content}
                 </EllipsisContentContainer>
-                <IconButton onClick={moreContents}>
-                  <ExpandMoreIcon />
-                </IconButton>
+                {overflow ? (
+                  <IconButton onClick={moreContents}>
+                    <ExpandMoreIcon />
+                  </IconButton>
+                ) : null}
               </Box>
             )}
           </Box>
@@ -193,14 +204,12 @@ export default PostCard;
 
 const CardMainContainer = styled.div`
   display: flex;
-  background-color: orange;
 `;
 
 const CardHeader = styled.div`
   display: flex;
   flex-direction: column;
   height: auto;
-  background-color: white;
   margin: 0 0 10px 8px;
 `;
 
