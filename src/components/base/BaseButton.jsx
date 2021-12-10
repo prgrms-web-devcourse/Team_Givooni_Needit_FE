@@ -11,23 +11,12 @@ const BaseButton = ({
   tag,
   fontSize,
   fontWeight,
+  ...props
 }) => {
   const pallete = theme.palette;
   let color = "#ffffff";
   let backgroundColor = "primary";
   let border = null;
-
-  const style = {
-    width: width,
-    minWidth: width,
-    height: height,
-    typography: typography,
-    color: color,
-    border: `solid 1px ${border}`,
-    borderRadius: height,
-    fontSize: fontSize,
-    fontWeight: fontWeight,
-  };
 
   switch (btnType) {
     case "white":
@@ -58,6 +47,18 @@ const BaseButton = ({
       break;
   }
 
+  const style = {
+    width: width,
+    minWidth: width,
+    height: height,
+    typography: typography,
+    color: color,
+    border: `solid 1px ${border}`,
+    borderRadius: height,
+    fontSize: fontSize,
+    fontWeight: fontWeight,
+  };
+
   return (
     <>
       {tag ? (
@@ -68,6 +69,7 @@ const BaseButton = ({
             color: color,
             backgroundColor: backgroundColor,
           }}
+          {...props}
         >
           {text}
         </Button>
@@ -77,6 +79,7 @@ const BaseButton = ({
           color={backgroundColor}
           disableElevation
           sx={style}
+          {...props}
         >
           {text}
         </Button>
