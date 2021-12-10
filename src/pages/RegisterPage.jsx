@@ -2,7 +2,6 @@ import BaseButton from "@/components/base/BaseButton";
 import Header from "@/components/base/Header";
 import Input from "@/components/base/Input";
 import PasswordInput from "@/components/base/PasswordInput";
-import PhoneInput from "@/components/base/PhoneInput";
 import theme from "@/styles/theme";
 import { Checkbox } from "@mui/material";
 import { useState } from "react";
@@ -10,8 +9,11 @@ import styled from "styled-components";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
+import Cleave from "cleave.js/react";
+import "cleave.js/dist/addons/cleave-phone.kr";
 
 const RegisterContainer = styled.div`
+  margin-top: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,6 +37,12 @@ const RegisterPage = () => {
   const [centerDate, setCenterDate] = useState("20000101");
   const [validateStatus, setValidateStatus] = useState("");
   const [myEmail, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const onPhoneChange = (e) => {
+    setPhoneNumber(e.target.value.replaceAll(" ", ""));
+    console.log(phoneNumber);
+  };
 
   const data = JSON.stringify({
     businesses: [
@@ -151,6 +159,14 @@ const RegisterPage = () => {
                 onClick={() => alert(myEmail)}
               />
             </div>
+
+            <PasswordInput
+              id="password"
+              name="password"
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+            />
             {!isCenter ? (
               <Input
                 type="닉네임"
@@ -162,14 +178,19 @@ const RegisterPage = () => {
                 helperText={formik.touched.nickname && formik.errors.nickname}
               />
             ) : undefined}
-            <PasswordInput
-              id="password"
-              name="password"
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+            <Cleave
+              placeholder="010 0000 0000"
+              options={{ phone: true, phoneRegionCode: "KR" }}
+              onKeyUp={onPhoneChange}
+              style={{
+                border: `1px solid #bbbbbb`,
+                borderRadius: "5px",
+                height: "2.5rem",
+                fontSize: "16px",
+                padding: "0.7rem",
+                boxSizing: "border-box",
+              }}
             />
-            <PhoneInput />
             {isCenter ? (
               <>
                 <Input
@@ -205,9 +226,8 @@ const RegisterPage = () => {
                   }}
                 >
                   <BaseButton
-                    // button type submit 아니고 type="button" 으로 나오게 해야 됨
                     type="button"
-                    kind={centerValidated ? 0 : 3}
+                    btnType={centerValidated ? undefined : "gray_dark"}
                     text="기관 회원 인증"
                     onClick={() => {
                       validation();
