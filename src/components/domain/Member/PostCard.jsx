@@ -11,47 +11,9 @@ import {
 import BaseButton from "@/components/base/BaseButton";
 import MemberProfile from "./MemberProfile";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const DUMMY = {
-  message: "success",
-  data: {
-    id: 1, // 기부글 식별자
-    title: "기부",
-    content:
-      "기부할래요 기부할래요? 기부할래요! 기부할래요 기부할래요 기부할래요? 기부할래요! 기부할래요",
-    category: "물품나눔",
-    quality: "보통",
-    status: "기부진행",
-    memberId: 1, // 기부글 작성자 : 식별자 아이디(회원)
-    member: "부리", // 기부글 작성자 : 회원 닉네임
-    centerCnt: 2, // 기부희망댓글 작성자 수(참여자수)
-    createdDate: "2021-12-05T02:18:21.807641",
-    updatedDate: "2021-12-05T19:50:29.063482",
-    tags: ["아동 · 청소년", "가족 · 여성", "지구촌"],
-    comments: [
-      {
-        id: 1, // 기부희망댓글 식별자
-        comment: "기부희망",
-        centerId: 1, // 기부희망댓글 작성자 식별자 아이디(센터)
-        center: "기부니 센터", // 기부희망댓글 작성자 : 센터 이름
-        centerImage: "test",
-        createdDate: "2021-12-06T03:02:21.597399",
-        updatedDate: "2021-12-06T03:39:41.936613",
-      },
-      {
-        id: 2,
-        comment: "기부희망",
-        centerId: 1,
-        center: "니드잇 센터",
-        centerImage: "test",
-        createdDate: "2021-12-06T16:18:29.599477",
-        updatedDate: "2021-12-06T16:18:29.599477",
-      },
-    ],
-  },
-};
-
-const PostCard = () => {
+const PostCard = ({ DUMMY }) => {
   let DUMMY_LIKE = [2, 3];
   const [like, setLike] = useState(DUMMY_LIKE.includes(DUMMY.data.memberId));
   const [overflow, setoverflow] = useState(false);
@@ -75,9 +37,8 @@ const PostCard = () => {
       : setoverflow(false);
   });
 
-  console.log(DUMMY);
   return (
-    <div style={{ width: "320px" }}>
+    <div style={{ width: "100%" }}>
       <Box
         sx={{
           display: "flex",
@@ -86,7 +47,7 @@ const PostCard = () => {
           p: "10px",
           backgroundColor: theme.palette.gray.light,
           borderRadius: "8px",
-          minHeight: "160px",
+          minHeight: "140px",
         }}
       >
         <CardMainContainer>
@@ -201,6 +162,10 @@ const PostCard = () => {
 };
 
 export default PostCard;
+
+PostCard.propTypes = {
+  DUMMY: PropTypes.any.isRequired,
+};
 
 const CardMainContainer = styled.div`
   display: flex;
