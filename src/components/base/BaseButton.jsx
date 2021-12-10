@@ -18,18 +18,6 @@ const BaseButton = ({
   let backgroundColor = "primary";
   let border = null;
 
-  const style = {
-    width: width,
-    minWidth: width,
-    height: height,
-    typography: typography,
-    color: color,
-    border: `solid 1px ${border}`,
-    borderRadius: height,
-    fontSize: fontSize,
-    fontWeight: fontWeight,
-  };
-
   switch (btnType) {
     case "white":
       color = pallete.primary.main;
@@ -58,6 +46,18 @@ const BaseButton = ({
       backgroundColor = pallete.gray.dark;
       break;
   }
+
+  const style = {
+    width: width,
+    minWidth: width,
+    height: height,
+    typography: typography,
+    color: color,
+    border: `solid 1px ${border}`,
+    borderRadius: height,
+    fontSize: fontSize,
+    fontWeight: fontWeight,
+  };
 
   return (
     <>
@@ -91,10 +91,10 @@ const BaseButton = ({
 BaseButton.propTypes = {
   text: PropTypes.string,
   typography: PropTypes.string,
-  width: PropTypes.number,
-  height: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   fontSize: PropTypes.number,
-  fontWeight: PropTypes.number,
+  fontWeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   btnType: PropTypes.string,
   tag: PropTypes.string,
 };
