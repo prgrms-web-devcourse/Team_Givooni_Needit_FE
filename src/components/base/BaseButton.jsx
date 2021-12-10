@@ -7,8 +7,10 @@ const BaseButton = ({
   typography = "subtitle1",
   width = 150,
   height = 50,
-  kind,
-  func,
+  btnType,
+  tag,
+  fontSize,
+  fontWeight,
   ...props
 }) => {
   const pallete = theme.palette;
@@ -16,44 +18,72 @@ const BaseButton = ({
   let backgroundColor = "primary";
   let border = null;
 
-  switch (kind) {
-    case 1:
+  const style = {
+    width: width,
+    minWidth: width,
+    height: height,
+    typography: typography,
+    color: color,
+    border: `solid 1px ${border}`,
+    borderRadius: height,
+    fontSize: fontSize,
+    fontWeight: fontWeight,
+  };
+
+  switch (btnType) {
+    case "white":
       color = pallete.primary.main;
       backgroundColor = "white";
       border = pallete.primary.main;
       break;
 
-    case 2:
+    case "transparent":
       color = pallete.primary.main;
       backgroundColor = "transparent";
       border = pallete.primary.main;
       break;
 
-    case 3:
+    case "gray_dark":
       backgroundColor = "gray_dark";
       border = null;
       break;
   }
 
+  switch (tag) {
+    case "primary":
+      backgroundColor = pallete.primary.main;
+      break;
+
+    case "gray_dark":
+      backgroundColor = pallete.gray.dark;
+      break;
+  }
+
   return (
     <>
-      <Button
-        variant="contained"
-        color={backgroundColor}
-        disableElevation
-        sx={{
-          width: width,
-          height: height,
-          typography: typography,
-          color: color,
-          border: `solid 1px ${border}`,
-          borderRadius: height,
-        }}
-        onClick={func}
-        {...props}
-      >
-        {text}
-      </Button>
+      {tag ? (
+        <Button
+          sx={style}
+          disabled
+          style={{
+            color: color,
+            backgroundColor: backgroundColor,
+          }}
+          {...props}
+        >
+          {text}
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          color={backgroundColor}
+          disableElevation
+          sx={style}
+          {...props}
+        >
+          {text}
+        </Button>
+      )}
     </>
   );
 };
@@ -63,8 +93,10 @@ BaseButton.propTypes = {
   typography: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
-  kind: PropTypes.number,
-  func: PropTypes.func,
+  fontSize: PropTypes.number,
+  fontWeight: PropTypes.number,
+  btnType: PropTypes.string,
+  tag: PropTypes.string,
 };
 
 export default BaseButton;
