@@ -9,6 +9,8 @@ const BaseButton = ({
   height = 50,
   btnType,
   tag,
+  fontSize,
+  fontWeight,
 }) => {
   const pallete = theme.palette;
   let color = "#ffffff";
@@ -17,11 +19,14 @@ const BaseButton = ({
 
   const style = {
     width: width,
+    minWidth: width,
     height: height,
     typography: typography,
     color: color,
     border: `solid 1px ${border}`,
     borderRadius: height,
+    fontSize: fontSize,
+    fontWeight: fontWeight,
   };
 
   switch (btnType) {
@@ -85,6 +90,8 @@ BaseButton.propTypes = {
   typography: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
+  fontSize: PropTypes.number,
+  fontWeight: PropTypes.number,
   btnType: PropTypes.string,
   tag: PropTypes.string,
 };
