@@ -7,3 +7,4 @@ export { default as Register } from "./RegisterPage";
 export { default as Schedule } from "./SchedulePage";
 export { default as Username } from "./UsernamePage";
 export { default as Writes } from "./WritesPage";
+export { default as Gps } from "./GpsPage";
