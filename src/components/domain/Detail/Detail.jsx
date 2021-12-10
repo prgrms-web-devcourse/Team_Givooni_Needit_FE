@@ -32,7 +32,7 @@ const Dummy_Data = {
         comment: "기부희망",
         centerId: 1, // 기부희망댓글 작성자 식별자 아이디(센터)
         center: "기부니 센터", // 기부희망댓글 작성자 : 센터 이름
-        centerImage: "test",
+        centerImage: "https://t1.daumcdn.net/cfile/tistory/99086B3C5B9B75C431",
         createdDate: "2021-12-06T03:02:21.597399",
         updatedDate: "2021-12-06T03:39:41.936613",
       },
@@ -41,7 +41,7 @@ const Dummy_Data = {
         comment: "기부희망",
         centerId: 1,
         center: "니드잇 센터",
-        centerImage: "test",
+        centerImage: "https://t1.daumcdn.net/cfile/tistory/99086B3C5B9B75C431",
         createdDate: "2021-12-06T16:18:29.599477",
         updatedDate: "2021-12-06T16:18:29.599477",
       },
@@ -58,12 +58,12 @@ const Dummy_Data = {
   },
 };
 
-const TotalContainer = styled.div`
+const WriteContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-const MainContainer = styled.div`
+const WriteSubContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 314px;
@@ -74,13 +74,13 @@ const MainContainer = styled.div`
   color: #fd9f28;
 `;
 
-const SubContainer = styled.div`
+const TextSliderAvatarContainer = styled.div`
   display: flex;
   width: 185px;
   height: 50px;
 `;
 
-const ChildContainer = styled.div`
+const TextSliderContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 8px;
@@ -94,30 +94,22 @@ const ChildContainer = styled.div`
   line-height: 20px;
 `;
 
-const CustomInputContainer = styled.div`
+const TitleContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 16px;
 `;
 
-// const CustomInputTitle = styled(Input)`
-//   margin-top: 23px;
-//   width: 320px;
-//   height: 30px;
-// `;
+const ContentContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 61px;
+`;
 
-// const CustomInputContent = styled(Input)`
-//   margin-top: 16px;
-//   width: 320px;
-//   height: 126px;
-// `;
-
-// const ToggleContainer = styled.div`
-//   display: flex;
-//   justify-content: flex-end;
-//   margin-top: 12px;
-//   margin-right: 22px;
-// `;
+const LineBar = styled.div`
+  width: 100%;
+  border-bottom: 1px solid #e8e8e8;
+`;
 
 const CommentContainer = styled.div`
   margin-left: 20px;
@@ -131,13 +123,14 @@ const ProfileContainer = styled.div`
   height: 25px;
 `;
 
-const FirstSubContainer = styled.div`
+const GroupContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 22px;
+  width: 320px;
 `;
 
-const SecondSubContainer = styled.div`
+const CardContainer = styled.div`
   margin-bottom: 17px;
   padding: 14px 10px;
   background-color: #f6f6f6;
@@ -164,15 +157,15 @@ const Comment = styled.div`
   /* identical to box height */
 
   color: #bdbdbd;
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 38px;
+  margin-right: 38px;
 `;
 
 const MemberContainer = styled.div`
   display: flex;
 `;
 
-const CommnentGroup = styled.div`
+const CommnentSubContainer = styled.div`
   margin-top: 17px;
 `;
 
@@ -203,11 +196,11 @@ const Detail = () => {
   return (
     <>
       <Header type="main" />
-      <TotalContainer>
-        <MainContainer>
-          <SubContainer>
+      <WriteContainer>
+        <WriteSubContainer>
+          <TextSliderAvatarContainer>
             <Avatar sx={{ width: 50, height: 50 }} />
-            <ChildContainer>
+            <TextSliderContainer>
               <div>어쩌고저쩌고</div>
               <Slider
                 id="기부진행"
@@ -215,26 +208,30 @@ const Detail = () => {
                   console.log(data);
                 }}
               />
-            </ChildContainer>
-          </SubContainer>
+            </TextSliderContainer>
+          </TextSliderAvatarContainer>
           <FavoriteIcon />
-        </MainContainer>
-      </TotalContainer>
-      <CustomInputContainer>
+        </WriteSubContainer>
+      </WriteContainer>
+      <TitleContainer>
         <Input type="게시물 제목"></Input>
-      </CustomInputContainer>
-      <CustomInputContainer>
+      </TitleContainer>
+      <ContentContainer>
         <Input
           multiline
           rows={4} // 최대 줄 수
         />
-      </CustomInputContainer>
-
+      </ContentContainer>
+      <LineBar />
       <CommentContainer>
-        <CommnentGroup>
-          <FirstSubContainer>
+        <CommnentSubContainer>
+          <GroupContainer>
             <ProfileContainer>
-              <Profile width={23.65} height={17.4} />
+              <Profile
+                width={23.65}
+                height={17.4}
+                profileData={detailData.comments}
+              />
             </ProfileContainer>
             <Toggle
               id={"123"}
@@ -243,11 +240,11 @@ const Detail = () => {
                 console.log(data);
               }}
             />
-          </FirstSubContainer>
+          </GroupContainer>
           {detailData.comments &&
             detailData.comments.map((part, i) => {
               return (
-                <SecondSubContainer key={i}>
+                <CardContainer key={i}>
                   <MemberDeleteContainer>
                     <MemberContainer>
                       <Avatar sx={{ width: 30, height: 30 }} />
@@ -256,12 +253,12 @@ const Detail = () => {
                     <DeleteOutlineIcon />
                   </MemberDeleteContainer>
                   <JoinCommentContainer>
-                    <Comment>기부할래요</Comment>
+                    <Comment>기부할래요!</Comment>
                   </JoinCommentContainer>
-                </SecondSubContainer>
+                </CardContainer>
               );
             })}
-        </CommnentGroup>
+        </CommnentSubContainer>
       </CommentContainer>
 
       <Nav />
