@@ -3,6 +3,7 @@ import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import PostCard from "./PostCard";
 import styled from "styled-components";
+import TagFilter from "./TagFilter";
 
 const DUMMY1 = {
   message: "success",
@@ -157,6 +158,7 @@ const Member = () => {
   return (
     <MemberViewContainer>
       <Header type="member" />
+      <TagFilter />
       <PostContainer>
         {postList.map((post, id) => {
           return <PostCard key={id} DUMMY={post} />;
