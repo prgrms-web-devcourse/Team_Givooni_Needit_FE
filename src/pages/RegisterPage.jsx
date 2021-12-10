@@ -9,6 +9,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import axios from "axios";
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -35,7 +36,6 @@ const RegisterPage = () => {
   const [validateStatus, setValidateStatus] = useState("");
   const [myEmail, setEmail] = useState("");
 
-  const axios = require("axios");
   const data = JSON.stringify({
     businesses: [
       {
