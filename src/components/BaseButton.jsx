@@ -11,6 +11,7 @@ const BaseButton = ({
   tag,
   fontSize,
   fontWeight,
+  ...props
 }) => {
   const pallete = theme.palette;
   let color = "#ffffff";
@@ -68,6 +69,7 @@ const BaseButton = ({
             color: color,
             backgroundColor: backgroundColor,
           }}
+          {...props}
         >
           {text}
         </Button>
@@ -77,6 +79,7 @@ const BaseButton = ({
           color={backgroundColor}
           disableElevation
           sx={style}
+          {...props}
         >
           {text}
         </Button>
