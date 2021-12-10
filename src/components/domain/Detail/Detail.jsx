@@ -9,6 +9,55 @@ import Toggle from "@/components/base/Toggle";
 import Profile from "@/components/base/Profile";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
+import { useState, useEffect } from "react";
+
+const Dummy_Data = {
+  message: "success",
+  data: {
+    id: 1, // 기부글 식별자
+    title: "기부",
+    content: "기부할래요",
+    category: "물품나눔",
+    quality: "보통",
+    status: "기부진행",
+    memberId: 1, // 기부글 작성자 : 식별자 아이디(회원)
+    member: "부리", // 기부글 작성자 : 회원 닉네임
+    centerCnt: 2, // 기부희망댓글 작성자 수(참여자수)
+    createdDate: "2021-12-05T02:18:21.807641",
+    updatedDate: "2021-12-05T19:50:29.063482",
+    tags: ["장애인", "다문화", "지구촌"],
+    comments: [
+      {
+        id: 1, // 기부희망댓글 식별자
+        comment: "기부희망",
+        centerId: 1, // 기부희망댓글 작성자 식별자 아이디(센터)
+        center: "기부니 센터", // 기부희망댓글 작성자 : 센터 이름
+        centerImage: "test",
+        createdDate: "2021-12-06T03:02:21.597399",
+        updatedDate: "2021-12-06T03:39:41.936613",
+      },
+      {
+        id: 2,
+        comment: "기부희망",
+        centerId: 1,
+        center: "니드잇 센터",
+        centerImage: "test",
+        createdDate: "2021-12-06T16:18:29.599477",
+        updatedDate: "2021-12-06T16:18:29.599477",
+      },
+      {
+        id: 3,
+        comment: "기부희망",
+        centerId: 1,
+        center: "needit 센터",
+        centerImage: "test",
+        createdDate: "2021-12-06T16:18:29.599477",
+        updatedDate: "2021-12-06T16:18:29.599477",
+      },
+    ],
+  },
+};
+
 const TotalContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -21,6 +70,7 @@ const MainContainer = styled.div`
   height: 50px;
   align-items: center;
   margin-top: 13px;
+  margin-bottom: 23px;
   color: #fd9f28;
 `;
 
@@ -47,34 +97,36 @@ const ChildContainer = styled.div`
 const CustomInputContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-bottom: 16px;
 `;
 
-const CustomInputTitle = styled(Input)`
-  margin-top: 23px;
-  width: 320px;
-  height: 30px;
-`;
+// const CustomInputTitle = styled(Input)`
+//   margin-top: 23px;
+//   width: 320px;
+//   height: 30px;
+// `;
 
-const CustomInputContent = styled(Input)`
-  margin-top: 16px;
-  width: 320px;
-  height: 126px;
-`;
+// const CustomInputContent = styled(Input)`
+//   margin-top: 16px;
+//   width: 320px;
+//   height: 126px;
+// `;
 
-const ToggleContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 12px;
-  margin-right: 22px;
-`;
+// const ToggleContainer = styled.div`
+//   display: flex;
+//   justify-content: flex-end;
+//   margin-top: 12px;
+//   margin-right: 22px;
+// `;
 
 const CommentContainer = styled.div`
-  margin-left: 33px;
-  margin-right: 33px;
+  margin-left: 20px;
+  margin-right: 20px;
   margin-top: 27px;
 `;
 
 const ProfileContainer = styled.div`
+  margin-left: 13px;
   width: 65px;
   height: 25px;
 `;
@@ -85,31 +137,15 @@ const FirstSubContainer = styled.div`
   margin-bottom: 22px;
 `;
 
-const CommentCount = styled.div`
-  width: 88.6px;
-  height: 15px;
-  left: 231px;
-  top: 11px;
-
-  /* subtitle2 */
-
-  font-family: Spoqa Han Sans Neo;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 15px;
-  /* identical to box height */
-
-  color: #c6c6c6;
-`;
-
 const SecondSubContainer = styled.div`
   margin-bottom: 17px;
-
+  padding: 14px 10px;
   background-color: #f6f6f6;
   border: 1px solid #e8e8e8;
   box-sizing: border-box;
   border-radius: 8px;
+  width: 320px;
+  height: 80px;
 `;
 const JoinCommentContainer = styled.div`
   display: flex;
@@ -137,10 +173,7 @@ const MemberContainer = styled.div`
 `;
 
 const CommnentGroup = styled.div`
-  margin-left: 14px;
-  margin-right: 14px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 17px;
 `;
 
 const MemberDeleteContainer = styled.div`
@@ -159,6 +192,14 @@ const MemberName = styled.div`
 `;
 
 const Detail = () => {
+  const [detailData, setDetailData] = useState({});
+
+  useEffect(() => {
+    //api
+    setDetailData(Dummy_Data.data);
+    console.log(detailData, Dummy_Data);
+  }, []);
+
   return (
     <>
       <Header type="main" />
@@ -180,42 +221,49 @@ const Detail = () => {
         </MainContainer>
       </TotalContainer>
       <CustomInputContainer>
-        <CustomInputTitle type="게시물 제목"></CustomInputTitle>
+        <Input type="게시물 제목"></Input>
       </CustomInputContainer>
       <CustomInputContainer>
-        <CustomInputContent type="게시글"></CustomInputContent>
-      </CustomInputContainer>
-      <ToggleContainer>
-        <Toggle
-          id="vkeif23d1"
-          text="toggle"
-          onChange={(data) => {
-            console.log(data);
-          }}
+        <Input
+          multiline
+          rows={4} // 최대 줄 수
         />
-      </ToggleContainer>
+      </CustomInputContainer>
+
       <CommentContainer>
         <CommnentGroup>
           <FirstSubContainer>
             <ProfileContainer>
               <Profile width={23.65} height={17.4} />
             </ProfileContainer>
-            <CommentCount>댓글 갯수 999+</CommentCount>
+            <Toggle
+              id={"123"}
+              text="toggle"
+              onChange={(data) => {
+                console.log(data);
+              }}
+            />
           </FirstSubContainer>
-          <SecondSubContainer>
-            <MemberDeleteContainer>
-              <MemberContainer>
-                <Avatar sx={{ width: 30, height: 30 }} />
-                <MemberName>어쩌고 저쩌고 멤버</MemberName>
-              </MemberContainer>
-              <DeleteOutlineIcon />
-            </MemberDeleteContainer>
-            <JoinCommentContainer>
-              <Comment>기부할래요</Comment>
-            </JoinCommentContainer>
-          </SecondSubContainer>
+          {detailData.comments &&
+            detailData.comments.map((part, i) => {
+              return (
+                <SecondSubContainer key={i}>
+                  <MemberDeleteContainer>
+                    <MemberContainer>
+                      <Avatar sx={{ width: 30, height: 30 }} />
+                      <MemberName>{part.center}</MemberName>
+                    </MemberContainer>
+                    <DeleteOutlineIcon />
+                  </MemberDeleteContainer>
+                  <JoinCommentContainer>
+                    <Comment>기부할래요</Comment>
+                  </JoinCommentContainer>
+                </SecondSubContainer>
+              );
+            })}
         </CommnentGroup>
       </CommentContainer>
+
       <Nav />
     </>
   );
