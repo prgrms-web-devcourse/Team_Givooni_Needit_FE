@@ -18,18 +18,6 @@ const BaseButton = ({
   let backgroundColor = "primary";
   let border = null;
 
-  const style = {
-    width: width,
-    minWidth: width,
-    height: height,
-    typography: typography,
-    color: color,
-    border: `solid 1px ${border}`,
-    borderRadius: height,
-    fontSize: fontSize,
-    fontWeight: fontWeight,
-  };
-
   switch (btnType) {
     case "white":
       color = pallete.primary.main;
@@ -58,6 +46,18 @@ const BaseButton = ({
       backgroundColor = pallete.gray.dark;
       break;
   }
+
+  const style = {
+    width: width,
+    minWidth: width,
+    height: height,
+    typography: typography,
+    color: color,
+    border: `solid 1px ${border}`,
+    borderRadius: height,
+    fontSize: fontSize,
+    fontWeight: fontWeight,
+  };
 
   return (
     <>
