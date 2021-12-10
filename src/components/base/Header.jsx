@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import theme from "@/styles/theme";
 
 const Container = styled.div`
+  position: fixed;
+  top: 0;
+  background-color: white;
   display: flex;
   padding: 0rem 1rem;
   margin: 0.5rem 0rem;
