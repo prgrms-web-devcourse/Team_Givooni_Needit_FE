@@ -1,22 +1,23 @@
-import * as React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { Box, Avatar, Typography, IconButton } from "@mui/material";
 import theme from "@/styles/theme";
 import { format } from "date-fns";
 import {
   Favorite as FavoriteIcon,
+  FavoriteBorder as FavoriteBorderIcon,
   ExpandMore as ExpandMoreIcon,
 } from "@mui/icons-material";
 import BaseButton from "@/components/base/BaseButton";
 import MemberProfile from "./MemberProfile";
+import { Link } from "react-router-dom";
 
 const DUMMY = {
   message: "success",
   data: {
     id: 1, // 기부글 식별자
     title: "기부",
-    content:
-      "기부할래요 기부할래요? 기부할래요! 기부할래요 기부할래요? 기부할래요! 기부할래요 기부할래요? 기부할래요!",
+    content: "기부할래요 기부할래요? 기부할래요!",
     category: "물품나눔",
     quality: "보통",
     status: "기부진행",
@@ -50,8 +51,19 @@ const DUMMY = {
 };
 
 const PostCard = () => {
-  const moreContents = (e) => {
-    console.log(e.target);
+  let DUMMY_LIKE = [2, 3];
+  const [like, setLike] = useState(DUMMY_LIKE.includes(DUMMY.data.memberId));
+  const [more, setMore] = useState(false);
+
+  const UserLike = (id) => {
+    DUMMY_LIKE.includes(id)
+      ? (DUMMY_LIKE = DUMMY_LIKE.filter((value) => value !== id)) &&
+        setLike(!like)
+      : DUMMY_LIKE.push(id) && setLike(!like);
+  };
+
+  const moreContents = () => {
+    setMore(!more);
   };
 
   console.log(DUMMY);
@@ -69,7 +81,11 @@ const PostCard = () => {
         }}
       >
         <CardMainContainer>
-          <Avatar sx={{ width: 50, height: 50 }} />
+          <Avatar
+            sx={{ width: 50, height: 50 }}
+            component={Link}
+            to={`/${DUMMY.data.memberId}`}
+          />
           <Box sx={{ width: "100%" }}>
             <CardHeader>
               <CardHeaderTitle
@@ -84,9 +100,21 @@ const PostCard = () => {
                   <Typography variant="subtitle1">
                     {DUMMY.data.member}
                   </Typography>
-                  <IconButton color="like">
-                    <FavoriteIcon />
-                  </IconButton>
+                  {like ? (
+                    <IconButton
+                      color="like"
+                      onClick={() => UserLike(DUMMY.data.memberId)}
+                    >
+                      <FavoriteIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      color="like"
+                      onClick={() => UserLike(DUMMY.data.memberId)}
+                    >
+                      <FavoriteBorderIcon />
+                    </IconButton>
+                  )}
                 </Box>
                 <Box sx={{ height: "100%" }}>
                   <Typography variant="subtitle2">
@@ -107,12 +135,28 @@ const PostCard = () => {
                 ))}
               </TagContainer>
             </CardHeader>
-            <Box sx={{ display: "flex" }}>
-              <CardContentContainer>{DUMMY.data.content}</CardContentContainer>
-              <IconButton onClick={moreContents}>
-                <ExpandMoreIcon />
-              </IconButton>
-            </Box>
+            {more ? (
+              <Box sx={{ display: "flex" }}>
+                <ContentContainer>
+                  {DUMMY.data.content}
+                  <IconButton
+                    sx={{ transform: "scaleY(-1)", ml: "auto" }}
+                    onClick={moreContents}
+                  >
+                    <ExpandMoreIcon />
+                  </IconButton>
+                </ContentContainer>
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex" }}>
+                <EllipsisContentContainer>
+                  {DUMMY.data.content}
+                </EllipsisContentContainer>
+                <IconButton onClick={moreContents}>
+                  <ExpandMoreIcon />
+                </IconButton>
+              </Box>
+            )}
           </Box>
         </CardMainContainer>
         <CardFooterContainer>
@@ -167,7 +211,12 @@ const CardHeaderTitle = styled.div`
   align-items: center;
 `;
 
-const CardContentContainer = styled.div`
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const EllipsisContentContainer = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
