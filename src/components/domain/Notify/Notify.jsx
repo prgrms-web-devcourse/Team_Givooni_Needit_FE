@@ -8,7 +8,11 @@ const Notify = ({ list = [], onClick }) => {
   const [hoverId, setHoverId] = useState("");
   return (
     <>
-      <List>
+      <List
+        sx={{
+          mt: "5rem",
+        }}
+      >
         {list.map((post) => (
           <ListItem key={post.id}>
             <ListItemButton

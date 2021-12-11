@@ -1,3 +1,4 @@
+import Header from "@/components/base/Header";
 import Notify from "@/components/domain/Notify/Notify";
 const dummyData = [
   {
@@ -32,7 +33,12 @@ const dummyData = [
   },
 ];
 const NotifyPage = () => {
-  return <Notify list={dummyData} onClick={(id) => console.log(id)} />;
+  return (
+    <>
+      <Header type="main" />
+      <Notify list={dummyData} onClick={(id) => console.log(id)} />
+    </>
+  );
 };
 
 export default NotifyPage;
