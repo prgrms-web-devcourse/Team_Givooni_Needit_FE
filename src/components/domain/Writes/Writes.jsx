@@ -49,11 +49,14 @@ const Writes = () => {
         <ImageWrapContainer>
           <ScrollWrapContainer>
             <input
+              id="file"
               type="file"
               multiple
               accept="image/jpg,image/png,image/jpeg,image/gif"
               onChange={handleImageUpload}
+              style={{ display: "none" }}
             />
+            <CustomLabel htmlFor="file">물품사진 (최대 4장)</CustomLabel>
 
             {detailImgs &&
               detailImgs.map((link, i) => {
@@ -100,16 +103,15 @@ const ContentContainer = styled.div`
 `;
 
 const ImageWrapContainer = styled.div`
-  overflow: scroll;
   margin-top: 9px;
   margin-bottom: 11px;
   margin-left: 26px;
   max-width: 500px;
-  overflow-x: scroll;
   white-space: nowrap;
 `;
 
 const ScrollWrapContainer = styled.div`
+  display: flex;
   overflow-x: auto;
   white-space: nowrap;
   font-size: 0;
@@ -121,6 +123,18 @@ const CustomImg = styled.img`
   background-color: #f6f6f6;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
+  margin-right: 10px;
+`;
+
+const CustomLabel = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+  height: 146px;
+  background-color: #f6f6f6;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
   margin-right: 10px;
 `;
 
