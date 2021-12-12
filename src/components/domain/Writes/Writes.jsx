@@ -7,11 +7,26 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import { useState, useEffect, useContext } from "react";
 import { StateContext, DispatchContext } from "@/context/index";
+import Toggle from "@/components/base/Toggle";
+
+const subArea = [
+  { id: 1, name: "아동 · 청소년" },
+  { id: 2, name: "어르신" },
+  { id: 3, name: "장애인" },
+  { id: 4, name: "다문화" },
+  { id: 5, name: "지구촌" },
+  { id: 6, name: "가족 · 여성" },
+  { id: 7, name: "시민사회" },
+  { id: 8, name: "동물" },
+  { id: 9, name: "환경" },
+  { id: 10, name: "기타" },
+];
 
 const Writes = () => {
   const [detailImgs, setDetailImgs] = useState([]);
   console.log(detailImgs);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tag, setTag] = useState([]);
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
@@ -20,6 +35,21 @@ const Writes = () => {
       type: "initTags",
     });
   }, []);
+
+  const clickHandler = () => {
+    setIsModalOpen(true);
+    setTag([]);
+  };
+
+  const clickModalBodyHandler = (e) => {
+    if (tag.length === 3) alert("최대 3개만 선택 가능합니다.");
+    else setTag([...tag, e]);
+  };
+
+  const clickComplete = () => {
+    setIsModalOpen(false);
+    console.log(tag);
+  };
 
   const handleImageUpload = (e) => {
     // 추후 alert 창과 같은 최대 4장의 메세지 전송
@@ -44,6 +74,40 @@ const Writes = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  if (isModalOpen)
+    return (
+      <CustomModal>
+        <CustomModalBody>
+          <ModalAreaContainer>
+            {subArea.map((t, i) => (
+              <ModalAreaItem
+                key={i}
+                onClick={(e) => {
+                  clickModalBodyHandler(e.target.textContent);
+                }}
+              >
+                <Toggle
+                  id=""
+                  text={t.name}
+                  onChange={(data) => {
+                    console.log(data);
+                  }}
+                />
+              </ModalAreaItem>
+            ))}
+          </ModalAreaContainer>
+          <BaseButton
+            text="선택 완료"
+            width="200px"
+            height="50px"
+            onClick={() => {
+              clickComplete();
+            }}
+          />
+        </CustomModalBody>
+      </CustomModal>
+    );
 
   return (
     <>
@@ -76,9 +140,12 @@ const Writes = () => {
           </CategoryContainer>
           <TagsContainer>
             <CustomBaseButton
-              text="태그설정: 최대 3개"
+              text={tag.length === 0 ? "태그설정: 최대 3개" : tag}
               width="120px"
               height="24px"
+              onClick={() => {
+                clickHandler();
+              }}
             />
           </TagsContainer>
         </InformationContainer>
@@ -336,6 +403,59 @@ const SubmitContainer = styled.div`
 const LineBar = styled.div`
   width: 100%;
   border-bottom: 1px solid #e8e8e8;
+`;
+
+const CustomModal = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: block;
+  background-color: rgba(0, 0, 0, 0.4);
+`;
+
+const CustomModalBody = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 330px;
+  padding: 10px;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  transform: translateX(-50%) translateY(-50%);
+`;
+
+const ModalAreaContainer = styled.div`
+  overflow-y: scroll;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  justify-content: center;
+  height: 80vh;
+`;
+
+const ModalAreaItem = styled.div`
+  display: flex;
+  width: 140px;
+  height: 25px;
+  /* h5 */
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 25px;
+  /* identical to box height */
+  /* mainColor */
+  /* Inside Auto Layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  justify-content: space-between;
+  color: #fd9f28;
+  padding: 10px;
 `;
 
 export default Writes;
