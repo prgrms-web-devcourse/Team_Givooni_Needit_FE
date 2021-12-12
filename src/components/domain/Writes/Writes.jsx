@@ -67,7 +67,17 @@ const Writes = () => {
         <LineBar />
         <PictureContainer>
           <PictureSubContainer>
-            <CameraAltIcon />
+            <input
+              id="file"
+              name="photo"
+              accept="image/*"
+              capture="camera"
+              onChange={handleImageUpload}
+              style={{ display: "none" }}
+            />
+            <CustomCameraLabel htmlFor="file">
+              <CameraAltIcon />
+            </CustomCameraLabel>
           </PictureSubContainer>
         </PictureContainer>
         <SubmitContainer>
@@ -154,6 +164,13 @@ const PictureSubContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const CustomCameraLabel = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8e8e8;
 `;
 
 const SubmitContainer = styled.div`
