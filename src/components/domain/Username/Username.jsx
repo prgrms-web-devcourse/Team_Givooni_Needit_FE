@@ -1,24 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "@/components/base/Header";
+import Nav from "@/components/base/Nav";
 import styled from "styled-components";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
 import UserProfile from "./UserProfile";
 import UserTab from "./UserTab";
-
+import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 const Username = () => {
+  const [fold, setFold] = useState(false);
   return (
     <UsernameContainer>
       <Header type="edit" />
       <Box sx={{ p: "5vw" }}>
         <UserProfile />
         {/* <UserIntroEdit placeholder="자기소개를 입력하세요"></UserIntroEdit> */}
-        <UserIntro>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            자기소개
-          </Typography>
-        </UserIntro>
-        <UserTab />
+
+        {!fold ? (
+          <>
+            <UserIntro>
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                자기소개
+              </Typography>
+            </UserIntro>
+            <IconButton
+              onClick={() => setFold(!fold)}
+              sx={{ position: "absolute", right: 5, zIndex: "1" }}
+            >
+              <ExpandMoreIcon
+                sx={fold ? "" : { transform: "scaleY(-1)", ml: "auto" }}
+              />
+            </IconButton>
+            <Box>
+              <UserTab height="30vh" />
+            </Box>
+          </>
+        ) : (
+          <>
+            <IconButton
+              onClick={() => setFold(!fold)}
+              sx={{ position: "absolute", right: 5, zIndex: "1" }}
+            >
+              <ExpandMoreIcon
+                sx={fold ? "" : { transform: "scaleY(-1)", ml: "auto" }}
+              />
+            </IconButton>
+            <Box>
+              <UserTab height="100%" />
+            </Box>
+          </>
+        )}
       </Box>
+      <Nav />
     </UsernameContainer>
   );
 };
