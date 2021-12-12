@@ -11,6 +11,7 @@ const Writes = () => {
   const [detailImgs, setDetailImgs] = useState([]);
   console.log(detailImgs);
   const handleImageUpload = (e) => {
+    // 추후 alert 창과 같은 최대 4장의 메세지 전송
     if (detailImgs.length === 4) return;
 
     const fileArr = e.target.files;
@@ -56,7 +57,10 @@ const Writes = () => {
               onChange={handleImageUpload}
               style={{ display: "none" }}
             />
-            <CustomLabel htmlFor="file">물품사진 (최대 4장)</CustomLabel>
+            <CustomLabel htmlFor="file">
+              <ImageLabelText>물품사진</ImageLabelText>
+              <ImageLabelText>(최대 4장)</ImageLabelText>
+            </CustomLabel>
 
             {detailImgs &&
               detailImgs.map((link, i) => {
@@ -120,11 +124,17 @@ const ImageWrapContainer = styled.div`
   white-space: nowrap;
 `;
 
+const ImageLabelText = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 71px;
+  word-break: break-all;
+`;
+
 const ScrollWrapContainer = styled.div`
   display: flex;
   overflow-x: auto;
   white-space: nowrap;
-  font-size: 0;
 `;
 
 const CustomImg = styled.img`
@@ -139,6 +149,7 @@ const CustomImg = styled.img`
 const CustomLabel = styled.label`
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   min-width: 100px;
   height: 146px;
@@ -146,6 +157,13 @@ const CustomLabel = styled.label`
   border-radius: 8px;
   border: 1px solid #e8e8e8;
   margin-right: 10px;
+
+  color: #bdbdbd;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
 `;
 
 const PictureContainer = styled.div`
