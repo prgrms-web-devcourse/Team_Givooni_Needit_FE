@@ -42,7 +42,19 @@ const Writes = () => {
         <TitleContainer>
           <Input type="게시글 제목" />
         </TitleContainer>
-        <InformationContainer></InformationContainer>
+        <InformationContainer>
+          <LocationContainer>
+            <CustomSelect style={{ appearance: "none" }}>
+              <option value="" disabled selected hidden>
+                카테고리
+              </option>
+              <option value="">물품나눔</option>
+              <option value="">재능기부</option>
+            </CustomSelect>
+          </LocationContainer>
+          <CategoryContainer></CategoryContainer>
+          <TagsContainer></TagsContainer>
+        </InformationContainer>
         <ContentContainer>
           <Input multiline type="물품소개" rows={5} />
         </ContentContainer>
@@ -109,6 +121,31 @@ const InformationContainer = styled.div`
   margin-top: 17px;
   margin-bottom: 21px;
 `;
+
+const LocationContainer = styled.div``;
+
+const CustomSelect = styled.select`
+  width: 61px;
+  height: 23px;
+  /* subtitle2 */
+
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  /* identical to box height */
+
+  color: #9b9b9b;
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+`;
+const CategoryContainer = styled.div``;
+const TagsContainer = styled.div``;
+
 const ContentContainer = styled.div`
   display: flex;
   justify-content: center;
