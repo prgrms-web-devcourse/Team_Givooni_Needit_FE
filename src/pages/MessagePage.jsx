@@ -1,6 +1,6 @@
 import Header from "@/components/base/Header";
-import MessageDetail from "@/components/domain/Message/MessageDetail";
-// import Message from "@/components/domain/Message/Message";
+// import MessageDetail from "@/components/domain/Message/MessageDetail";
+import Message from "@/components/domain/Message/Message";
 const dummyData = [
   {
     id: 1,
@@ -80,11 +80,11 @@ const MessagePage = () => {
   return (
     <>
       <Header type="main" />
-      {/* <Message list={dummyData} callback={(id) => console.log(id)} /> */}
-      <MessageDetail
+      <Message list={dummyData} callback={(id) => console.log(id)} />
+      {/* <MessageDetail
         list={dummyMessage}
         sendMessage={(value) => console.log(value)}
-      />
+      /> */}
     </>
   );
 };

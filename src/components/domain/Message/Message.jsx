@@ -4,6 +4,7 @@ import { Avatar } from "@mui/material";
 import { ListItemButton } from "@mui/material";
 import { ListItemText } from "@mui/material";
 import { PropTypes } from "prop-types";
+
 const Message = ({ list, callback }) => {
   return (
     <>
@@ -29,19 +30,25 @@ const Message = ({ list, callback }) => {
                 sx={{
                   color: "primary.main",
                   typography: "h3",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
                 }}
               ></ListItemText>
               <ListItemText
-                primary={message.text}
                 sx={{
                   color: "gray_dark.dark",
                   typography: "body1",
-                  // whiteSpace: "nowrap",
-                  // textOverflow: "ellipsis",
+                  width: "280px",
                 }}
-              ></ListItemText>
+              >
+                <div
+                  style={{
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {message.text}
+                </div>
+              </ListItemText>
             </List>
           </ListItemButton>
         ))}

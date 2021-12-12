@@ -58,8 +58,12 @@ const MessageDetail = ({ list, sendMessage }) => {
                 primary={message.text}
                 sx={{
                   p: 2,
-                  backgroundColor: "primary.main",
-                  color: "white.main",
+                  backgroundColor: `${
+                    message.user !== user ? "primary.main" : "gray.light"
+                  }`,
+                  color: `${
+                    message.user !== user ? "white.main" : "primary.main"
+                  }`,
                   borderRadius: "8px",
                   maxWidth: "60%",
                   whiteSpace: "normal",
@@ -88,10 +92,10 @@ const MessageDetail = ({ list, sendMessage }) => {
           }}
           value={text}
           onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => {
+          onKeyUp={(e) => {
             if (e.code !== "Enter") return;
-            sendMessage(text);
             setText("");
+            sendMessage(text);
           }}
         />
         <Button
