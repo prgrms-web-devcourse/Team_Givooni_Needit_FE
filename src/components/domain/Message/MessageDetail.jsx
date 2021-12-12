@@ -3,11 +3,11 @@ import { ListItem } from "@mui/material";
 import { List } from "@mui/material";
 import { ListItemText } from "@mui/material";
 import PropTypes from "prop-types";
-import { TextField } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import { Container } from "@mui/material";
+import Input from "@/components/base/Input";
 
 const MessageDetail = ({ list, sendMessage }) => {
   const [text, setText] = useState("");
@@ -79,15 +79,13 @@ const MessageDetail = ({ list, sendMessage }) => {
       >
         <CalendarTodayIcon
           onClick={() => alert("캘린터 짠")}
-          sx={{ mr: "8px" }}
+          sx={{ mr: "8px", color: "primary.main" }}
         />
-        <TextField
+        <Input
+          type="message"
           sx={{
             flexGrow: "1",
           }}
-          id="message-input"
-          label="send to"
-          variant="outlined"
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => {

@@ -76,6 +76,7 @@ const dummyMessage = [
 ];
 const MessagePage = () => {
   console.log(dummyData);
+  console.log(dummyMessage);
   return (
     <>
       <Header type="main" />
