@@ -4,6 +4,7 @@ import Nav from "@/components/base/Nav";
 import PostCard from "./PostCard";
 import styled from "styled-components";
 import TagFilter from "./TagFilter";
+import PostFilter from "./PostFilter";
 
 const DUMMY1 = {
   message: "success",
@@ -159,6 +160,7 @@ const Member = () => {
     <MemberViewContainer>
       <Header type="member" />
       <TagFilter />
+      <PostFilter />
       <PostContainer>
         {postList.map((post, id) => {
           return <PostCard key={id} DUMMY={post} />;
