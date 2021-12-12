@@ -23,7 +23,13 @@ const UserProfile = () => {
       <Avatar
         alt={DUMMY.nickname}
         src="/example.jpg"
-        sx={{ width: "28vw", height: "28vw", mr: "2vw" }}
+        sx={{
+          width: "28vw",
+          height: "28vw",
+          maxWidth: "200px",
+          maxHeight: "200px",
+          mr: "2vw",
+        }}
       />
       <Box>
         <Box
