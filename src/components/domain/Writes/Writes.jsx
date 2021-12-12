@@ -4,12 +4,23 @@ import BaseButton from "@/components/base/BaseButton";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-
-import { useState } from "react";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+import { useState, useEffect, useContext } from "react";
+import { StateContext, DispatchContext } from "@/context/index";
 
 const Writes = () => {
   const [detailImgs, setDetailImgs] = useState([]);
   console.log(detailImgs);
+
+  const state = useContext(StateContext);
+  const dispatch = useContext(DispatchContext);
+
+  useEffect(() => {
+    dispatch({
+      type: "initTags",
+    });
+  }, []);
+
   const handleImageUpload = (e) => {
     // 추후 alert 창과 같은 최대 4장의 메세지 전송
     if (detailImgs.length === 4) return;
@@ -44,6 +55,17 @@ const Writes = () => {
         </TitleContainer>
         <InformationContainer>
           <LocationContainer>
+            <LocationButton>
+              <div style={{ width: "69px", height: "15px" }}>
+                {state.selectedTown}
+              </div>
+              <GpsFixedIcon
+                sx={{ width: "15px", height: "15px" }}
+                style={{ color: "#FD9F28", marginLeft: "4px" }}
+              />
+            </LocationButton>
+          </LocationContainer>
+          <CategoryContainer>
             <CustomSelect style={{ appearance: "none" }}>
               <option value="" disabled selected hidden>
                 카테고리
@@ -51,9 +73,14 @@ const Writes = () => {
               <option value="">물품나눔</option>
               <option value="">재능기부</option>
             </CustomSelect>
-          </LocationContainer>
-          <CategoryContainer></CategoryContainer>
-          <TagsContainer></TagsContainer>
+          </CategoryContainer>
+          <TagsContainer>
+            <CustomBaseButton
+              text="태그설정: 최대 3개"
+              width="120px"
+              height="24px"
+            />
+          </TagsContainer>
         </InformationContainer>
         <ContentContainer>
           <Input multiline type="물품소개" rows={5} />
@@ -99,7 +126,6 @@ const Writes = () => {
         <SubmitContainer>
           <BaseButton text="작성 완료" width="300px" height="50px" />
         </SubmitContainer>
-
         <Nav />
       </MainContainer>
     </>
@@ -118,11 +144,51 @@ const TitleContainer = styled.div`
 `;
 
 const InformationContainer = styled.div`
-  margin-top: 17px;
-  margin-bottom: 21px;
+  margin: 17px 26px 21px 28px;
+  width: 320px;
+  height: 24px;
+  display: flex;
 `;
 
 const LocationContainer = styled.div``;
+
+const LocationButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 7px;
+
+  position: static;
+  width: 104px;
+  height: 23px;
+  left: 0px;
+  top: 0px;
+
+  /* gray_light */
+
+  background: #f6f6f6;
+  /* gray */
+
+  border: 1px solid #e8e8e8;
+  box-sizing: border-box;
+  border-radius: 8px;
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  /* identical to box height */
+
+  color: #adadad;
+`;
 
 const CustomSelect = styled.select`
   width: 61px;
@@ -140,11 +206,45 @@ const CustomSelect = styled.select`
 
   /* Inside Auto Layout */
 
+  background: #f6f6f6;
+  /* gray */
+
+  border: 1px solid #e8e8e8;
+  box-sizing: border-box;
+  border-radius: 8px;
+
   flex: none;
   order: 0;
 `;
-const CategoryContainer = styled.div``;
+const CategoryContainer = styled.div`
+  margin: 0px 25px 0px 10px;
+`;
 const TagsContainer = styled.div``;
+
+const CustomBaseButton = styled(BaseButton)`
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+  /* identical to box height */
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  /* White */
+
+  color: #ffffff;
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+  padding: 4.5px 7px;
+`;
 
 const ContentContainer = styled.div`
   display: flex;
