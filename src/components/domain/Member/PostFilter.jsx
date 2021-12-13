@@ -1,14 +1,7 @@
-// import PropTypes from "prop-types";
-// import BaseButton from "@/components/base/BaseButton";
 import styled from "styled-components";
 import { useState } from "react";
-// import theme from "@/styles/theme";
-// import PropTypes from "prop-types";
-// import theme from "@/styles/theme";
 import { Fade, Menu, MenuItem, Button } from "@mui/material";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
-
-import { Link } from "react-router-dom";
+import LocationSelector from "@/components/base/LocationSelector";
 
 const PostFilter = () => {
   const [category, setCategory] = useState("전체");
@@ -29,6 +22,7 @@ const PostFilter = () => {
         <Button
           color="gray_dark"
           id="fade-button"
+          sx={{ fontWeight: "400" }}
           aria-controls="fade-menu"
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
@@ -53,19 +47,13 @@ const PostFilter = () => {
       </div>
 
       <div>
-        <Button endIcon={<MyLocationIcon />} component={Link} to="/">
-          지역선택
-        </Button>
+        <LocationSelector />
       </div>
     </PostFilterContainer>
   );
 };
 
 export default PostFilter;
-
-// PostFilter.propTypes = {
-//   tag: PropTypes.array,
-// };
 
 const PostFilterContainer = styled.div`
   display: flex;
