@@ -47,8 +47,7 @@ const TagFilter = ({
           fontSize="14px"
           text={tag}
           onClick={onFilter}
-          btnType={filter.includes(tag) ? null : "gray_dark"}
-          style={{ margin: "0 2px 8px 2px" }}
+          btnType={filter.includes(tag) ? null : "gray"}
         />
       ))}
     </TagContainer>
@@ -63,6 +62,8 @@ TagFilter.propTypes = {
 
 const TagContainer = styled.div`
   display: flex;
+  gap: 4px;
+  padding: 8px 4px;
   border-bottom: 1px solid ${theme.palette.gray.main};
   overflow: auto;
   ::-webkit-scrollbar {
