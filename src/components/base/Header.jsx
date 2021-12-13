@@ -148,6 +148,19 @@ const Header = ({ type, view, url, fixed }) => {
           </RightContainer>
         </Container>
       );
+    case "searchOut":
+      return (
+        <Container>
+          <Link to="/member">{logo}</Link>
+          <RightContainer>
+            <Link to="/notify">
+              <NotificationsIcon
+                style={{ fontSize: "1.9rem", color: "#FD9F28" }}
+              />
+            </Link>
+          </RightContainer>
+        </Container>
+      );
     case "member":
       return (
         <Container>
