@@ -16,8 +16,6 @@ const DUMMY = {
 };
 
 const UserProfile = () => {
-  // const { username } = useParams();
-
   return (
     <UserProfileContainer>
       <Avatar
@@ -26,8 +24,8 @@ const UserProfile = () => {
         sx={{
           width: "28vw",
           height: "28vw",
-          maxWidth: "200px",
-          maxHeight: "200px",
+          maxWidth: "140px",
+          maxHeight: "140px",
           mr: "2vw",
         }}
       />
@@ -35,7 +33,6 @@ const UserProfile = () => {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
             width: "60vw",
             gap: "5px",
