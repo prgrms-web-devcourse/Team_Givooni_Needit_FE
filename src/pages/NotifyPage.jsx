@@ -1,5 +1,6 @@
 import Header from "@/components/base/Header";
 import Notify from "@/components/domain/Notify/Notify";
+import Nav from "@/components/base/Nav";
 const dummyData = [
   {
     id: 1,
@@ -37,6 +38,7 @@ const NotifyPage = () => {
     <>
       <Header type="main" />
       <Notify list={dummyData} onClick={(id) => console.log(id)} />
+      <Nav />
     </>
   );
 };
