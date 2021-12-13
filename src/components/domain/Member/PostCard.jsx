@@ -15,7 +15,7 @@ import BaseButton from "@/components/base/BaseButton";
 import PropTypes from "prop-types";
 const PostCard = ({ DUMMY }) => {
   return (
-    <div style={{ width: "100%" }} component={Link} to={`/`}>
+    <div style={{ width: "100%" }}>
       <Box
         sx={{
           display: "flex",
