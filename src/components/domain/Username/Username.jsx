@@ -1,58 +1,38 @@
-import React, { useState } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import UserProfile from "./UserProfile";
-import UserTab from "./UserTab";
-import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import theme from "@/styles/theme";
 const Username = () => {
-  const [fold, setFold] = useState(false);
+  const buttonStyle = {
+    background: theme.palette.gray.light,
+    width: "100%",
+    color: theme.palette.primary.main,
+    margin: "5px 0",
+    border: `1px solid ${theme.palette.gray.main}`,
+    borderRadius: "8px",
+  };
+
   return (
     <UsernameContainer>
       <Header type="edit" />
-      <Box sx={{ p: "5vw" }}>
+      <Box sx={{ p: "16px" }}>
         <UserProfile />
         {/* <UserIntroEdit placeholder="자기소개를 입력하세요"></UserIntroEdit> */}
-
-        {!fold ? (
-          <>
-            <UserIntro>
-              <Typography
-                sx={{ fontSize: 14 }}
-                color="text.secondary"
-                gutterBottom
-              >
-                자기소개
-              </Typography>
-            </UserIntro>
-            <IconButton
-              onClick={() => setFold(!fold)}
-              sx={{ position: "absolute", right: 5, zIndex: "1" }}
-            >
-              <ExpandMoreIcon
-                sx={fold ? "" : { transform: "scaleY(-1)", ml: "auto" }}
-              />
-            </IconButton>
-            <Box>
-              <UserTab height="30vh" />
-            </Box>
-          </>
-        ) : (
-          <>
-            <IconButton
-              onClick={() => setFold(!fold)}
-              sx={{ position: "absolute", right: 5, zIndex: "1" }}
-            >
-              <ExpandMoreIcon
-                sx={fold ? "" : { transform: "scaleY(-1)", ml: "auto" }}
-              />
-            </IconButton>
-            <Box>
-              <UserTab height="100%" />
-            </Box>
-          </>
-        )}
+        <Box sx={{ my: "8px" }}>
+          <Button color="gray_dark" sx={buttonStyle}>
+            내가 쓴 글
+          </Button>
+          <Button color="gray_dark" sx={buttonStyle}>
+            관심센터
+          </Button>
+        </Box>
+        <UserIntro>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            자기소개
+          </Typography>
+        </UserIntro>
       </Box>
       <Nav />
     </UsernameContainer>
@@ -61,9 +41,7 @@ const Username = () => {
 
 export default Username;
 
-const UsernameContainer = styled.div`
-  margin-top: 5rem;
-`;
+const UsernameContainer = styled.div``;
 
 const UserIntro = styled.div`
   background: #f6f6f6;
