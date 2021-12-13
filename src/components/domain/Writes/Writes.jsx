@@ -31,6 +31,7 @@ const Writes = () => {
   const [detailImgs, setDetailImgs] = useState([]);
 
   const state = useContext(StateContext);
+  console.log(state.selectedTags);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const writeTitle = ({ target }) => {
@@ -43,19 +44,18 @@ const Writes = () => {
 
   const clickTagHandler = () => {
     setIsModalOpen(true);
-    setTag([]);
   };
 
   const changeSelectHandler = ({ target }) => {
     setCategory(target.value);
   };
 
-  const clickModalBodyHandler = (e) => {
-    if (tag.length === 3) alert("최대 3개만 선택 가능합니다.");
-    else setTag([...tag, e]);
+  const clickModalBodyHandler = () => {
+    // setTag(state.selectedTags);
   };
 
   const clickButtonComplete = () => {
+    setTag(state.selectedTags);
     setIsModalOpen(false);
     console.log(tag);
   };
@@ -86,6 +86,17 @@ const Writes = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const isToggleOn = (toggleId) => {
+    let isSame = false;
+    console.log(tag);
+    tag.map(({ id }) => {
+      console.log(id, toggleId);
+      if (id === toggleId) isSame = true;
+    });
+
+    return isSame;
   };
 
   return (
@@ -126,7 +137,7 @@ const Writes = () => {
             text={
               tag.length === 0
                 ? "태그설정: 최대 3개"
-                : tag.map((val) => "#".concat(val)).join(" ")
+                : tag.map((val) => "#".concat(val.text)).join(" ")
             }
             onClick={() => {
               clickTagHandler();
@@ -191,14 +202,17 @@ const Writes = () => {
               {subArea.map((t, i) => (
                 <ModalAreaItem
                   key={i}
-                  onClick={(e) => {
-                    clickModalBodyHandler(e.target.textContent);
+                  onClick={() => {
+                    clickModalBodyHandler();
                   }}
                 >
                   <Toggle
-                    id=""
+                    id={t.id}
                     text={t.name}
-                    onChange={(data) => {
+                    toggleOn={() => {
+                      return isToggleOn(t.id);
+                    }}
+                    onClick={(data) => {
                       console.log(data);
                     }}
                   />
