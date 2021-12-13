@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Modal, Box } from "@mui/material";
 import { MyLocation as MyLocationIcon } from "@mui/icons-material";
-import area from "@/utils/const/LocationData";
+import LocationData from "@/utils/const/LocationData";
 import theme from "@/styles/theme";
 import { StateContext, DispatchContext } from "@/context";
 
@@ -58,7 +58,7 @@ const LocationSelector = () => {
         <Box sx={style}>
           <Box sx={{ width: "100%", overflow: "auto" }}>
             {openDetail
-              ? area[city].map((city, idx) => {
+              ? LocationData[city].map((city, idx) => {
                   return (
                     <>
                       <Button
@@ -72,7 +72,7 @@ const LocationSelector = () => {
                     </>
                   );
                 })
-              : Object.keys(area).map((city, idx) => {
+              : Object.keys(LocationData).map((city, idx) => {
                   return (
                     <>
                       <Button
