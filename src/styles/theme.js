@@ -53,31 +53,31 @@ const theme = createTheme({
     },
     h5: {
       fontSize: 20,
-      fontWeight: 700,
+      fontWeight: 500,
       lineHeight: 1.5,
     },
     h6: {
       fontSize: 16,
-      fontWeight: 700,
+      fontWeight: 500,
       lineHeight: 1.5,
     },
     subtitle1: {
       fontSize: 16,
-      fontWeight: 500,
+      fontWeight: 400,
     },
     subtitle2: {
       fontSize: 12,
-      fontWeight: 500,
+      fontWeight: 400,
     },
     body1: {
       fontSize: 16,
-      fontWeight: 400,
-      lineHeight: 1.2,
+      fontWeight: 300,
+      lineHeight: 1.5,
     },
     body2: {
       fontSize: 12,
-      fontWeight: 400,
-      lineHeight: 1.2,
+      fontWeight: 300,
+      lineHeight: 1.5,
     },
   },
 });

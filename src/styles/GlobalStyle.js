@@ -17,11 +17,11 @@ const GlobalStyle = createGlobalStyle`
     font-size: 24px;
   }
   h5 {
-    font-weight: 700;
+    font-weight: 500;
     font-size: 20px;
   }
   h6 {
-    font-weight: 700;
+    font-weight: 500;
     font-size: 16px;
   }
 
