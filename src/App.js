@@ -28,6 +28,7 @@ function App() {
           <Route path="/member" element={<Member />} />
           <Route path="/username" element={<Username />} />
           <Route path="/message" element={<Message />} />
+          <Route path="/message/:id" element={<Message />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/notify" element={<Notify />} />
           <Route path="/writes" element={<Writes />} />
