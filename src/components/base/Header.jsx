@@ -6,18 +6,19 @@ import PropTypes from "prop-types";
 import theme from "@/styles/theme";
 
 const Container = styled.div`
-  position: fixed;
+  position: ${({ fixed }) => fixed && "fixed"};
   top: 0;
   background-color: white;
   display: flex;
   padding: 0rem 1rem;
-  margin: 0.5rem 0rem;
+  margin-bottom: 1rem;
+  z-index: 9999;
   box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   border-bottom: 1px solid #e8e8e8;
-  height: 4rem;
+  height: 5rem;
   color: ${theme.palette.primary.main};
 `;
 
@@ -102,11 +103,11 @@ const logo = (
   </svg>
 );
 
-const Header = ({ type, view, url }) => {
+const Header = ({ type, view, url, fixed }) => {
   switch (type) {
     case "plain":
       return (
-        <Container>
+        <Container fixed={fixed}>
           <Link
             to="/member"
             style={{
@@ -139,6 +140,19 @@ const Header = ({ type, view, url }) => {
             >
               <Input type="searchSmall" />
             </Link>
+            <Link to="/notify">
+              <NotificationsIcon
+                style={{ fontSize: "1.9rem", color: "#FD9F28" }}
+              />
+            </Link>
+          </RightContainer>
+        </Container>
+      );
+    case "searchOut":
+      return (
+        <Container>
+          <Link to="/member">{logo}</Link>
+          <RightContainer>
             <Link to="/notify">
               <NotificationsIcon
                 style={{ fontSize: "1.9rem", color: "#FD9F28" }}
@@ -229,6 +243,7 @@ const Header = ({ type, view, url }) => {
 };
 
 Header.propTypes = {
+  fixed: PropTypes.bool,
   type: PropTypes.string,
   view: PropTypes.string,
   url: PropTypes.string,
