@@ -88,40 +88,6 @@ const Writes = () => {
     }
   };
 
-  if (isModalOpen)
-    return (
-      <CustomModal>
-        <CustomModalBody>
-          <ModalAreaContainer>
-            {subArea.map((t, i) => (
-              <ModalAreaItem
-                key={i}
-                onClick={(e) => {
-                  clickModalBodyHandler(e.target.textContent);
-                }}
-              >
-                <Toggle
-                  id=""
-                  text={t.name}
-                  onChange={(data) => {
-                    console.log(data);
-                  }}
-                />
-              </ModalAreaItem>
-            ))}
-          </ModalAreaContainer>
-          <BaseButton
-            text="선택 완료"
-            width="200px"
-            height="50px"
-            onClick={() => {
-              clickButtonComplete();
-            }}
-          />
-        </CustomModalBody>
-      </CustomModal>
-    );
-
   return (
     <>
       <MainContainer>
@@ -218,6 +184,40 @@ const Writes = () => {
         </SubmitContainer>
         <Nav />
       </MainContainer>
+      {isModalOpen ? (
+        <CustomModal>
+          <CustomModalBody>
+            <ModalAreaContainer>
+              {subArea.map((t, i) => (
+                <ModalAreaItem
+                  key={i}
+                  onClick={(e) => {
+                    clickModalBodyHandler(e.target.textContent);
+                  }}
+                >
+                  <Toggle
+                    id=""
+                    text={t.name}
+                    onChange={(data) => {
+                      console.log(data);
+                    }}
+                  />
+                </ModalAreaItem>
+              ))}
+            </ModalAreaContainer>
+            <BaseButton
+              text="선택 완료"
+              width="200px"
+              height="50px"
+              onClick={() => {
+                clickButtonComplete();
+              }}
+            />
+          </CustomModalBody>
+        </CustomModal>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
