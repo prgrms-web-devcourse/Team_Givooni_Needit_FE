@@ -126,7 +126,7 @@ const Header = ({ type, view, url, fixed }) => {
       );
     case "main":
       return (
-        <Container>
+        <Container fixed={fixed}>
           <Link to="/member">{logo}</Link>
           <RightContainer>
             <Link
@@ -150,7 +150,7 @@ const Header = ({ type, view, url, fixed }) => {
       );
     case "searchOut":
       return (
-        <Container>
+        <Container fixed={fixed}>
           <Link to="/member">{logo}</Link>
           <RightContainer>
             <Link to="/notify">
@@ -163,7 +163,7 @@ const Header = ({ type, view, url, fixed }) => {
       );
     case "member":
       return (
-        <Container>
+        <Container fixed={fixed}>
           <Link
             to="/member"
             style={{
@@ -199,7 +199,7 @@ const Header = ({ type, view, url, fixed }) => {
       );
     case "edit":
       return (
-        <Container>
+        <Container fixed={fixed}>
           <Link to="/member">{logo}</Link>
           <RightContainer>
             <Link
@@ -220,7 +220,7 @@ const Header = ({ type, view, url, fixed }) => {
       );
     case "confirm":
       return (
-        <Container>
+        <Container fixed={fixed}>
           <Link to="/member">{logo}</Link>
           <RightContainer>
             <Link
