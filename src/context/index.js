@@ -26,12 +26,14 @@ function contextReducer(state, action) {
     case "removeTag":
       return {
         ...state,
-        selectedTags: state.selectedTags.filter((tag) => tag.id !== nextState),
+        selectedTags: state.selectedTags.filter(
+          (tag) => tag.id !== nextState.id
+        ),
       };
     case "addTag":
       return {
         ...state,
-        selectedTags: [...state.selectedTags, { id: nextState }],
+        selectedTags: [...state.selectedTags, nextState],
       };
     case "setTown":
       return { ...state, selectedTown: nextState };
