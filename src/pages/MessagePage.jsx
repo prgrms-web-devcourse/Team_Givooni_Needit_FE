@@ -1,6 +1,7 @@
 import Header from "@/components/base/Header";
 // import MessageDetail from "@/components/domain/Message/MessageDetail";
 import Message from "@/components/domain/Message/Message";
+import Nav from "@/components/base/Nav";
 const dummyData = [
   {
     id: 1,
@@ -85,6 +86,7 @@ const MessagePage = () => {
         list={dummyMessage}
         sendMessage={(value) => console.log(value)}
       /> */}
+      <Nav />
     </>
   );
 };
