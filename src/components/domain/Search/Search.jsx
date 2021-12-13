@@ -1,4 +1,5 @@
 import Header from "@/components/base/Header";
+import Nav from "@/components/base/Nav";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import theme from "@/styles/theme";
@@ -10,6 +11,9 @@ import useDebounce from "@/hooks/useDebounce";
 import axios from "axios";
 
 const Search = () => {
+  const [contentDetail, setContentDetail] = useState(false);
+  // const [centerDetail, setCenterDetail] = useState(false);
+
   const END_POINT = "https://naver.com"; // 임시 Url
 
   const data = useCallback(async (input) => {
@@ -43,11 +47,14 @@ const Search = () => {
         <Input
           type="searchFull"
           sx={{ width: "95vw", marginBottom: "1rem" }}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            setContentDetail(false);
+            setValue(e.target.value);
+          }}
         />
         게시글
         {DUMMY_DATA.map(({ id, title, tags, content }, index) => {
-          return index >= 3 ? undefined : (
+          return contentDetail ? (
             <div
               style={{
                 border: `1px solid ${theme.palette.gray.main}`,
@@ -63,7 +70,7 @@ const Search = () => {
                   color: theme.palette.black.main,
                 }}
               >
-                <ProfileCard>
+                <ProfileCard onClick={() => alert(id)}>
                   <AccountCircle
                     style={{
                       color: theme.palette.gray_dark.light,
@@ -84,20 +91,62 @@ const Search = () => {
                 {/* <div>{centerCnt}</div> */}
               </Link>
             </div>
-          );
+          ) : !contentDetail && index < 3 ? (
+            <div
+              style={{
+                border: `1px solid ${theme.palette.gray.main}`,
+                borderRadius: "12.8px",
+                padding: "1rem",
+                backgroundColor: theme.palette.gray.light,
+              }}
+            >
+              <Link
+                to=""
+                style={{
+                  textDecoration: "none",
+                  color: theme.palette.black.main,
+                }}
+              >
+                <ProfileCard onClick={() => alert(id)}>
+                  <AccountCircle
+                    style={{
+                      color: theme.palette.gray_dark.light,
+                      width: "3.5rem",
+                      height: "3.5rem",
+                    }}
+                  />
+                  <div>
+                    <TitleContainer key={id}>{title}</TitleContainer>
+                    <TagContainer>
+                      {tags.map((tag, index) => (
+                        <Tag key={index} text={tag} />
+                      ))}
+                    </TagContainer>
+                  </div>
+                </ProfileCard>
+                <ContentContainer>{content}</ContentContainer>
+                {/* <div>{centerCnt}</div> */}
+              </Link>
+            </div>
+          ) : undefined;
         })}
-        <div
-          style={{
-            color: theme.palette.gray_dark.dark,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "right",
-          }}
-          onClick={() => history.push("/")}
-        >
-          더보기
-          <NavigateNext />
-        </div>
+        {!contentDetail && (
+          <div
+            style={{
+              color: theme.palette.gray_dark.dark,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "right",
+            }}
+            onClick={() => {
+              setContentDetail(true);
+            }}
+          >
+            더보기
+            <NavigateNext />
+          </div>
+        )}
+        <Nav />
       </AlignContainer>
     </>
   );
