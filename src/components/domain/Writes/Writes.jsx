@@ -24,7 +24,10 @@ const subArea = [
 
 const Writes = () => {
   const [detailImgs, setDetailImgs] = useState([]);
-  console.log(detailImgs);
+  const [category, setCategory] = useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  console.log(detailImgs, category);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tag, setTag] = useState([]);
   const state = useContext(StateContext);
@@ -36,9 +39,21 @@ const Writes = () => {
     });
   }, []);
 
+  const writeTitle = ({ target }) => {
+    setTitle(target.value);
+  };
+
+  const writeContent = ({ target }) => {
+    setContent(target.value);
+  };
+
   const clickHandler = () => {
     setIsModalOpen(true);
     setTag([]);
+  };
+
+  const handleChangeSelect = ({ target }) => {
+    setCategory(target.value);
   };
 
   const clickModalBodyHandler = (e) => {
@@ -49,6 +64,10 @@ const Writes = () => {
   const clickComplete = () => {
     setIsModalOpen(false);
     console.log(tag);
+  };
+
+  const submitWrites = () => {
+    console.log(detailImgs, category, tag, title, content);
   };
 
   const handleImageUpload = (e) => {
@@ -115,7 +134,7 @@ const Writes = () => {
         {/* <Header type="main" /> */}
 
         <TitleContainer>
-          <Input type="게시글 제목" />
+          <Input type="게시글 제목" onChange={writeTitle} />
         </TitleContainer>
         <InformationContainer>
           <LocationContainer>
@@ -130,27 +149,32 @@ const Writes = () => {
             </LocationButton>
           </LocationContainer>
           <CategoryContainer>
-            <CustomSelect style={{ appearance: "none" }}>
-              <option value="" disabled selected hidden>
+            <CustomSelect
+              style={{ appearance: "none" }}
+              onChange={handleChangeSelect}
+            >
+              <option value="카테고리" disabled selected hidden>
                 카테고리
               </option>
-              <option value="">물품나눔</option>
-              <option value="">재능기부</option>
+              <option value="물품나눔">물품나눔</option>
+              <option value="재능기부">재능기부</option>
             </CustomSelect>
           </CategoryContainer>
-          <TagsContainer>
-            <CustomBaseButton
-              text={tag.length === 0 ? "태그설정: 최대 3개" : tag}
-              width="120px"
-              height="24px"
-              onClick={() => {
-                clickHandler();
-              }}
-            />
-          </TagsContainer>
         </InformationContainer>
+        <TagsContainer>
+          <CustomBaseButton
+            text={
+              tag.length === 0
+                ? "태그설정: 최대 3개"
+                : tag.map((val) => "#".concat(val)).join(" ")
+            }
+            onClick={() => {
+              clickHandler();
+            }}
+          />
+        </TagsContainer>
         <ContentContainer>
-          <Input multiline type="물품소개" rows={5} />
+          <Input multiline type="물품소개" rows={5} onChange={writeContent} />
         </ContentContainer>
         <LineBar />
         <ImageWrapContainer>
@@ -191,7 +215,12 @@ const Writes = () => {
           </PictureSubContainer>
         </PictureContainer>
         <SubmitContainer>
-          <BaseButton text="작성 완료" width="300px" height="50px" />
+          <BaseButton
+            text="작성 완료"
+            width="300px"
+            height="50px"
+            onClick={submitWrites}
+          />
         </SubmitContainer>
         <Nav />
       </MainContainer>
@@ -215,6 +244,7 @@ const InformationContainer = styled.div`
   width: 320px;
   height: 24px;
   display: flex;
+  justify-content: space-between;
 `;
 
 const LocationContainer = styled.div``;
@@ -286,9 +316,13 @@ const CustomSelect = styled.select`
 const CategoryContainer = styled.div`
   margin: 0px 25px 0px 10px;
 `;
-const TagsContainer = styled.div``;
+const TagsContainer = styled.div`
+  margin-left: 28px;
+`;
 
 const CustomBaseButton = styled(BaseButton)`
+  width: auto;
+  height: 24px;
   font-family: Inter;
   font-style: normal;
   font-weight: 600;
