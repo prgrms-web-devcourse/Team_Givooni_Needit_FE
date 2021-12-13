@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import PostCard from "./PostCard";
 import styled from "styled-components";
 import TagFilter from "./TagFilter";
 import PostFilter from "./PostFilter";
+import { StateContext } from "@/context";
 
 const DUMMY1 = {
   message: "success",
@@ -121,7 +122,6 @@ const DUMMY3 = {
     ],
   },
 };
-
 const Member = () => {
   const [postList, setPostList] = useState([
     DUMMY1,
@@ -155,6 +155,9 @@ const Member = () => {
     }
     return () => observer && observer.disconnect();
   }, [postList]);
+
+  const state = useContext(StateContext);
+  console.log(state);
 
   return (
     <MemberViewContainer>
