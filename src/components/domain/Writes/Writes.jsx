@@ -31,7 +31,6 @@ const Writes = () => {
   const [detailImgs, setDetailImgs] = useState([]);
 
   const state = useContext(StateContext);
-  console.log(state.selectedTags);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const writeTitle = ({ target }) => {
@@ -50,14 +49,12 @@ const Writes = () => {
     setCategory(target.value);
   };
 
-  const clickModalBodyHandler = () => {
-    // setTag(state.selectedTags);
-  };
-
   const clickButtonComplete = () => {
-    setTag(state.selectedTags);
-    setIsModalOpen(false);
-    console.log(tag);
+    if (state.selectedTags.length > 3) alert("3가지 이하로 선택해주세요");
+    else {
+      setTag(state.selectedTags);
+      setIsModalOpen(false);
+    }
   };
 
   const submitWrites = () => {
@@ -200,20 +197,12 @@ const Writes = () => {
           <CustomModalBody>
             <ModalAreaContainer>
               {subArea.map((t, i) => (
-                <ModalAreaItem
-                  key={i}
-                  onClick={() => {
-                    clickModalBodyHandler();
-                  }}
-                >
+                <ModalAreaItem key={i}>
                   <Toggle
                     id={t.id}
                     text={t.name}
                     toggleOn={() => {
                       return isToggleOn(t.id);
-                    }}
-                    onClick={(data) => {
-                      console.log(data);
                     }}
                   />
                 </ModalAreaItem>
