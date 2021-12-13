@@ -30,16 +30,24 @@ const TagFilter = ({
 
   return (
     <TagContainer>
-      <BaseButton height="24px" width="3rem" text="태그" tag="primary" />
+      <BaseButton
+        height="20px"
+        width="3rem"
+        text="태그"
+        tag="primary"
+        typography="body2"
+        fontSize="14px"
+      />
       {tag.map((tag, idx) => (
         <BaseButton
           key={idx}
-          height="24px"
+          height="20px"
           width={`${tag.length + 2}rem`}
+          typography="body2"
+          fontSize="14px"
           text={tag}
           onClick={onFilter}
-          btnType={filter.includes(tag) ? null : "gray_dark"}
-          style={{ margin: "0 2px 8px 2px" }}
+          btnType={filter.includes(tag) ? null : "gray"}
         />
       ))}
     </TagContainer>
@@ -54,6 +62,8 @@ TagFilter.propTypes = {
 
 const TagContainer = styled.div`
   display: flex;
+  gap: 4px;
+  padding: 8px 4px;
   border-bottom: 1px solid ${theme.palette.gray.main};
   overflow: auto;
   ::-webkit-scrollbar {
