@@ -1,4 +1,4 @@
-const area = {
+const LocationData = {
   서울특별시: [
     "강남구",
     "강동구",
@@ -244,4 +244,4 @@ const area = {
   제주도: ["서귀포시", "제주시", "남제주군", "북제주군"],
 };
 
-export default area;
+export default LocationData;

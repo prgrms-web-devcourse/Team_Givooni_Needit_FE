@@ -91,10 +91,10 @@ const BaseButton = ({
 BaseButton.propTypes = {
   text: PropTypes.string,
   typography: PropTypes.string,
-  width: PropTypes.number,
-  height: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   fontSize: PropTypes.number,
-  fontWeight: PropTypes.number,
+  fontWeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   btnType: PropTypes.string,
   tag: PropTypes.string,
 };
