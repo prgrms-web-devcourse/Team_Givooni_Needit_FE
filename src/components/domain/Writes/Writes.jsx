@@ -5,7 +5,7 @@ import Nav from "@/components/base/Nav";
 import styled from "styled-components";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { StateContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
 
@@ -27,8 +27,14 @@ const Writes = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tag, setTag] = useState([]);
+  const [apiTag, setApiTag] = useState([]);
   const [category, setCategory] = useState("");
-  const [detailImgs, setDetailImgs] = useState([]);
+  const [Imgs, setImgs] = useState([]);
+  const [quality, setQuality] = useState("");
+
+  useEffect(() => {
+    setQuality("좋음");
+  });
 
   const state = useContext(StateContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,17 +59,19 @@ const Writes = () => {
     if (state.selectedTags.length > 3) alert("3가지 이하로 선택해주세요");
     else {
       setTag(state.selectedTags);
+      setApiTag(state.selectedTags.map(({ id }) => id));
       setIsModalOpen(false);
     }
   };
 
+  //API에 필요한 6가지 항목
   const submitWrites = () => {
-    console.log(detailImgs, category, tag, title, content);
+    console.log(title, content, category, apiTag, quality, Imgs);
   };
 
   const handleImageUpload = (e) => {
     // 추후 alert 창과 같은 최대 4장의 메세지 전송
-    if (detailImgs.length === 4) return;
+    if (Imgs.length === 4) return;
 
     const fileArr = e.target.files;
 
@@ -79,7 +87,7 @@ const Writes = () => {
       reader.onload = () => {
         console.log(reader.result);
         fileURLs[i] = reader.result;
-        setDetailImgs([...detailImgs, fileURLs]);
+        setImgs([...Imgs, fileURLs]);
       };
       reader.readAsDataURL(file);
     }
@@ -160,8 +168,8 @@ const Writes = () => {
               <ImageLabelText>(최대 4장)</ImageLabelText>
             </CustomLabel>
 
-            {detailImgs &&
-              detailImgs.map((link, i) => {
+            {Imgs &&
+              Imgs.map((link, i) => {
                 return <CustomImg src={link} key={i} />;
               })}
           </ScrollWrapContainer>
