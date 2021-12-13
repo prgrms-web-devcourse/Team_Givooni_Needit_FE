@@ -5,8 +5,8 @@ import Nav from "@/components/base/Nav";
 import styled from "styled-components";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-import { useState, useEffect, useContext } from "react";
-import { StateContext, DispatchContext } from "@/context/index";
+import { useState, useContext } from "react";
+import { StateContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
 
 const subArea = [
@@ -23,21 +23,15 @@ const subArea = [
 ];
 
 const Writes = () => {
-  const [detailImgs, setDetailImgs] = useState([]);
-  const [category, setCategory] = useState("");
+  // API로 전송할 Data
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  console.log(detailImgs, category);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [tag, setTag] = useState([]);
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+  const [category, setCategory] = useState("");
+  const [detailImgs, setDetailImgs] = useState([]);
 
-  useEffect(() => {
-    dispatch({
-      type: "initTags",
-    });
-  }, []);
+  const state = useContext(StateContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const writeTitle = ({ target }) => {
     setTitle(target.value);
@@ -47,12 +41,12 @@ const Writes = () => {
     setContent(target.value);
   };
 
-  const clickHandler = () => {
+  const clickTagHandler = () => {
     setIsModalOpen(true);
     setTag([]);
   };
 
-  const handleChangeSelect = ({ target }) => {
+  const changeSelectHandler = ({ target }) => {
     setCategory(target.value);
   };
 
@@ -61,7 +55,7 @@ const Writes = () => {
     else setTag([...tag, e]);
   };
 
-  const clickComplete = () => {
+  const clickButtonComplete = () => {
     setIsModalOpen(false);
     console.log(tag);
   };
@@ -121,7 +115,7 @@ const Writes = () => {
             width="200px"
             height="50px"
             onClick={() => {
-              clickComplete();
+              clickButtonComplete();
             }}
           />
         </CustomModalBody>
@@ -151,7 +145,7 @@ const Writes = () => {
           <CategoryContainer>
             <CustomSelect
               style={{ appearance: "none" }}
-              onChange={handleChangeSelect}
+              onChange={changeSelectHandler}
             >
               <option value="카테고리" disabled selected hidden>
                 카테고리
@@ -169,7 +163,7 @@ const Writes = () => {
                 : tag.map((val) => "#".concat(val)).join(" ")
             }
             onClick={() => {
-              clickHandler();
+              clickTagHandler();
             }}
           />
         </TagsContainer>
@@ -328,17 +322,12 @@ const CustomBaseButton = styled(BaseButton)`
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
-  /* identical to box height */
 
   display: flex;
   align-items: center;
   text-align: center;
 
-  /* White */
-
   color: #ffffff;
-
-  /* Inside Auto Layout */
 
   flex: none;
   order: 0;
@@ -475,15 +464,11 @@ const ModalAreaItem = styled.div`
   display: flex;
   width: 140px;
   height: 25px;
-  /* h5 */
   font-family: Spoqa Han Sans Neo;
   font-style: normal;
   font-weight: bold;
   font-size: 20px;
   line-height: 25px;
-  /* identical to box height */
-  /* mainColor */
-  /* Inside Auto Layout */
   flex: none;
   order: 0;
   flex-grow: 0;
