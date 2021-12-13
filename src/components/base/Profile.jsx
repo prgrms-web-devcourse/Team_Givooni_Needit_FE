@@ -4,7 +4,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
 import { makeStyles } from "@mui/styles";
-import useAsync from "../utils/hooks/useAsync";
+import useAsync from "@/utils/hooks/useAsync";
 
 const useStyles = makeStyles({
   avatar: ({ width, height }) => ({

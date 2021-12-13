@@ -13,6 +13,7 @@ import {
   Notify,
   Writes,
   Gps,
+  Detail,
 } from "./pages";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/notify" element={<Notify />} />
           <Route path="/writes" element={<Writes />} />
           <Route path="/Gps" element={<Gps />} />
+          <Route path="/detail" element={<Detail />} />
         </Routes>
         <br />
         <Link to="login">login</Link>
