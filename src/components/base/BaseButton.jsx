@@ -31,6 +31,11 @@ const BaseButton = ({
       border = pallete.primary.main;
       break;
 
+    case "gray":
+      backgroundColor = "gray";
+      border = null;
+      break;
+
     case "gray_dark":
       backgroundColor = "gray_dark";
       border = null;
