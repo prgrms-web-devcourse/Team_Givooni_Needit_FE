@@ -139,9 +139,17 @@ const Detail = () => {
                 height={17.4}
                 profileData={detailData.comments}
               />
+              <CustomCommentNum>
+                참여자 수 {detailData.userCnt}명
+              </CustomCommentNum>
             </ProfileContainer>
+
             {state.loginUser !== detailData.userId ? (
               <BaseButton
+                width={80}
+                height={28}
+                fontWeight={500}
+                fontSize={12}
                 text={giveButton.text}
                 btnType={giveButton.type}
                 onClick={() => {
@@ -162,9 +170,17 @@ const Detail = () => {
                       <MemberName>{part.userName}</MemberName>
                     </MemberContainer>
                     {part.userId === state.loginUser ? (
-                      <DeleteOutlineIcon />
+                      <DeleteOutlineIcon
+                        onClick={() => {
+                          console.log("댓글 삭제기능");
+                        }}
+                      />
                     ) : (
-                      <MailOutlineIcon />
+                      <MailOutlineIcon
+                        onClick={() => {
+                          console.log("메일보내기 기능");
+                        }}
+                      />
                     )}
                   </MemberDeleteContainer>
                   <JoinCommentContainer>
@@ -330,9 +346,24 @@ const CommentContainer = styled.div`
 `;
 
 const ProfileContainer = styled.div`
+  display: flex;
   margin-left: 13px;
-  width: 65px;
+  width: 140px;
   height: 25px;
+`;
+
+const CustomCommentNum = styled.div`
+  margin-left: 3px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #c6c6c6;
 `;
 
 const GroupContainer = styled.div`
