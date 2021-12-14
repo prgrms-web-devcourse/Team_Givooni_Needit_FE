@@ -214,7 +214,7 @@ const Dummy_Data = {
       {
         id: 2,
         comment: "기부신청",
-        userId: "abcde",
+        userId: "abcdefg",
         userName: "기부니2",
         userImage: "test.jpg",
         createdDate: "2021-12-14T00:38:39.943698",
