@@ -1,11 +1,6 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import Header from "@/components/base/Header";
-import Nav from "@/components/base/Nav";
+import React, { useState, useEffect, useRef } from "react";
 import PostCard from "@/components/domain/Member/PostCard";
-import UserProfile from "./UserProfile";
-import { Box } from "@mui/material";
 import styled from "styled-components";
-import { StateContext } from "@/context";
 
 const DUMMY1 = {
   message: "success",
@@ -157,35 +152,23 @@ const UserPosts = () => {
     return () => observer && observer.disconnect();
   }, [postList]);
 
-  const state = useContext(StateContext);
-  console.log(state);
-
   return (
-    <MemberViewContainer>
-      <Header type="plain" />
-      <Box sx={{ p: "16px" }}>
-        <UserProfile />
-      </Box>
-
+    <>
       <PostContainer>
         {postList.map((post, id) => {
           return <PostCard key={id} DUMMY={post} />;
         })}
       </PostContainer>
-      <Nav />
       <LoadingContainer ref={fetchBox}></LoadingContainer>
-    </MemberViewContainer>
+    </>
   );
 };
 
 export default UserPosts;
 
-const MemberViewContainer = styled.div``;
-
 const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 16px;
   gap: 10px;
 `;
 

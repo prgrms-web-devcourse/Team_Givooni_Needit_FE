@@ -4,35 +4,70 @@ import styled from "styled-components";
 import { Box, Typography, Button } from "@mui/material";
 import UserProfile from "./UserProfile";
 import theme from "@/styles/theme";
+import { useState } from "react";
+import UserPosts from "./UserPosts";
+import UserLikes from "./UserLikes";
 const Username = () => {
   const buttonStyle = {
+    display: "flex",
     background: theme.palette.gray.light,
     width: "100%",
+    height: "40px",
     color: theme.palette.primary.main,
-    margin: "5px 0",
+    my: "15px",
     border: `1px solid ${theme.palette.gray.main}`,
-    borderRadius: "8px",
+    borderRadius: "20px",
+  };
+  const [component, setComponent] = useState("UserIntro");
+
+  const buttonList = [
+    ["UserPosts", "작성한 글"],
+    ["UserLikes", "관심센터"],
+    ["UserIntro", "자기소개"],
+  ];
+
+  const userInpo = {
+    UserIntro: (
+      <UserIntro>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          자기소개
+        </Typography>
+      </UserIntro>
+    ),
+    UserPosts: <UserPosts />,
+    UserLikes: <UserLikes />,
   };
 
   return (
     <UsernameContainer>
       <Header type="edit" />
+
       <Box sx={{ p: "16px" }}>
         <UserProfile />
-        {/* <UserIntroEdit placeholder="자기소개를 입력하세요"></UserIntroEdit> */}
-        <Box sx={{ my: "8px" }}>
-          <Button color="gray_dark" sx={buttonStyle}>
-            내가 쓴 글
-          </Button>
-          <Button color="gray_dark" sx={buttonStyle}>
-            관심센터
-          </Button>
+        <Box
+          sx={{
+            display: "flex",
+            mx: "auto",
+            width: "95%",
+            gap: "10px",
+            justifyContent: "center",
+          }}
+        >
+          {buttonList.map((list, index) => {
+            if (component !== list[0])
+              return (
+                <Button
+                  key={index}
+                  color="gray_dark"
+                  sx={buttonStyle}
+                  onClick={() => setComponent(list[0])}
+                >
+                  {list[1]}
+                </Button>
+              );
+          })}
         </Box>
-        <UserIntro>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            자기소개
-          </Typography>
-        </UserIntro>
+        {userInpo[component]}
       </Box>
       <Nav />
     </UsernameContainer>
@@ -49,25 +84,6 @@ const UserIntro = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   height: 170px;
-  margin: 10px 0;
   padding: 10px;
   overflow: auto;
 `;
-
-// const UserIntroEdit = styled.textarea`
-//   background: #f6f6f6;
-//   border: 1px solid #e8e8e8;
-//   box-sizing: border-box;
-//   border-radius: 8px;
-//   height: 170px;
-//   width: 100%;
-//   margin: 10px 0;
-//   padding: 10px;
-//   font-size: 14px;
-//   font-family: "Spoqa Han Sans Neo";
-//   color: #8e8e8e;
-//   resize: none;
-//   &:focus {
-//     outline: none;
-//   }
-// `;

@@ -2,9 +2,6 @@ import React from "react";
 import { Typography, Box, Avatar, IconButton } from "@mui/material";
 import styled from "styled-components";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
-import Header from "@/components/base/Header";
-import Nav from "@/components/base/Nav";
-import UserProfile from "./UserProfile";
 
 const DUMMY_DATA = {
   post: [
@@ -55,37 +52,30 @@ const DUMMY_DATA = {
 
 const UserLikes = () => {
   return (
-    <>
-      <Header type="plain" />
-      <Box sx={{ px: "16px" }}>
-        <UserProfile />
-        <LikeProfileContainer>
-          {DUMMY_DATA.post.map((like, idx) => {
-            return (
-              <LikeProfile key={idx}>
-                <Box sx={{ display: "flex", gap: "10px" }}>
-                  <Avatar />
-                  <Typography
-                    color="primary"
-                    variant="subtitle1"
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    {like.member}
-                  </Typography>
-                </Box>
-                <IconButton color="like">
-                  <FavoriteIcon />
-                </IconButton>
-              </LikeProfile>
-            );
-          })}
-        </LikeProfileContainer>
-      </Box>
-      <Nav />
-    </>
+    <LikeProfileContainer>
+      {DUMMY_DATA.post.map((like, idx) => {
+        return (
+          <LikeProfile key={idx}>
+            <Box sx={{ display: "flex", gap: "10px" }}>
+              <Avatar />
+              <Typography
+                color="primary"
+                variant="subtitle1"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {like.member}
+              </Typography>
+            </Box>
+            <IconButton color="like">
+              <FavoriteIcon />
+            </IconButton>
+          </LikeProfile>
+        );
+      })}
+    </LikeProfileContainer>
   );
 };
 
