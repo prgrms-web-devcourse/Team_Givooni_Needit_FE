@@ -3,21 +3,23 @@ import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
 import BaseButton from "@/components/base/BaseButton";
-import {
-  Mood as MoodIcon,
-  SentimentSatisfied as SentimentSatisfiedIcon,
-  SentimentVeryDissatisfied as SentimentVeryDissatisfiedIcon,
-} from "@mui/icons-material";
-import { Box, Avatar, Chip } from "@mui/material";
+import { Box, Avatar } from "@mui/material";
+import { Call as CallIcon, Map as MapIcon } from "@mui/icons-material";
 
 const DUMMY = {
   memberId: 4,
   nickname: "updated 스펜서",
   profileImageUrl: "spencer.jpg",
+  contact: "010-1359-0329",
+  address: "인천시 계양구 계양산로134번길 21",
+  intro: "하이 마이네임 이즈 수현, 아임 엠마! 아임 지연!  ",
 };
 
 const UserEdit = () => {
   const [previewImg, setPreviewImg] = useState(null);
+  const [contactInput, setContactInput] = useState(DUMMY["contact"]);
+  const [addressInput, setAddressInput] = useState(DUMMY["address"]);
+  const [introInput, setIntroInput] = useState(DUMMY["intro"]);
   const profileInput = useRef();
 
   const uploadImage = () => {
@@ -26,6 +28,16 @@ const UserEdit = () => {
 
   const handleFileChange = (e) => {
     preview(e.target.files[0]);
+  };
+
+  const handleContactChange = (e) => {
+    setContactInput(e.target.value);
+  };
+  const handleAddressChange = (e) => {
+    setAddressInput(e.target.value);
+  };
+  const handleIntroChange = (e) => {
+    setIntroInput(e.target.value);
   };
 
   const preview = (image) => {
@@ -86,22 +98,27 @@ const UserEdit = () => {
                 }}
               />
             </Box>
-            <Box sx={{ display: "flex", gap: "4px" }}>
-              <Chip icon={<MoodIcon />} label="11" variant="outlined" />
-              <Chip
-                icon={<SentimentSatisfiedIcon />}
-                label="5"
-                variant="outlined"
+            <Box display="flex" sx={{ mt: "14px" }}>
+              <CallIcon />
+              <UserDataEdit
+                value={contactInput}
+                onChange={handleContactChange}
               />
-              <Chip
-                icon={<SentimentVeryDissatisfiedIcon />}
-                label="3"
-                variant="outlined"
+            </Box>
+            <Box display="flex">
+              <MapIcon />
+              <UserDataEdit
+                value={addressInput}
+                onChange={handleAddressChange}
               />
             </Box>
           </Box>
         </UserProfileContainer>
-        <UserIntroEdit placeholder="자기소개를 입력하세요"></UserIntroEdit>
+        <UserIntroEdit
+          placeholder="자기소개를 입력하세요"
+          value={introInput}
+          onChange={handleIntroChange}
+        ></UserIntroEdit>
         <Box sx={{ my: "8px" }}></Box>
       </Box>
       <Nav />
@@ -125,6 +142,19 @@ const UserIntroEdit = styled.textarea`
   font-size: 14px;
   font-family: "Spoqa Han Sans Neo";
   color: #8e8e8e;
+  resize: none;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const UserDataEdit = styled.textarea`
+  border: none;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  font-size: 12px;
+  font-family: "Spoqa Han Sans Neo";
   resize: none;
   &:focus {
     outline: none;
