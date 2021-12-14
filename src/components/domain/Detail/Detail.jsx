@@ -53,7 +53,7 @@ const Detail = () => {
 
     detailData.comments &&
       detailData.comments.map((comment) => {
-        if (comment.userId === state.loginUser) {
+        if (comment.userId === state.userId) {
           setGiveButton(giveComplete);
           isExist = true;
         }
@@ -96,7 +96,7 @@ const Detail = () => {
                 />
               </TextSliderContainer>
             </TextSliderAvatarContainer>
-            {state.loginUser === detailData.userId ? (
+            {state.userId === detailData.userId ? (
               <MoreVertIcon
                 onClick={() => {
                   setIsClickMoreVert(!isClickMoreVert);
@@ -148,7 +148,7 @@ const Detail = () => {
                 </CustomCommentNum>
               </ProfileContainer>
 
-              {state.loginUser !== detailData.userId ? (
+              {state.userId !== detailData.userId ? (
                 <BaseButton
                   width={80}
                   height={28}
@@ -173,7 +173,7 @@ const Detail = () => {
                         <Avatar sx={{ width: 30, height: 30 }} />
                         <MemberName>{part.userName}</MemberName>
                       </MemberContainer>
-                      {part.userId === state.loginUser ? (
+                      {part.userId === state.userId ? (
                         <DeleteOutlineIcon
                           onClick={() => {
                             console.log("댓글 삭제기능");
@@ -210,7 +210,7 @@ const Dummy_Data = {
     content: "기부원해요",
     category: "재능기부",
     status: "기부진행",
-    userId: "abcdef",
+    userId: "abcde",
     userName: "테스트 센터",
     userImage: "updated url",
     userCnt: 3,
@@ -235,7 +235,7 @@ const Dummy_Data = {
       {
         id: 2,
         comment: "기부신청",
-        userId: "abcdefg",
+        userId: "abcdef",
         userName: "기부니2",
         userImage: "test.jpg",
         createdDate: "2021-12-14T00:38:39.943698",
