@@ -2,7 +2,6 @@ import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import PropTypes from "prop-types";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
 
 const useStyles = makeStyles({
   avatar: ({ width, height }) => ({
@@ -11,48 +10,46 @@ const useStyles = makeStyles({
   }),
 });
 
-const Profile = ({ max, width, height, comments = [] }) => {
-  const classes = useStyles({ width, height });
-  const [state, refetch] = useState(comments);
+// 사이즈 크기 자유롭게
 
-  console.log(state, refetch);
+const MemberProfile = ({ width, height, users }) => {
+  const classes = useStyles({ width, height });
   //Avatar 태그 클릭시 이벤트
   const clickAvatarHandler = (id) => {
-    //해당 대상의 마이페이지로 이동하는 함수 구현
     console.log(id);
   };
 
   return (
     <>
-      <AvatarGroup max={max} classes={{ avatar: classes.avatar }}>
-        {state.map(({ userName, userImage, userId }) => {
+      <AvatarGroup max={3} classes={{ avatar: classes.avatar }}>
+        {users.map(({ center, centerImage, id }) => {
           return (
             <Avatar
-              key={userId + Math.random()}
-              alt={userName}
-              src={userImage}
+              key={id + Math.random()}
+              alt={center}
+              src={centerImage}
               onClick={() => {
-                clickAvatarHandler(userId);
+                clickAvatarHandler(id);
               }}
             />
           );
         })}
-      </AvatarGroup>{" "}
+      </AvatarGroup>
     </>
   );
 };
-Profile.defaultProps = {
+
+MemberProfile.defaultProps = {
   max: 3,
   width: 40,
   height: 40,
-  comments: [],
 };
 
-Profile.propTypes = {
+MemberProfile.propTypes = {
   max: PropTypes.number,
   width: PropTypes.number,
   height: PropTypes.number,
-  comments: PropTypes.array,
+  users: PropTypes.array,
 };
 
-export default Profile;
+export default MemberProfile;
