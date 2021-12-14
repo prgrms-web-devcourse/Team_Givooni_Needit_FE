@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import theme from "@/styles/theme";
 import Tag from "@/components/base/Tag";
-import { AccountCircle, NavigateNext } from "@mui/icons-material";
+import { NavigateNext, Palette, Redeem } from "@mui/icons-material";
 import Input from "@/components/base/Input";
 import { useCallback, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
@@ -45,6 +45,7 @@ const Search = () => {
       <Header type="searchOut" fixed={true} />
       <AlignContainer>
         <Input
+          value={value}
           type="searchFull"
           sx={{ width: "95vw", marginBottom: "1rem" }}
           onChange={(e) => {
@@ -53,83 +54,93 @@ const Search = () => {
           }}
         />
         게시글
-        {DUMMY_DATA.map(({ id, title, tags, content }, index) => {
-          return contentDetail ? (
-            <div
-              style={{
-                border: `1px solid ${theme.palette.gray.main}`,
-                borderRadius: "12.8px",
-                padding: "1rem",
-                backgroundColor: theme.palette.gray.light,
-              }}
-            >
-              <Link
-                to=""
+        {DUMMY_DATA.map(
+          ({ id, title, tags, content, status, category }, index) => {
+            return contentDetail ? (
+              <div
                 style={{
-                  textDecoration: "none",
-                  color: theme.palette.black.main,
+                  border: `1px solid ${theme.palette.gray.main}`,
+                  borderRadius: "12.8px",
+                  backgroundColor: theme.palette.gray.light,
                 }}
               >
-                <ProfileCard onClick={() => alert(id)}>
-                  <AccountCircle
-                    style={{
-                      color: theme.palette.gray_dark.light,
-                      width: "3.5rem",
-                      height: "3.5rem",
-                    }}
-                  />
-                  <div>
-                    <TitleContainer key={id}>{title}</TitleContainer>
-                    <TagContainer>
-                      {tags.map((tag, index) => (
-                        <Tag key={index} text={tag} />
-                      ))}
-                    </TagContainer>
-                  </div>
-                </ProfileCard>
-                <ContentContainer>{content}</ContentContainer>
-                {/* <div>{centerCnt}</div> */}
-              </Link>
-            </div>
-          ) : !contentDetail && index < 3 ? (
-            <div
-              style={{
-                border: `1px solid ${theme.palette.gray.main}`,
-                borderRadius: "12.8px",
-                padding: "1rem",
-                backgroundColor: theme.palette.gray.light,
-              }}
-            >
-              <Link
-                to=""
+                <Link
+                  to=""
+                  style={{
+                    textDecoration: "none",
+                    color: theme.palette.black.main,
+                  }}
+                >
+                  <ProfileCard onClick={() => alert(id)}>
+                    <div style={{ display: "flex", gap: "0.5rem" }}>
+                      <Tag
+                        text={status}
+                        backgroundColor={
+                          status === "기부완료" ? "gray_dark" : undefined
+                        }
+                      />
+                      {category === "물품나눔" ? (
+                        <Redeem style={{ color: theme.palette.primary.main }} />
+                      ) : (
+                        <Palette
+                          style={{ color: theme.palette.primary.main }}
+                        />
+                      )}
+                    </div>
+                  </ProfileCard>
+                  <TitleContainer key={id}>{title}</TitleContainer>
+                  <ContentContainer>{content}</ContentContainer>
+                  <TagContainer>
+                    {tags.map((tag, index) => (
+                      <div key={index}>#{tag}</div>
+                    ))}
+                  </TagContainer>
+                </Link>
+              </div>
+            ) : !contentDetail && index < 3 ? (
+              <div
                 style={{
-                  textDecoration: "none",
-                  color: theme.palette.black.main,
+                  border: `1px solid ${theme.palette.gray.main}`,
+                  borderRadius: "12.8px",
+                  backgroundColor: theme.palette.gray.light,
                 }}
               >
-                <ProfileCard onClick={() => alert(id)}>
-                  <AccountCircle
-                    style={{
-                      color: theme.palette.gray_dark.light,
-                      width: "3.5rem",
-                      height: "3.5rem",
-                    }}
-                  />
-                  <div>
-                    <TitleContainer key={id}>{title}</TitleContainer>
-                    <TagContainer>
-                      {tags.map((tag, index) => (
-                        <Tag key={index} text={tag} />
-                      ))}
-                    </TagContainer>
-                  </div>
-                </ProfileCard>
-                <ContentContainer>{content}</ContentContainer>
-                {/* <div>{centerCnt}</div> */}
-              </Link>
-            </div>
-          ) : undefined;
-        })}
+                <Link
+                  to=""
+                  style={{
+                    textDecoration: "none",
+                    color: theme.palette.black.main,
+                  }}
+                >
+                  <ProfileCard onClick={() => alert(id)}>
+                    <div style={{ display: "flex", gap: "0.5rem" }}>
+                      <Tag
+                        text={status}
+                        backgroundColor={
+                          status === "기부완료" ? "gray_dark" : undefined
+                        }
+                      />
+                      {category === "물품나눔" ? (
+                        <Redeem style={{ color: theme.palette.primary.main }} />
+                      ) : (
+                        <Palette
+                          style={{ color: theme.palette.primary.main }}
+                        />
+                      )}
+                    </div>
+                  </ProfileCard>
+                  <TitleContainer key={id}>{title}</TitleContainer>
+                  <ContentContainer>{content}</ContentContainer>
+                  <TagContainer>
+                    {tags.map((tag, index) => (
+                      <div key={index}>#{tag}</div>
+                    ))}
+                  </TagContainer>
+                </Link>
+              </div>
+            ) : undefined;
+          }
+        )}
         {!contentDetail && (
           <div
             style={{
@@ -146,8 +157,8 @@ const Search = () => {
             <NavigateNext />
           </div>
         )}
-        <Nav />
       </AlignContainer>
+      <Nav />
     </>
   );
 };
@@ -167,6 +178,9 @@ const AlignContainer = styled.div`
 const TagContainer = styled.div`
   display: flex;
   gap: 0.2rem;
+  font-size: 12px;
+  color: ${theme.palette.gray.dark};
+  margin: 1rem;
 `;
 
 const ProfileCard = styled.div`
@@ -174,13 +188,13 @@ const ProfileCard = styled.div`
   flex-direction: row;
   gap: 0.5rem;
   align-items: center;
-  border-bottom: 1px solid ${theme.palette.gray.main};
-  padding-bottom: 0.7rem;
-  margin-bottom: 0.7rem;
+  margin: 1rem 0 0.5rem 1rem;
 `;
 
 const TitleContainer = styled.div`
-  height: 1.6rem;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+  color: ${theme.palette.primary.main};
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -190,12 +204,15 @@ const TitleContainer = styled.div`
 
 const ContentContainer = styled.div`
   font-size: 0.9rem;
-  max-height: 4.8rem;
+  max-height: 3.2rem;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid ${theme.palette.gray.main};
 `;
 
 const DUMMY_DATA = [
@@ -203,7 +220,7 @@ const DUMMY_DATA = [
     id: 1, // 기부글 식별자
     title: "기부",
     content: "기부할래요",
-    category: "물품나눔",
+    category: "재능기부",
     quality: "보통",
     status: "기부진행",
     memberId: 1, // 기부글 작성자 : 식별자 아이디(회원)
@@ -234,7 +251,7 @@ const DUMMY_DATA = [
       "집에 쌀이랑 이불이랑 남아도는 게 많아서 기부하려고 하는데 필요하신 센터 있으시면 댓글로 신청 부탁드립니다. 집에 쌀이랑 이불이랑 남아도는 게 많아서 기부하려고 하는데 필요하신 센터 있으시면 댓글로 신청 부탁드립니다.",
     category: "물품나눔",
     quality: "보통",
-    status: "기부진행",
+    status: "기부완료",
     memberId: 5, // 기부글 작성자 : 식별자 아이디(회원)
     member: "하정하정", // 기부글 작성자 : 회원 닉네임
     centerCnt: 2, // 기부희망댓글 작성자 수(참여자수)
@@ -248,7 +265,7 @@ const DUMMY_DATA = [
     content: "기부할래요",
     category: "물품나눔",
     quality: "보통",
-    status: "기부진행",
+    status: "기부완료",
     memberId: 3, // 기부글 작성자 : 식별자 아이디(회원)
     member: "상우상우상", // 기부글 작성자 : 회원 닉네임
     centerCnt: 2, // 기부희망댓글 작성자 수(참여자수)
