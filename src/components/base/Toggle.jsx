@@ -2,7 +2,7 @@ import { Chip } from "@mui/material";
 import { useState, useContext } from "react";
 import styled from "styled-components";
 import { PropTypes } from "prop-types";
-import { DispatchContext } from "@/contextApi";
+import { DispatchContext } from "@/context";
 const Tag = styled(Chip)`
   background-color: ${(props) => !props.checked && "#9e9e9e"};
   color: white;
