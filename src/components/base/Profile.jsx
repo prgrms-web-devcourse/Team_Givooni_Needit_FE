@@ -1,10 +1,8 @@
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
 import { makeStyles } from "@mui/styles";
-import useAsync from "../utils/hooks/useAsync";
+import { useState } from "react";
 
 const useStyles = makeStyles({
   avatar: ({ width, height }) => ({
@@ -13,87 +11,28 @@ const useStyles = makeStyles({
   }),
 });
 
-const wait = (timeToDelay) =>
-  new Promise((resolve) => setTimeout(resolve, timeToDelay));
-
-//dummy Data
-const dataArr = [
-  {
-    name: "mmmm",
-    image: "/",
-    id: "khw970421",
-  },
-  {
-    name: "김",
-    image: "/",
-    id: "khw97wdlwloed0",
-  },
-  {
-    name: "박",
-    image: "",
-    id: "kii9222swwsss",
-  },
-  {
-    name: "윤",
-    image: "",
-    id: "kqwjeowos11ss",
-  },
-  {
-    name: "윤",
-    image: "",
-    id: "kqwjeowos11ss",
-  },
-  {
-    name: "윤",
-    image: "",
-    id: "kqwjeowos11ss",
-  },
-  {
-    name: "윤",
-    image: "",
-    id: "kqwjeowos11ss",
-  },
-];
-
-// 사이즈 크기 자유롭게
-
-async function getUsers() {
-  await wait(1000);
-  return dataArr;
-}
-
-const Profile = ({ max, width, height }) => {
+const Profile = ({ max, width, height, comments = [] }) => {
   const classes = useStyles({ width, height });
-  const [state, refetch] = useAsync(getUsers, []);
-  const { loading, data: users, error } = state; // state.data 를 users 키워드로 조회
+  const [state, refetch] = useState(comments);
 
-  console.log(max, width, height, refetch);
-
+  console.log(state, refetch);
   //Avatar 태그 클릭시 이벤트
   const clickAvatarHandler = (id) => {
     //해당 대상의 마이페이지로 이동하는 함수 구현
     console.log(id);
   };
 
-  if (loading)
-    return (
-      <Box sx={{ display: "flex" }}>
-        <CircularProgress style={{ color: "#FD9F28", width, height }} />
-      </Box>
-    );
-  if (error) return <div>에러가 발생했습니다</div>;
-  if (!users) return null;
   return (
     <>
       <AvatarGroup max={max} classes={{ avatar: classes.avatar }}>
-        {users.map(({ name, image, id }) => {
+        {state.map(({ userName, userImage, userId }) => {
           return (
             <Avatar
-              key={id + Math.random()}
-              alt={name}
-              src={image}
+              key={userId + Math.random()}
+              alt={userName}
+              src={userImage}
               onClick={() => {
-                clickAvatarHandler(id);
+                clickAvatarHandler(userId);
               }}
             />
           );
@@ -102,17 +41,18 @@ const Profile = ({ max, width, height }) => {
     </>
   );
 };
-
 Profile.defaultProps = {
   max: 3,
   width: 40,
   height: 40,
+  comments: [],
 };
 
 Profile.propTypes = {
   max: PropTypes.number,
   width: PropTypes.number,
   height: PropTypes.number,
+  comments: PropTypes.array,
 };
 
 export default Profile;
