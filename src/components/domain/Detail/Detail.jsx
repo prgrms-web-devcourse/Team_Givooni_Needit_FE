@@ -1,20 +1,23 @@
 import styled from "styled-components";
+import { useState, useEffect, useContext } from "react";
+
 import Avatar from "@mui/material/Avatar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditIcon from "@mui/icons-material/Edit";
+
 import Nav from "@/components/base/Nav";
 import Header from "@/components/base/Header";
 import Slider from "@/components/base/Slider";
 // import Input from "@/components/base/Input";
 import BaseButton from "@/components/base/BaseButton";
-
 import Profile from "@/components/base/Profile";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import theme from "@/styles/theme";
+
 import { StateContext } from "@/context/index";
-import { useState, useEffect, useContext } from "react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import EditIcon from "@mui/icons-material/Edit";
 
 const giveComplete = {
   text: "기부완료",
@@ -76,123 +79,125 @@ const Detail = () => {
 
   return (
     <>
-      <Header type="main" fixed={true} />
-      <WriteContainer>
-        <WriteSubContainer>
-          <TextSliderAvatarContainer>
-            <Avatar sx={{ width: 50, height: 50 }} />
-            <TextSliderContainer>
-              <div>{detailData.userName}</div>
-              <Slider
-                id="기부진행"
-                toggle={true}
-                onChange={(data) => {
-                  console.log(data);
+      <MainContainer>
+        <Header type="main" fixed={true} />
+        <WriteContainer>
+          <WriteSubContainer>
+            <TextSliderAvatarContainer>
+              <Avatar sx={{ width: 50, height: 50 }} />
+              <TextSliderContainer>
+                <div>{detailData.userName}</div>
+                <Slider
+                  id="기부진행"
+                  toggle={true}
+                  onChange={(data) => {
+                    console.log(data);
+                  }}
+                />
+              </TextSliderContainer>
+            </TextSliderAvatarContainer>
+            {state.loginUser === detailData.userId ? (
+              <MoreVertIcon
+                onClick={() => {
+                  setIsClickMoreVert(!isClickMoreVert);
                 }}
               />
-            </TextSliderContainer>
-          </TextSliderAvatarContainer>
-          {state.loginUser === detailData.userId ? (
-            <MoreVertIcon
-              onClick={() => {
-                setIsClickMoreVert(!isClickMoreVert);
-              }}
-            />
-          ) : IsFollow() ? (
-            <FavoriteIcon />
-          ) : (
-            <FavoriteBorderIcon />
-          )}
+            ) : IsFollow() ? (
+              <FavoriteIcon />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
 
-          {isClickMoreVert ? (
-            <>
-              <EditIcon
-                onClick={() => {
-                  // 글쓰기 페이지 이동
-                  console.log("글쓰기 페이지 이동");
-                }}
-              />
-              <DeleteOutlineIcon
-                onClick={() => {
-                  console.log("삭제기능구현");
-                }}
-              />
-            </>
-          ) : (
-            <></>
-          )}
-        </WriteSubContainer>
-      </WriteContainer>
-      <TitleContainer>
-        <CustomTitle>{detailData.title}</CustomTitle>
-      </TitleContainer>
-      <ContentContainer>
-        <CustomContent>{detailData.content}</CustomContent>
-      </ContentContainer>
-      <LineBar />
-      <CommentContainer>
-        <CommnentSubContainer>
-          <GroupContainer>
-            <ProfileContainer>
-              <Profile
-                width={23.65}
-                height={17.4}
-                profileData={detailData.comments}
-              />
-              <CustomCommentNum>
-                참여자 수 {detailData.userCnt}명
-              </CustomCommentNum>
-            </ProfileContainer>
-
-            {state.loginUser !== detailData.userId ? (
-              <BaseButton
-                width={80}
-                height={28}
-                fontWeight={500}
-                fontSize={12}
-                text={giveButton.text}
-                btnType={giveButton.type}
-                onClick={() => {
-                  clickGiveCommentBtn();
-                }}
-              />
+            {isClickMoreVert ? (
+              <>
+                <EditIcon
+                  onClick={() => {
+                    // 글쓰기 페이지 이동
+                    console.log("글쓰기 페이지 이동");
+                  }}
+                />
+                <DeleteOutlineIcon
+                  onClick={() => {
+                    console.log("삭제기능구현");
+                  }}
+                />
+              </>
             ) : (
               <></>
             )}
-          </GroupContainer>
-          {detailData.comments &&
-            detailData.comments.map((part, i) => {
-              return (
-                <CardContainer key={i}>
-                  <MemberDeleteContainer>
-                    <MemberContainer>
-                      <Avatar sx={{ width: 30, height: 30 }} />
-                      <MemberName>{part.userName}</MemberName>
-                    </MemberContainer>
-                    {part.userId === state.loginUser ? (
-                      <DeleteOutlineIcon
-                        onClick={() => {
-                          console.log("댓글 삭제기능");
-                        }}
-                      />
-                    ) : (
-                      <MailOutlineIcon
-                        onClick={() => {
-                          console.log("메일보내기 기능");
-                        }}
-                      />
-                    )}
-                  </MemberDeleteContainer>
-                  <JoinCommentContainer>
-                    <Comment>기부할래요!</Comment>
-                  </JoinCommentContainer>
-                </CardContainer>
-              );
-            })}
-        </CommnentSubContainer>
-      </CommentContainer>
+          </WriteSubContainer>
+        </WriteContainer>
+        <TitleContainer>
+          <CustomTitle>{detailData.title}</CustomTitle>
+        </TitleContainer>
+        <ContentContainer>
+          <CustomContent>{detailData.content}</CustomContent>
+        </ContentContainer>
+        <LineBar />
+        <CommentContainer>
+          <CommnentSubContainer>
+            <GroupContainer>
+              <ProfileContainer>
+                <Profile
+                  width={23.65}
+                  height={17.4}
+                  profileData={detailData.comments}
+                />
+                <CustomCommentNum>
+                  참여자 수 {detailData.userCnt}명
+                </CustomCommentNum>
+              </ProfileContainer>
 
-      <Nav />
+              {state.loginUser !== detailData.userId ? (
+                <BaseButton
+                  width={80}
+                  height={28}
+                  fontWeight={500}
+                  fontSize={12}
+                  text={giveButton.text}
+                  btnType={giveButton.type}
+                  onClick={() => {
+                    clickGiveCommentBtn();
+                  }}
+                />
+              ) : (
+                <></>
+              )}
+            </GroupContainer>
+            {detailData.comments &&
+              detailData.comments.map((part, i) => {
+                return (
+                  <CardContainer key={i}>
+                    <MemberDeleteContainer>
+                      <MemberContainer>
+                        <Avatar sx={{ width: 30, height: 30 }} />
+                        <MemberName>{part.userName}</MemberName>
+                      </MemberContainer>
+                      {part.userId === state.loginUser ? (
+                        <DeleteOutlineIcon
+                          onClick={() => {
+                            console.log("댓글 삭제기능");
+                          }}
+                        />
+                      ) : (
+                        <MailOutlineIcon
+                          onClick={() => {
+                            console.log("메일보내기 기능");
+                          }}
+                        />
+                      )}
+                    </MemberDeleteContainer>
+                    <JoinCommentContainer>
+                      <Comment>기부할래요!</Comment>
+                    </JoinCommentContainer>
+                  </CardContainer>
+                );
+              })}
+          </CommnentSubContainer>
+        </CommentContainer>
+
+        <Nav />
+      </MainContainer>
     </>
   );
 };
@@ -248,6 +253,16 @@ const Dummy_Data = {
     ],
   },
 };
+
+const MainContainer = styled.div`
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  color: ${theme.palette.placeholder.main};
+`;
+
 const WriteContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -262,7 +277,7 @@ const WriteSubContainer = styled.div`
   align-items: center;
   margin-top: 13px;
   margin-bottom: 23px;
-  color: #fd9f28;
+  color: ${theme.palette.primary.main};
 `;
 
 const TextSliderAvatarContainer = styled.div`
@@ -275,11 +290,7 @@ const TextSliderContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 8px;
-  /* h6 */
-  font-family: Spoqa Han Sans Neo;
-  font-style: normal;
   font-weight: bold;
-  font-size: 16px;
   line-height: 20px;
 `;
 
@@ -292,20 +303,11 @@ const TitleContainer = styled.div`
 const CustomTitle = styled.div`
   width: 320px;
   height: 30px;
-  background: #f6f6f6;
-  /* Gray/02 */
-
+  background: ${theme.palette.gray.light};
   border: 1px solid #e8e8e8;
   box-sizing: border-box;
   border-radius: 8px;
-
   padding: 6px 10px;
-  /* UI - 16 Medium */
-
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
   line-height: 19px;
 `;
 
@@ -318,20 +320,11 @@ const ContentContainer = styled.div`
 const CustomContent = styled.div`
   width: 320px;
   height: 126px;
-  background: #f6f6f6;
-  /* Gray/02 */
-
+  background: ${theme.palette.gray.light};
   border: 1px solid #e8e8e8;
   box-sizing: border-box;
   border-radius: 8px;
   padding: 6px 10px;
-
-  /* UI - 16 Medium */
-
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
   line-height: 19px;
 `;
 const LineBar = styled.div`
@@ -354,16 +347,11 @@ const ProfileContainer = styled.div`
 
 const CustomCommentNum = styled.div`
   margin-left: 3px;
-  font-family: Spoqa Han Sans Neo;
-  font-style: normal;
-  font-weight: 500;
   font-size: 12px;
   line-height: 15px;
   /* identical to box height */
 
   text-align: center;
-
-  color: #c6c6c6;
 `;
 
 const GroupContainer = styled.div`
@@ -376,7 +364,7 @@ const GroupContainer = styled.div`
 const CardContainer = styled.div`
   margin-bottom: 17px;
   padding: 14px 10px;
-  background-color: #f6f6f6;
+  background-color: ${theme.palette.gray.light};
   border: 1px solid #e8e8e8;
   box-sizing: border-box;
   border-radius: 8px;
@@ -392,13 +380,8 @@ const JoinCommentContainer = styled.div`
   margin-bottom: 10px;
 `;
 const Comment = styled.div`
-  font-family: Spoqa Han Sans Neo;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 20px;
   /* identical to box height */
-  color: #bdbdbd;
+  color: ${theme.palette.placeholder.main};
   margin-left: 38px;
   margin-right: 38px;
 `;
@@ -414,15 +397,12 @@ const CommnentSubContainer = styled.div`
 const MemberDeleteContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  color: #fd9f28;
-  font-family: Spoqa Han Sans Neo;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
+  color: ${theme.palette.primary.main};
   line-height: 20px;
 `;
 
 const MemberName = styled.div`
+  font-weight: bold;
   margin-left: 8px;
 `;
 
