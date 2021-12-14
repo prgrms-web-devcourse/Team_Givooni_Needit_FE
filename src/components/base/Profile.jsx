@@ -14,6 +14,7 @@ const useStyles = makeStyles({
 const Profile = ({ max, width, height, comments = [] }) => {
   const classes = useStyles({ width, height });
   const [state, refetch] = useState(comments);
+
   console.log(state, refetch);
   //Avatar 태그 클릭시 이벤트
   const clickAvatarHandler = (id) => {
