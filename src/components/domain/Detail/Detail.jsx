@@ -291,7 +291,6 @@ const TextSliderContainer = styled.div`
   flex-direction: column;
   margin-left: 8px;
   font-weight: bold;
-  line-height: 20px;
 `;
 
 const TitleContainer = styled.div`
@@ -308,7 +307,6 @@ const CustomTitle = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   padding: 6px 10px;
-  line-height: 19px;
 `;
 
 const ContentContainer = styled.div`
@@ -325,7 +323,6 @@ const CustomContent = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   padding: 6px 10px;
-  line-height: 19px;
 `;
 const LineBar = styled.div`
   width: 100%;
@@ -336,6 +333,8 @@ const CommentContainer = styled.div`
   margin-left: 20px;
   margin-right: 20px;
   margin-top: 27px;
+  display: flex;
+  justify-content: center;
 `;
 
 const ProfileContainer = styled.div`
@@ -348,9 +347,6 @@ const ProfileContainer = styled.div`
 const CustomCommentNum = styled.div`
   margin-left: 3px;
   font-size: 12px;
-  line-height: 15px;
-  /* identical to box height */
-
   text-align: center;
 `;
 
@@ -369,18 +365,13 @@ const CardContainer = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   width: 320px;
-  height: 80px;
 `;
 const JoinCommentContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 293px;
-  height: 60px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 `;
 const Comment = styled.div`
-  /* identical to box height */
   color: ${theme.palette.placeholder.main};
   margin-left: 38px;
   margin-right: 38px;
@@ -398,7 +389,6 @@ const MemberDeleteContainer = styled.div`
   display: flex;
   justify-content: space-between;
   color: ${theme.palette.primary.main};
-  line-height: 20px;
 `;
 
 const MemberName = styled.div`
