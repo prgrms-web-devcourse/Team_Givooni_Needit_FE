@@ -36,12 +36,11 @@ const Detail = () => {
 
     detailData.comments &&
       detailData.comments.map((comment) => {
-        console.log(comment.userId, state.loginUser);
         if (comment.userId === state.loginUser) {
           isExist = true;
         }
       });
-
+    console.log(isExist);
     return isExist;
   };
 
@@ -131,7 +130,11 @@ const Detail = () => {
                       <Avatar sx={{ width: 30, height: 30 }} />
                       <MemberName>{part.userName}</MemberName>
                     </MemberContainer>
-                    <MailOutlineIcon />
+                    {part.userId === state.loginUser ? (
+                      <DeleteOutlineIcon />
+                    ) : (
+                      <MailOutlineIcon />
+                    )}
                   </MemberDeleteContainer>
                   <JoinCommentContainer>
                     <Comment>기부할래요!</Comment>
@@ -180,7 +183,7 @@ const Dummy_Data = {
       {
         id: 2,
         comment: "기부신청",
-        userId: "abcdef",
+        userId: "abcdefg",
         userName: "기부니2",
         userImage: "test.jpg",
         createdDate: "2021-12-14T00:38:39.943698",
