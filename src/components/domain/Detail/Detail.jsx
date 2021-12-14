@@ -15,15 +15,29 @@ import { StateContext } from "@/context/index";
 import { useState, useEffect, useContext } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
+
+const giveComplete = {
+  text: "기부완료",
+  type: "gray",
+};
+
+const giveUncomplete = {
+  text: "기부신청",
+  type: "white",
+};
+
 const Detail = () => {
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
+  const [giveButton, setGiveButton] = useState(giveUncomplete);
   const state = useContext(StateContext);
 
   useEffect(() => {
     //api
     setDetailData(Dummy_Data.data);
     console.log(detailData, Dummy_Data);
+
+    isCommentExist();
   }, [detailData]);
 
   // follow 대상인지 아닌지에 따라 팔로우 하트 혹은 언팔로우 하트 추가
@@ -37,14 +51,29 @@ const Detail = () => {
     detailData.comments &&
       detailData.comments.map((comment) => {
         if (comment.userId === state.loginUser) {
+          setGiveButton(giveComplete);
           isExist = true;
         }
       });
-    console.log(isExist);
+
     return isExist;
   };
 
-  console.log(detailData.status === "기부진행");
+  const clickGiveCommentBtn = () => {
+    if (giveButton.text === "기부신청") {
+      //api 실행
+      //   const apiData = {
+      //     "data": 1, // 해당 기부희망댓글의 식별자 아이디 반환
+      //     "message": "success"
+      //   }
+
+      setGiveButton(giveComplete);
+    } else if (giveButton.text === "기부완료") {
+      // 자신의 comment 삭제 이벤트
+      setGiveButton(giveUncomplete);
+    }
+  };
+
   return (
     <>
       <Header type="main" fixed={true} />
@@ -112,11 +141,13 @@ const Detail = () => {
               />
             </ProfileContainer>
             {state.loginUser !== detailData.userId ? (
-              isCommentExist() ? (
-                <BaseButton text={"신청완료"} btnType={"gray"} />
-              ) : (
-                <BaseButton text={"기부신청"} btnType={"white"} />
-              )
+              <BaseButton
+                text={giveButton.text}
+                btnType={giveButton.type}
+                onClick={() => {
+                  clickGiveCommentBtn();
+                }}
+              />
             ) : (
               <></>
             )}
@@ -183,7 +214,7 @@ const Dummy_Data = {
       {
         id: 2,
         comment: "기부신청",
-        userId: "abcdefg",
+        userId: "abcde",
         userName: "기부니2",
         userImage: "test.jpg",
         createdDate: "2021-12-14T00:38:39.943698",
