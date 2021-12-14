@@ -138,11 +138,15 @@ const Detail = () => {
           <CommnentSubContainer>
             <GroupContainer>
               <ProfileContainer>
-                <Profile
-                  width={23.65}
-                  height={17.4}
-                  profileData={detailData.comments}
-                />
+                {detailData.comments ? (
+                  <Profile
+                    width={23.65}
+                    height={17.4}
+                    comments={detailData.comments}
+                  />
+                ) : (
+                  <></>
+                )}
                 <CustomCommentNum>
                   참여자 수 {detailData.userCnt}명
                 </CustomCommentNum>
@@ -237,7 +241,8 @@ const Dummy_Data = {
         comment: "기부신청",
         userId: "abcdef",
         userName: "기부니2",
-        userImage: "test.jpg",
+        userImage:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/IU_at_%22Persona%22_press_conference%2C_27_March_2019_02.jpg/640px-IU_at_%22Persona%22_press_conference%2C_27_March_2019_02.jpg",
         createdDate: "2021-12-14T00:38:39.943698",
         updatedDate: "2021-12-14T00:38:39.943698",
       },
