@@ -4,8 +4,9 @@ import { MyLocation as MyLocationIcon } from "@mui/icons-material";
 import LocationData from "@/utils/const/LocationData";
 import theme from "@/styles/theme";
 import { StateContext, DispatchContext } from "@/context";
+import PropTypes from "prop-types";
 
-const LocationSelector = () => {
+const LocationSelector = ({ color = "primary", fontWeight = "400" }) => {
   const state = useContext(StateContext);
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
@@ -51,14 +52,19 @@ const LocationSelector = () => {
 
   return (
     <div>
-      <Button onClick={handleOpen} endIcon={<MyLocationIcon />}>
+      <Button
+        onClick={handleOpen}
+        endIcon={<MyLocationIcon />}
+        sx={{ fontWeight: fontWeight }}
+        color={color}
+      >
         {state.selectedTown ? state.selectedTown : "지역선택"}
       </Button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Box sx={{ width: "100%", overflow: "auto" }}>
             {openDetail
-              ? LocationData[city].map((city, idx) => {
+              ? LocationData[city]?.map((city, idx) => {
                   return (
                     <>
                       <Button
@@ -72,7 +78,7 @@ const LocationSelector = () => {
                     </>
                   );
                 })
-              : Object.keys(LocationData).map((city, idx) => {
+              : Object.keys(LocationData)?.map((city, idx) => {
                   return (
                     <>
                       <Button
@@ -95,10 +101,16 @@ const LocationSelector = () => {
 
 export default LocationSelector;
 
+LocationSelector.propTypes = {
+  color: PropTypes.string,
+  fontWeight: PropTypes.string,
+};
+
 const cityStyle = {
   width: "45%",
   textAlign: "center",
-  color: theme.palette.text.secondary,
+  color: theme.palette.primary.main,
+  my: "4px",
 };
 
 const style = {
