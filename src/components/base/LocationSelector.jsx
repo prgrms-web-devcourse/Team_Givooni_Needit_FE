@@ -6,7 +6,11 @@ import theme from "@/styles/theme";
 import { StateContext, DispatchContext } from "@/context";
 import PropTypes from "prop-types";
 
-const LocationSelector = ({ color = "primary", fontWeight = "400" }) => {
+const LocationSelector = ({
+  color = "primary",
+  fontWeight = "400",
+  fontSize = "14px",
+}) => {
   const state = useContext(StateContext);
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
@@ -55,7 +59,7 @@ const LocationSelector = ({ color = "primary", fontWeight = "400" }) => {
       <Button
         onClick={handleOpen}
         endIcon={<MyLocationIcon />}
-        sx={{ fontWeight: fontWeight }}
+        sx={{ fontWeight: fontWeight, fontSize: fontSize }}
         color={color}
       >
         {state.selectedTown ? state.selectedTown : "지역선택"}
@@ -104,6 +108,7 @@ export default LocationSelector;
 LocationSelector.propTypes = {
   color: PropTypes.string,
   fontWeight: PropTypes.string,
+  fontSize: PropTypes.string,
 };
 
 const cityStyle = {
