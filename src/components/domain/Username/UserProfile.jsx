@@ -2,12 +2,12 @@ import React from "react";
 // import { useParams } from "react-router";
 import BaseButton from "@/components/base/BaseButton";
 import styled from "styled-components";
-import {
-  Mood as MoodIcon,
-  SentimentSatisfied as SentimentSatisfiedIcon,
-  SentimentVeryDissatisfied as SentimentVeryDissatisfiedIcon,
-} from "@mui/icons-material";
-import { Box, Avatar, Chip } from "@mui/material";
+// import {
+//   Mood as MoodIcon,
+//   SentimentSatisfied as SentimentSatisfiedIcon,
+//   SentimentVeryDissatisfied as SentimentVeryDissatisfiedIcon,
+// } from "@mui/icons-material";
+import { Box, Avatar } from "@mui/material";
 
 const DUMMY = {
   memberId: 4,
@@ -26,7 +26,7 @@ const UserProfile = () => {
           height: "28vw",
           maxWidth: "140px",
           maxHeight: "140px",
-          mr: "2vw",
+          mr: "20px",
         }}
       />
       <Box>
@@ -35,6 +35,7 @@ const UserProfile = () => {
             display: "flex",
             alignItems: "center",
             width: "60vw",
+            height: "100%",
             gap: "5px",
             mb: "6px",
           }}
@@ -51,7 +52,7 @@ const UserProfile = () => {
             }}
           />
         </Box>
-        <Box sx={{ display: "flex", gap: "4px" }}>
+        {/* <Box sx={{ display: "flex", gap: "4px" }}>
           <Chip icon={<MoodIcon />} label="11" variant="outlined" />
           <Chip
             icon={<SentimentSatisfiedIcon />}
@@ -63,7 +64,7 @@ const UserProfile = () => {
             label="3"
             variant="outlined"
           />
-        </Box>
+        </Box> */}
       </Box>
     </UserProfileContainer>
   );
