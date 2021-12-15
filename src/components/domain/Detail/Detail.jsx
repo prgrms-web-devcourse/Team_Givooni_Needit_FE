@@ -43,19 +43,14 @@ const giveUncomplete = {
   btnType: "white",
   tag: "",
 };
+
 const Detail = () => {
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
-  const [giveButton, setGiveButton] = useState(giveUncomplete);
-  const [modalLink, setModalLink] = useState("");
-  const state = useContext(StateContext);
-
   const [open, setOpen] = useState(false);
-  const handleOpen = (e) => {
-    setModalLink(e.target.currentSrc);
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
+  const [giveButton, setGiveButton] = useState(giveUncomplete);
+  const [modalImgLink, setModalImgLink] = useState("");
+  const state = useContext(StateContext);
 
   useEffect(() => {
     //api
@@ -63,13 +58,20 @@ const Detail = () => {
     console.log(detailData, Dummy_Data);
 
     isCommentExist();
-  }, [detailData]);
+  }, []);
+
+  const modalImgOpen = ({ target }) => {
+    setModalImgLink(target.currentSrc);
+    setOpen(true);
+  };
+  const modalImgClose = () => setOpen(false);
 
   // follow 대상인지 아닌지에 따라 팔로우 하트 혹은 언팔로우 하트 추가
   const IsFollow = () => {
     return false;
   };
 
+  //comment가 로그인한 대상이 작성했는지 체크
   const isCommentExist = () => {
     let isExist = false;
 
@@ -159,24 +161,16 @@ const Detail = () => {
           <ScrollWrapContainer>
             {detailData.images &&
               detailData.images.map((link, i) => {
-                return (
-                  <CustomImg
-                    src={link}
-                    key={i}
-                    onClick={(e) => {
-                      handleOpen(e);
-                    }}
-                  />
-                );
+                return <CustomImg src={link} key={i} onClick={modalImgOpen} />;
               })}
             <Modal
               open={open}
-              onClose={handleClose}
+              onClose={modalImgClose}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <img src={modalLink} />
+                <img src={modalImgLink} />
               </Box>
             </Modal>
           </ScrollWrapContainer>
@@ -205,6 +199,7 @@ const Detail = () => {
                   tag={giveButton.tag}
                   btnType={giveButton.btnType}
                   onClick={() => {
+                    console.log("!!!!");
                     clickGiveCommentBtn();
                   }}
                 />
