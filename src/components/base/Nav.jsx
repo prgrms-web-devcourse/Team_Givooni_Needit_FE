@@ -101,7 +101,7 @@ const Nav = () => {
             }}
             onClick={handleClose}
             component={Link}
-            to="/center"
+            to="/wishes"
           >
             <AccountBalanceIcon />
             센터뷰
@@ -118,7 +118,7 @@ const Nav = () => {
             }}
             onClick={handleClose}
             component={Link}
-            to="/member"
+            to="/donations"
           >
             <FavoriteIcon />
             멤버뷰
@@ -147,7 +147,7 @@ const Nav = () => {
         />
         <BottomNavigationAction
           component={Link}
-          to="/username"
+          to="/user"
           label="내정보"
           icon={<AccountCircleIcon />}
           sx={{ minWidth: "60px", p: 0.5 }}
