@@ -8,6 +8,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 
 import Nav from "@/components/base/Nav";
 import Header from "@/components/base/Header";
@@ -18,6 +20,17 @@ import Profile from "@/components/base/Profile";
 import theme from "@/styles/theme";
 
 import { StateContext } from "@/context/index";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const giveComplete = {
   text: "기부완료",
@@ -33,7 +46,15 @@ const Detail = () => {
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
   const [giveButton, setGiveButton] = useState(giveUncomplete);
+  const [modalLink, setModalLink] = useState("");
   const state = useContext(StateContext);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = (e) => {
+    setModalLink(e.target.currentSrc);
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     //api
@@ -137,8 +158,26 @@ const Detail = () => {
           <ScrollWrapContainer>
             {detailData.images &&
               detailData.images.map((link, i) => {
-                return <CustomImg src={link} key={i} />;
+                return (
+                  <CustomImg
+                    src={link}
+                    key={i}
+                    onClick={(e) => {
+                      handleOpen(e);
+                    }}
+                  />
+                );
               })}
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <img src={modalLink} />
+              </Box>
+            </Modal>
           </ScrollWrapContainer>
         </ImageWrapContainer>
         <LineBar />
