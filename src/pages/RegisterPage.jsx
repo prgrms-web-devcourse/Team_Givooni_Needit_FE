@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import Cleave from "cleave.js/react";
 import "cleave.js/dist/addons/cleave-phone.kr";
+import { postRequest } from "@/api/axios";
 
 const RegisterContainer = styled.div`
   margin-top: 5rem;
@@ -38,7 +39,9 @@ const RegisterPage = () => {
   const [centerDate, setCenterDate] = useState("20000101");
   const [validateStatus, setValidateStatus] = useState("");
   const [myEmail, setEmail] = useState("");
+  const [myCode, setCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [emailValidated, setEmailValidated] = useState("");
 
   const ref = useRef();
 
@@ -86,6 +89,22 @@ const RegisterPage = () => {
       .catch(function () {
         alert("유효한 사업자 정보를 입력해주세요.");
       });
+
+  const emailValidation = () => {
+    postRequest("/email", JSON.stringify({ email: myEmail }));
+  };
+
+  const codeValidation = async () => {
+    const result = await postRequest(
+      "/verifyCode",
+      JSON.stringify({
+        code: myCode,
+        email: myEmail,
+      })
+    );
+    console.log(result === "인증코드 검증 완료");
+    if (result === "인증코드 검증 완료") setEmailValidated("success");
+  };
 
   const validationSchema = !isCenter
     ? yup.object({
@@ -150,26 +169,49 @@ const RegisterPage = () => {
               name="email"
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                console.log(e.target.value);
                 setEmail(e.target.value);
+                setEmailValidated("");
               }}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
             <div style={{ display: "flex", gap: ".5rem" }}>
-              <Input type="Email 인증 코드" sx={{ width: "13.5rem" }} />
-              <BaseButton
-                type="button"
-                text="인증 요청"
-                width="6rem"
-                height="2.4rem"
-                onClick={() => {
-                  if (myEmail) {
-                    alert(myEmail);
-                    handleStart();
-                  }
-                }}
+              <Input
+                type="Email 인증 코드"
+                sx={{ width: "13.5rem" }}
+                onKeyUp={(e) => setCode(e.target.value)}
               />
+              {emailValidated === "success" ? (
+                <BaseButton
+                  type="button"
+                  text="인증 완료"
+                  width="6rem"
+                  height="2.4rem"
+                />
+              ) : emailValidated === "ing" ? (
+                <BaseButton
+                  btnType="gray_dark"
+                  type="button"
+                  text="인증 확인"
+                  width="6rem"
+                  height="2.4rem"
+                  onClick={() => codeValidation()}
+                />
+              ) : (
+                <BaseButton
+                  type="button"
+                  text="인증 요청"
+                  width="6rem"
+                  height="2.4rem"
+                  onClick={() => {
+                    if (myEmail) {
+                      emailValidation();
+                      handleStart();
+                      setEmailValidated("ing");
+                    }
+                  }}
+                />
+              )}
             </div>
             <Countdown
               ref={ref}
