@@ -35,6 +35,9 @@ const theme = createTheme({
     transparent: {
       main: "#FFFFFF0",
     },
+    text: {
+      secondary: "#9E9E9E",
+    },
   },
   typography: {
     fontFamily: ["Spoqa Han Sans Neo", "sans-serif"].join(","),
@@ -69,7 +72,12 @@ const theme = createTheme({
     body1: {
       fontSize: 16,
       fontWeight: 400,
-      lineHeight: 1.5,
+      lineHeight: 1.2,
+    },
+    body2: {
+      fontSize: 12,
+      fontWeight: 400,
+      lineHeight: 1.2,
     },
   },
 });
