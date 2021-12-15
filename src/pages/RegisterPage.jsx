@@ -42,12 +42,39 @@ const RegisterPage = () => {
   const [myCode, setCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailValidated, setEmailValidated] = useState("");
+  const [memberInfo, setMemberInfo] = useState({
+    address: "",
+    contact: "",
+    email: "",
+    nickname: "",
+    password: "",
+  });
+  const [centerInfo, setCenterInfo] = useState({
+    address: "서울시 강남구",
+    contact: "",
+    email: "",
+    name: "",
+    owner: "",
+    password: "",
+    registrationCode: "",
+  });
 
   // const ref = useRef();
 
   const onPhoneChange = (e) => {
     setPhoneNumber(e.target.value.replaceAll(" ", ""));
     console.log(phoneNumber);
+    if (isCenter) {
+      setCenterInfo({
+        ...centerInfo,
+        contact: phoneNumber,
+      });
+    } else {
+      setMemberInfo({
+        ...memberInfo,
+        contact: phoneNumber,
+      });
+    }
   };
 
   // const handleStart = () => {
@@ -130,10 +157,6 @@ const RegisterPage = () => {
           .string("비밀번호를 입력해주세요.")
           .min(8, "9자 이상의 비밀번호를 입력해주세요.")
           .required("비밀번호를 입력해주세요."),
-        nickname: yup
-          .string("닉네임을 입력해주세요")
-          .min(3, "3자 이상의 닉네임을 입력해주세요.")
-          .required("닉네임을 입력해주세요."),
         centername: yup
           .string("기관명을 입력해주세요")
           .min(3, "3자 이상의 기관명을 입력해주세요.")
@@ -141,15 +164,28 @@ const RegisterPage = () => {
       });
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      nickname: "",
-      centername: "",
-    },
+    initialValues: !isCenter
+      ? {
+          email: "",
+          password: "",
+          nickname: "",
+        }
+      : {
+          email: "",
+          password: "",
+          centername: "",
+        },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      if (emailValidated === "success") alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      if (!isCenter && emailValidated === "success") {
+        alert("member" + JSON.stringify(values, null, 2));
+        console.log(memberInfo);
+        await postRequest("/members/signup", JSON.stringify(memberInfo));
+      }
+      if (isCenter && centerValidated && emailValidated) {
+        alert("center" + JSON.stringify(values, null, 2));
+        postRequest("/centers/signup", centerInfo);
+      }
     },
   });
 
@@ -161,7 +197,11 @@ const RegisterPage = () => {
           <AlignContainer>
             <div>
               기관사용자이신가요?
-              <Checkbox onChange={() => setIsCenter(!isCenter)}></Checkbox>
+              <Checkbox
+                onChange={() => {
+                  setIsCenter(!isCenter);
+                }}
+              ></Checkbox>
             </div>
             <Input
               type="Email"
@@ -171,6 +211,17 @@ const RegisterPage = () => {
               onKeyUp={(e) => {
                 setEmail(e.target.value);
                 setEmailValidated("");
+                if (isCenter) {
+                  setCenterInfo({
+                    email: e.target.value,
+                    ...centerInfo,
+                  });
+                } else {
+                  setMemberInfo({
+                    ...memberInfo,
+                    email: e.target.value,
+                  });
+                }
               }}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
@@ -236,6 +287,19 @@ const RegisterPage = () => {
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
+              onKeyUp={(e) => {
+                if (isCenter) {
+                  setCenterInfo({
+                    ...centerInfo,
+                    password: e.target.value,
+                  });
+                } else {
+                  setMemberInfo({
+                    ...memberInfo,
+                    password: e.target.value,
+                  });
+                }
+              }}
             />
             {!isCenter ? (
               <Input
@@ -246,6 +310,12 @@ const RegisterPage = () => {
                   formik.touched.nickname && Boolean(formik.errors.nickname)
                 }
                 helperText={formik.touched.nickname && formik.errors.nickname}
+                onKeyUp={(e) => {
+                  setMemberInfo({
+                    ...memberInfo,
+                    nickname: e.target.value,
+                  });
+                }}
               />
             ) : undefined}
             <Cleave
@@ -274,18 +344,36 @@ const RegisterPage = () => {
                   helperText={
                     formik.touched.centername && formik.errors.centername
                   }
+                  onKeyUp={(e) => {
+                    setCenterInfo({
+                      ...centerInfo,
+                      name: e.target.value,
+                    });
+                  }}
                 />
                 <Input
                   type="사업자 등록 번호"
-                  onChange={(e) => setCenterNum(e.target.value)}
+                  onKeyUp={(e) => {
+                    setCenterNum(e.target.value);
+                    setCenterInfo({
+                      ...centerInfo,
+                      registrationCode: e.target.value,
+                    });
+                  }}
                 />
                 <Input
                   type="대표자 성명"
-                  onChange={(e) => setCenterName(e.target.value)}
+                  onKeyUp={(e) => {
+                    setCenterName(e.target.value);
+                    setCenterInfo({
+                      ...centerInfo,
+                      owner: e.target.value,
+                    });
+                  }}
                 />
                 <Input
                   type="개업 일자 / YYYYMMDD"
-                  onChange={(e) => setCenterDate(e.target.value)}
+                  onKeyUp={(e) => setCenterDate(e.target.value)}
                 />
                 <div
                   style={{
