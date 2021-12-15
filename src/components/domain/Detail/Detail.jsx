@@ -138,15 +138,11 @@ const Detail = () => {
           <CommnentSubContainer>
             <GroupContainer>
               <ProfileContainer>
-                {detailData.comments ? (
-                  <Profile
-                    width={23.65}
-                    height={17.4}
-                    comments={detailData.comments}
-                  />
-                ) : (
-                  <></>
-                )}
+                <Profile
+                  width={23.65}
+                  height={17.4}
+                  comments={detailData.comments}
+                />
                 <CustomCommentNum>
                   참여자 수 {detailData.userCnt}명
                 </CustomCommentNum>
