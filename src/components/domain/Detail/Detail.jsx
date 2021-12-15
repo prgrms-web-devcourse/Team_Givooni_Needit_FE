@@ -178,7 +178,10 @@ const Detail = () => {
                   <CardContainer key={i}>
                     <MemberDeleteContainer>
                       <MemberContainer>
-                        <Avatar sx={{ width: 30, height: 30 }} />
+                        <Avatar
+                          sx={{ width: 30, height: 30 }}
+                          src={part.userImage}
+                        />
                         <MemberName>{part.userName}</MemberName>
                       </MemberContainer>
                       {part.userId === state.userId ? (
@@ -365,6 +368,7 @@ const CommentContainer = styled.div`
   margin-left: 20px;
   margin-right: 20px;
   margin-top: 27px;
+  padding-bottom: 56px;
   display: flex;
   justify-content: center;
 `;
