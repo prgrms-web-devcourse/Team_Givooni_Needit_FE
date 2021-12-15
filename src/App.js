@@ -33,7 +33,8 @@ function App() {
           <Route path="/notify" element={<Notify />} />
           <Route path="/writes" element={<Writes />} />
           <Route path="/Gps" element={<Gps />} />
-          <Route path="/detail/:postId" element={<Detail />} />
+          <Route path="/donations/:postId" element={<Detail />} />
+          <Route path="/wishes/:postId" element={<Detail />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
