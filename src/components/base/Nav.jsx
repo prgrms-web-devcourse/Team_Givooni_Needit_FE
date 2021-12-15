@@ -101,7 +101,7 @@ const Nav = () => {
             }}
             onClick={handleClose}
             component={Link}
-            to="/wishes"
+            to="/donations"
           >
             <AccountBalanceIcon />
             센터뷰
@@ -118,7 +118,7 @@ const Nav = () => {
             }}
             onClick={handleClose}
             component={Link}
-            to="/donations"
+            to="/wishes"
           >
             <FavoriteIcon />
             멤버뷰
