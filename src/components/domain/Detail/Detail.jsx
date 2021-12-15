@@ -33,15 +33,16 @@ const style = {
 };
 
 const giveComplete = {
-  text: "기부완료",
-  type: "gray",
+  text: "신청완료",
+  btnType: "gray_dark",
+  tag: "primary",
 };
 
 const giveUncomplete = {
   text: "기부신청",
-  type: "white",
+  btnType: "white",
+  tag: "",
 };
-
 const Detail = () => {
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
@@ -194,7 +195,6 @@ const Detail = () => {
                   참여자 수 {detailData.userCnt}명
                 </CustomCommentNum>
               </ProfileContainer>
-
               {state.userId !== detailData.userId ? (
                 <BaseButton
                   width={80}
@@ -202,7 +202,8 @@ const Detail = () => {
                   fontWeight={500}
                   fontSize={12}
                   text={giveButton.text}
-                  btnType={giveButton.type}
+                  tag={giveButton.tag}
+                  btnType={giveButton.btnType}
                   onClick={() => {
                     clickGiveCommentBtn();
                   }}
