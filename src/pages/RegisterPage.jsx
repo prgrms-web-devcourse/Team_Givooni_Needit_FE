@@ -1,11 +1,11 @@
-import Countdown, { zeroPad } from "react-countdown";
+// import Countdown, { zeroPad } from "react-countdown";
 import BaseButton from "@/components/base/BaseButton";
 import Header from "@/components/base/Header";
 import Input from "@/components/base/Input";
 import PasswordInput from "@/components/base/PasswordInput";
 import theme from "@/styles/theme";
 import { Checkbox } from "@mui/material";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -43,16 +43,16 @@ const RegisterPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailValidated, setEmailValidated] = useState("");
 
-  const ref = useRef();
+  // const ref = useRef();
 
   const onPhoneChange = (e) => {
     setPhoneNumber(e.target.value.replaceAll(" ", ""));
     console.log(phoneNumber);
   };
 
-  const handleStart = () => {
-    ref?.current.start();
-  };
+  // const handleStart = () => {
+  //   ref?.current.start();
+  // };
 
   const data = JSON.stringify({
     businesses: [
@@ -149,7 +149,7 @@ const RegisterPage = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      if (emailValidated === "success") alert(JSON.stringify(values, null, 2));
     },
   });
 
@@ -206,14 +206,14 @@ const RegisterPage = () => {
                   onClick={() => {
                     if (myEmail) {
                       emailValidation();
-                      handleStart();
+                      // handleStart();
                       setEmailValidated("ing");
                     }
                   }}
                 />
               )}
             </div>
-            <Countdown
+            {/* <Countdown
               ref={ref}
               date={Date.now() + 300000}
               autoStart={false}
@@ -229,7 +229,7 @@ const RegisterPage = () => {
                   {zeroPad(minutes)} : {zeroPad(seconds)}
                 </div>
               )}
-            />
+            /> */}
             <PasswordInput
               id="password"
               name="password"
