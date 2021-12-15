@@ -43,7 +43,7 @@ const RegisterPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailValidated, setEmailValidated] = useState("");
   const [memberInfo, setMemberInfo] = useState({
-    address: "",
+    address: "서울시 강남구",
     contact: "",
     email: "",
     nickname: "",
@@ -117,18 +117,15 @@ const RegisterPage = () => {
         alert("유효한 사업자 정보를 입력해주세요.");
       });
 
-  const emailValidation = () => {
-    postRequest("/email", JSON.stringify({ email: myEmail }));
+  const emailValidation = async () => {
+    await postRequest("email", { email: myEmail });
   };
 
   const codeValidation = async () => {
-    const result = await postRequest(
-      "/verifyCode",
-      JSON.stringify({
-        code: myCode,
-        email: myEmail,
-      })
-    );
+    const result = await postRequest("verifyCode", {
+      code: myCode,
+      email: myEmail,
+    });
     console.log(result === "인증코드 검증 완료");
     if (result === "인증코드 검증 완료") setEmailValidated("success");
   };
@@ -180,11 +177,11 @@ const RegisterPage = () => {
       if (!isCenter && emailValidated === "success") {
         alert("member" + JSON.stringify(values, null, 2));
         console.log(memberInfo);
-        await postRequest("/members/signup", JSON.stringify(memberInfo));
+        await postRequest("members/signup", memberInfo);
       }
       if (isCenter && centerValidated && emailValidated) {
         alert("center" + JSON.stringify(values, null, 2));
-        postRequest("/centers/signup", centerInfo);
+        postRequest("centers/signup", centerInfo);
       }
     },
   });
