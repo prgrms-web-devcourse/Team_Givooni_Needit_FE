@@ -2,7 +2,6 @@ import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import PropTypes from "prop-types";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
 
 const useStyles = makeStyles({
   avatar: ({ width, height }) => ({
@@ -13,9 +12,7 @@ const useStyles = makeStyles({
 
 const Profile = ({ max, width, height, comments = [] }) => {
   const classes = useStyles({ width, height });
-  const [state, refetch] = useState(comments);
 
-  console.log(state, refetch);
   //Avatar 태그 클릭시 이벤트
   const clickAvatarHandler = (id) => {
     //해당 대상의 마이페이지로 이동하는 함수 구현
@@ -25,7 +22,7 @@ const Profile = ({ max, width, height, comments = [] }) => {
   return (
     <>
       <AvatarGroup max={max} classes={{ avatar: classes.avatar }}>
-        {state.map(({ userName, userImage, userId }) => {
+        {comments.map(({ userName, userImage, userId }) => {
           return (
             <Avatar
               key={userId + Math.random()}
