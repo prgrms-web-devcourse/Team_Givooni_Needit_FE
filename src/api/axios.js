@@ -1,10 +1,11 @@
 import axios from "axios";
-const API_END_POINT = "https://jsonplaceholder.typicode.com";
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const getRequest = async (url = "", options = {}) => {
   const returnResult = await axios({
     method: "get",
-    url: `${API_END_POINT}/${url}`,
+    url: `${API_BASE_URL}/${url}`,
     ...options,
   })
     .then((response) => response.data)
@@ -17,8 +18,8 @@ const getRequest = async (url = "", options = {}) => {
 const postRequest = async (url = "", options = {}) => {
   const returnResult = await axios({
     method: "post",
-    url: `${API_END_POINT}/${url}`,
-    data: options,
+    url: `${API_BASE_URL}/${url}`,
+    ...options,
   })
     .then((response) => response.data)
     .catch((error) => {
@@ -31,8 +32,8 @@ const postRequest = async (url = "", options = {}) => {
 const putRequest = async (url = "", options = {}) => {
   const returnResult = await axios({
     method: "put",
-    url: `${API_END_POINT}/${url}`,
-    data: options,
+    url: `${API_BASE_URL}/${url}`,
+    ...options,
   })
     .then((response) => response.data)
     .catch((error) => {
@@ -42,4 +43,18 @@ const putRequest = async (url = "", options = {}) => {
   return returnResult;
 };
 
-export { getRequest, postRequest, putRequest };
+const deleteRequest = async (url = "", options = {}) => {
+  const returnResult = await axios({
+    method: "delete",
+    url: `${API_BASE_URL}/${url}`,
+    ...options,
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error);
+    });
+
+  return returnResult;
+};
+
+export { getRequest, postRequest, putRequest, deleteRequest };
