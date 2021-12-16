@@ -16,7 +16,7 @@ import Slider from "@/components/base/Slider";
 import BaseButton from "@/components/base/BaseButton";
 import Profile from "@/components/base/Profile";
 import theme from "@/styles/theme";
-import { getRequest, postRequest } from "@/api/axios";
+import { getRequest, postRequest, deleteRequest } from "@/api/axios";
 import { StateContext } from "@/context/index";
 import { useParams } from "react-router-dom";
 const style = {
@@ -104,6 +104,19 @@ const Detail = () => {
       setGiveButton(giveUncomplete);
     }
   };
+
+  const deleteMyComment = async (commentID) => {
+    const result = await deleteRequest(
+      `${requestTarget}/${postId}/comments/${commentID}`,
+      {
+        headers: {
+          Authorization: bearerToken,
+        },
+      }
+    );
+    console.log(result);
+  };
+
   return (
     <>
       <MainContainer>
@@ -224,7 +237,7 @@ const Detail = () => {
                       {part.userId === state.userId ? (
                         <DeleteOutlineIcon
                           onClick={() => {
-                            console.log("댓글 삭제기능");
+                            deleteMyComment(part.id);
                           }}
                         />
                       ) : (
