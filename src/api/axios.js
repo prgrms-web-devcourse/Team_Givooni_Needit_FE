@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const getRequest = async (url = "", options = {}) => {
@@ -44,7 +45,7 @@ const putRequest = async (url = "", options = {}) => {
 
 const deleteRequest = async (url = "", options = {}) => {
   const returnResult = await axios({
-    method: "put",
+    method: "delete",
     url: `${API_BASE_URL}/${url}`,
     data: options,
   })
