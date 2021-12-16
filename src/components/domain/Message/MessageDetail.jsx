@@ -3,15 +3,15 @@ import { ListItem } from "@mui/material";
 import { List } from "@mui/material";
 import { ListItemText } from "@mui/material";
 import PropTypes from "prop-types";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AddSchedule from "./AddSchedule";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import { Container } from "@mui/material";
 import Input from "@/components/base/Input";
-
-const MessageDetail = ({ list, sendMessage }) => {
+import { ListItemButton } from "@mui/material";
+const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
   const [text, setText] = useState("");
-  const user = "나";
+  const me = "MEMBER".toLowerCase();
   return (
     <>
       <List
@@ -19,74 +19,175 @@ const MessageDetail = ({ list, sendMessage }) => {
           mt: "5rem",
         }}
       >
-        {list.map((message) => (
-          <ListItem
-            key={message.id}
-            sx={{
-              display: "flex",
-              px: "16px",
-              justifyContent: `${
-                message.user !== user ? "flex-start" : "flex-end"
-              }`,
-            }}
-          >
-            {message.user !== user && (
-              <Avatar
-                alt={message.user}
-                src={message.src}
-                sx={{
-                  mr: "16px",
-                }}
-              />
-            )}
-            <List
+        {list.map((message) => {
+          return message.contract === null ? (
+            <ListItem
+              key={message.messageId + message.senderType + "메세지"}
               sx={{
                 display: "flex",
-                flexDirection: "column",
-                alignItems: `${
-                  message.user !== user ? "flex-start" : "flex-end"
+                px: "16px",
+                justifyContent: `${
+                  message.senderType !== me.toUpperCase()
+                    ? "flex-start"
+                    : "flex-end"
                 }`,
               }}
             >
-              <ListItemText
-                primary={message.user}
+              {message.senderType !== me.toUpperCase() && (
+                <Avatar
+                  alt={message[message.senderType.toLowerCase()].name}
+                  src={message[message.senderType.toLowerCase()].imageUrl}
+                  sx={{
+                    mr: "16px",
+                  }}
+                />
+              )}
+              <List
                 sx={{
-                  color: "primary.main",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: `${
+                    message.senderType !== me.toUpperCase()
+                      ? "flex-start"
+                      : "flex-end"
+                  }`,
                 }}
-              />
-              <ListItemText
-                primary={message.text}
+              >
+                <ListItemText
+                  primary={message[message.senderType.toLowerCase()].name}
+                  sx={{
+                    color: "primary.main",
+                  }}
+                />
+                <ListItemText
+                  primary={message.content}
+                  sx={{
+                    p: 2,
+                    backgroundColor: `${
+                      message.senderType !== me.toUpperCase()
+                        ? "primary.main"
+                        : "gray.light"
+                    }`,
+                    color: `${
+                      message.senderType !== me.toUpperCase()
+                        ? "white.main"
+                        : "primary.main"
+                    }`,
+                    borderRadius: "8px",
+                    whiteSpace: "pre-wrap",
+                    maxWidth: "50%",
+                    boxShadow: 2,
+                  }}
+                />
+              </List>
+            </ListItem>
+          ) : (
+            <List
+              sx={{
+                px: "16px",
+                mx: "24px",
+              }}
+            >
+              <List
                 sx={{
-                  p: 2,
-                  backgroundColor: `${
-                    message.user !== user ? "primary.main" : "gray.light"
-                  }`,
-                  color: `${
-                    message.user !== user ? "white.main" : "primary.main"
-                  }`,
+                  backgroundColor: "gray.light",
+
                   borderRadius: "8px",
-                  maxWidth: "60%",
-                  whiteSpace: "normal",
                 }}
-              />
+              >
+                <ListItemText
+                  primary={message.contract.postTitle}
+                  sx={{
+                    textAlign: "center",
+                    color: "#727171",
+                  }}
+                />
+                <ListItemText
+                  primary={message.contract.contractDate}
+                  sx={{
+                    textAlign: "center",
+                    color: "#727171",
+                  }}
+                />
+              </List>
+              <ListItem
+                sx={{
+                  display: "flex",
+                  padding: 0,
+                  borderRadius: "8px",
+                  my: "12px",
+                }}
+              >
+                <ListItemButton
+                  onClick={() => {
+                    contract(message.contract.contractId, "ACCEPTED");
+                  }}
+                  sx={{
+                    backgroundColor: `${
+                      message.contract.status === "ACCEPTED"
+                        ? "primary.main"
+                        : "white.main"
+                    }`,
+                    marginRight: "8px",
+                    borderRadius: "8px",
+                  }}
+                >
+                  <ListItemText
+                    primary="수락"
+                    sx={{
+                      textAlign: "center",
+                      color: `${
+                        message.contract.status === "ACCEPTED"
+                          ? "white.main"
+                          : "black"
+                      }`,
+                    }}
+                  />
+                </ListItemButton>
+                <ListItemButton
+                  onClick={() => {
+                    contract(message.contract.contractId, "REFUSED");
+                  }}
+                  sx={{
+                    backgroundColor: `${
+                      message.contract.status === "REFUSED"
+                        ? "primary.main"
+                        : "white.main"
+                    }`,
+                    borderRadius: "8px",
+                  }}
+                >
+                  <ListItemText
+                    primary="거절"
+                    sx={{
+                      textAlign: "center",
+                      color: `${
+                        message.contract.status === "REFUSED"
+                          ? "white.main"
+                          : "black"
+                      }`,
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
             </List>
-          </ListItem>
-        ))}
+          );
+        })}
       </List>
       <Container
         sx={{
-          width: "100%",
+          wmessageIdth: "100%",
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
           position: "fixed",
-          botton: "0",
+          bottom: "0",
+          px: "8px",
+          py: "16px",
+          backgroundColor: "white.main",
         }}
       >
-        <CalendarTodayIcon
-          onClick={() => alert("캘린터 짠")}
-          sx={{ mr: "8px", color: "primary.main" }}
-        />
+        <AddSchedule reserveDonation={(date) => reserveDonation(date)} />
         <Input
           type="message"
           sx={{
@@ -115,6 +216,8 @@ const MessageDetail = ({ list, sendMessage }) => {
 MessageDetail.propTypes = {
   list: PropTypes.array,
   sendMessage: PropTypes.func,
+  reserveDonation: PropTypes.func,
+  contract: PropTypes.func,
 };
 
 export default MessageDetail;
