@@ -18,7 +18,8 @@ import Profile from "@/components/base/Profile";
 import theme from "@/styles/theme";
 import { getRequest, postRequest, deleteRequest } from "@/api/axios";
 import { StateContext } from "@/context/index";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -149,12 +150,19 @@ const Detail = () => {
             )}
             {isClickMoreVert ? (
               <>
-                <EditIcon
-                  onClick={() => {
-                    // 글쓰기 페이지 이동
-                    console.log("글쓰기 페이지 이동");
+                <Link
+                  to="/writes"
+                  state={{
+                    prewriteData: detailData,
                   }}
-                />
+                >
+                  <CustomEditIcon
+                    onClick={() => {
+                      // 글쓰기 페이지 이동
+                      console.log("글쓰기 페이지 이동");
+                    }}
+                  />
+                </Link>
                 <DeleteOutlineIcon
                   onClick={() => {
                     console.log("삭제기능구현");
@@ -295,6 +303,11 @@ const TextSliderContainer = styled.div`
   margin-left: 8px;
   font-weight: bold;
 `;
+
+const CustomEditIcon = styled(EditIcon)`
+  color: ${theme.palette.primary.main};
+`;
+
 const TitleContainer = styled.div`
   display: flex;
   justify-content: center;
