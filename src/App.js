@@ -30,8 +30,10 @@ function App() {
           <Route path="/user" element={<User />} />
           <Route path="/member/:memberId" element={<Member />} />
           <Route path="/center/:centerId" element={<Center />} />
-          <Route path="/message" element={<Message />} />
-          <Route path="/message/:id" element={<Message />} />
+          <Route
+            path="/message/:postId/:postType/:recieverId"
+            element={<Message />}
+          />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/notify" element={<Notify />} />
           <Route path="/writes" element={<Writes />} />
