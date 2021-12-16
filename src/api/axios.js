@@ -44,7 +44,7 @@ const putRequest = async (url = "", options = {}) => {
 
 const deleteRequest = async (url = "", options = {}) => {
   const returnResult = await axios({
-    method: "put",
+    method: "delete",
     url: `${API_BASE_URL}/${url}`,
     data: options,
   })
