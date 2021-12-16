@@ -7,7 +7,7 @@ import theme from "@/styles/theme";
 import { useState } from "react";
 import UserPosts from "./UserPosts";
 import UserLikes from "./UserLikes";
-const Username = () => {
+const User = () => {
   const buttonStyle = {
     display: "flex",
     background: theme.palette.gray.light,
@@ -39,7 +39,7 @@ const Username = () => {
   };
 
   return (
-    <UsernameContainer>
+    <UserContainer>
       <Header type="edit" />
 
       <Box sx={{ p: "16px" }}>
@@ -70,13 +70,13 @@ const Username = () => {
         {userInpo[component]}
       </Box>
       <Nav />
-    </UsernameContainer>
+    </UserContainer>
   );
 };
 
-export default Username;
+export default User;
 
-const UsernameContainer = styled.div``;
+const UserContainer = styled.div``;
 
 const UserIntro = styled.div`
   background: #f6f6f6;

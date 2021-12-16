@@ -1,8 +1,8 @@
+// import Countdown, { zeroPad } from "react-countdown";
 import BaseButton from "@/components/base/BaseButton";
 import Header from "@/components/base/Header";
 import Input from "@/components/base/Input";
 import PasswordInput from "@/components/base/PasswordInput";
-import PhoneInput from "@/components/base/PhoneInput";
 import theme from "@/styles/theme";
 import { Checkbox } from "@mui/material";
 import { useState } from "react";
@@ -10,8 +10,13 @@ import styled from "styled-components";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
+import Cleave from "cleave.js/react";
+import "cleave.js/dist/addons/cleave-phone.kr";
+import { postRequest } from "@/api/axios";
+import { useNavigate } from "react-router";
 
 const RegisterContainer = styled.div`
+  margin-top: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,6 +33,7 @@ const AlignContainer = styled.div`
 `;
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const [isCenter, setIsCenter] = useState(false);
   const [centerValidated, setCenterValidated] = useState(false);
   const [centerName, setCenterName] = useState("홍길동");
@@ -35,6 +41,44 @@ const RegisterPage = () => {
   const [centerDate, setCenterDate] = useState("20000101");
   const [validateStatus, setValidateStatus] = useState("");
   const [myEmail, setEmail] = useState("");
+  const [myCode, setCode] = useState("");
+  const [emailValidated, setEmailValidated] = useState("");
+  const [memberInfo, setMemberInfo] = useState({
+    address: "서울시 강남구",
+    contact: "",
+    email: "",
+    nickname: "",
+    password: "",
+  });
+  const [centerInfo, setCenterInfo] = useState({
+    address: "서울시 강남구",
+    contact: "",
+    email: "",
+    name: "",
+    owner: "",
+    password: "",
+    registrationCode: "",
+  });
+
+  // const ref = useRef();
+
+  const onPhoneChange = (e) => {
+    if (isCenter) {
+      setCenterInfo({
+        ...centerInfo,
+        contact: e.target.value.replaceAll(" ", ""),
+      });
+    } else {
+      setMemberInfo({
+        ...memberInfo,
+        contact: e.target.value.replaceAll(" ", ""),
+      });
+    }
+  };
+
+  // const handleStart = () => {
+  //   ref?.current.start();
+  // };
 
   const data = JSON.stringify({
     businesses: [
@@ -72,6 +116,19 @@ const RegisterPage = () => {
         alert("유효한 사업자 정보를 입력해주세요.");
       });
 
+  const emailValidation = async () => {
+    await postRequest("email", { email: myEmail });
+  };
+
+  const codeValidation = async () => {
+    const result = await postRequest("verifyCode", {
+      code: myCode,
+      email: myEmail,
+    });
+    console.log(result === "인증코드 검증 완료");
+    if (result === "인증코드 검증 완료") setEmailValidated("success");
+  };
+
   const validationSchema = !isCenter
     ? yup.object({
         email: yup
@@ -96,10 +153,6 @@ const RegisterPage = () => {
           .string("비밀번호를 입력해주세요.")
           .min(8, "9자 이상의 비밀번호를 입력해주세요.")
           .required("비밀번호를 입력해주세요."),
-        nickname: yup
-          .string("닉네임을 입력해주세요")
-          .min(3, "3자 이상의 닉네임을 입력해주세요.")
-          .required("닉네임을 입력해주세요."),
         centername: yup
           .string("기관명을 입력해주세요")
           .min(3, "3자 이상의 기관명을 입력해주세요.")
@@ -107,27 +160,55 @@ const RegisterPage = () => {
       });
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      nickname: "",
-      centername: "",
-    },
+    initialValues: !isCenter
+      ? {
+          email: "",
+          password: "",
+          nickname: "",
+        }
+      : {
+          email: "",
+          password: "",
+          centername: "",
+        },
+
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async () => {
+      if (!isCenter && emailValidated === "success") {
+        const register_result = await postRequest("members/signup", memberInfo);
+        console.log(register_result);
+        if (register_result.message === "success") {
+          console.log("회원가입 성공");
+          navigate("/login");
+        }
+      }
+      if (isCenter && centerValidated && emailValidated) {
+        const register_result2 = await postRequest(
+          "centers/signup",
+          centerInfo
+        );
+        console.log(register_result2);
+        if (register_result2.message === "success") {
+          console.log("회원가입 성공");
+          navigate("/login");
+        }
+      }
     },
   });
 
   return (
     <>
-      <Header type="plain" />
+      <Header type="plain" fixed={true} />
       <form onSubmit={formik.handleSubmit}>
         <RegisterContainer>
           <AlignContainer>
             <div>
               기관사용자이신가요?
-              <Checkbox onChange={() => setIsCenter(!isCenter)}></Checkbox>
+              <Checkbox
+                onChange={() => {
+                  setIsCenter(!isCenter);
+                }}
+              ></Checkbox>
             </div>
             <Input
               type="Email"
@@ -135,22 +216,97 @@ const RegisterPage = () => {
               name="email"
               onChange={formik.handleChange}
               onKeyUp={(e) => {
-                console.log(e.target.value);
                 setEmail(e.target.value);
+                if (isCenter) {
+                  setCenterInfo({
+                    ...centerInfo,
+                    email: e.target.value,
+                  });
+                } else {
+                  setMemberInfo({
+                    ...memberInfo,
+                    email: e.target.value,
+                  });
+                }
               }}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
             <div style={{ display: "flex", gap: ".5rem" }}>
-              <Input type="Email 인증 코드" sx={{ width: "13.5rem" }} />
-              <BaseButton
-                type="button"
-                text="인증 요청"
-                width="6rem"
-                height="2.4rem"
-                onClick={() => alert(myEmail)}
+              <Input
+                type="Email 인증 코드"
+                sx={{ width: "13.5rem" }}
+                onKeyUp={(e) => setCode(e.target.value)}
               />
+              {emailValidated === "success" ? (
+                <BaseButton
+                  type="button"
+                  text="인증 완료"
+                  width="6rem"
+                  height="2.4rem"
+                />
+              ) : emailValidated === "ing" ? (
+                <BaseButton
+                  btnType="gray_dark"
+                  type="button"
+                  text="인증 확인"
+                  width="6rem"
+                  height="2.4rem"
+                  onClick={() => codeValidation()}
+                />
+              ) : (
+                <BaseButton
+                  type="button"
+                  text="인증 요청"
+                  width="6rem"
+                  height="2.4rem"
+                  onClick={() => {
+                    if (myEmail) {
+                      emailValidation();
+                      // handleStart();
+                      setEmailValidated("ing");
+                    }
+                  }}
+                />
+              )}
             </div>
+            {/* <Countdown
+              ref={ref}
+              date={Date.now() + 300000}
+              autoStart={false}
+              renderer={({ minutes, seconds }) => (
+                <div
+                  style={{
+                    color: "#d32f2f",
+                    fontSize: "0.8rem",
+                    textAlign: "right",
+                    marginRight: "0.5rem",
+                  }}
+                >
+                  {zeroPad(minutes)} : {zeroPad(seconds)}
+                </div>
+              )}
+            /> */}
+            <PasswordInput
+              id="password"
+              name="password"
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              onKeyUp={(e) => {
+                if (isCenter) {
+                  setCenterInfo({
+                    ...centerInfo,
+                    password: e.target.value,
+                  });
+                } else {
+                  setMemberInfo({
+                    ...memberInfo,
+                    password: e.target.value,
+                  });
+                }
+              }}
+            />
             {!isCenter ? (
               <Input
                 type="닉네임"
@@ -160,16 +316,27 @@ const RegisterPage = () => {
                   formik.touched.nickname && Boolean(formik.errors.nickname)
                 }
                 helperText={formik.touched.nickname && formik.errors.nickname}
+                onKeyUp={(e) => {
+                  setMemberInfo({
+                    ...memberInfo,
+                    nickname: e.target.value,
+                  });
+                }}
               />
             ) : undefined}
-            <PasswordInput
-              id="password"
-              name="password"
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+            <Cleave
+              placeholder="010 0000 0000"
+              options={{ phone: true, phoneRegionCode: "KR" }}
+              onKeyUp={onPhoneChange}
+              style={{
+                border: `1px solid #bbbbbb`,
+                borderRadius: "5px",
+                height: "2.5rem",
+                fontSize: "16px",
+                padding: "0.7rem",
+                boxSizing: "border-box",
+              }}
             />
-            <PhoneInput />
             {isCenter ? (
               <>
                 <Input
@@ -183,18 +350,36 @@ const RegisterPage = () => {
                   helperText={
                     formik.touched.centername && formik.errors.centername
                   }
+                  onKeyUp={(e) => {
+                    setCenterInfo({
+                      ...centerInfo,
+                      name: e.target.value,
+                    });
+                  }}
                 />
                 <Input
                   type="사업자 등록 번호"
-                  onChange={(e) => setCenterNum(e.target.value)}
+                  onKeyUp={(e) => {
+                    setCenterNum(e.target.value);
+                    setCenterInfo({
+                      ...centerInfo,
+                      registrationCode: e.target.value,
+                    });
+                  }}
                 />
                 <Input
                   type="대표자 성명"
-                  onChange={(e) => setCenterName(e.target.value)}
+                  onKeyUp={(e) => {
+                    setCenterName(e.target.value);
+                    setCenterInfo({
+                      ...centerInfo,
+                      owner: e.target.value,
+                    });
+                  }}
                 />
                 <Input
                   type="개업 일자 / YYYYMMDD"
-                  onChange={(e) => setCenterDate(e.target.value)}
+                  onKeyUp={(e) => setCenterDate(e.target.value)}
                 />
                 <div
                   style={{
@@ -205,11 +390,11 @@ const RegisterPage = () => {
                   }}
                 >
                   <BaseButton
-                    // button type submit 아니고 type="button" 으로 나오게 해야 됨
                     type="button"
-                    kind={centerValidated ? 0 : 3}
+                    btnType={centerValidated ? undefined : "gray_dark"}
                     text="기관 회원 인증"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       validation();
                       if (validateStatus === "02")
                         alert("유효하지 않은 사업자 정보입니다.");
