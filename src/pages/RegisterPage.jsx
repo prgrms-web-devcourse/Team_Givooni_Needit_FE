@@ -119,13 +119,15 @@ const RegisterPage = () => {
       });
 
   const emailValidation = async () => {
-    await postRequest("email", { email: myEmail });
+    await postRequest("email", { data: { email: myEmail } });
   };
 
   const codeValidation = async () => {
     const result = await postRequest("verifyCode", {
-      code: myCode,
-      email: myEmail,
+      data: {
+        code: myCode,
+        email: myEmail,
+      },
     });
     console.log(result === "인증코드 검증 완료");
     if (result === "인증코드 검증 완료") setEmailValidated("success");
@@ -178,7 +180,9 @@ const RegisterPage = () => {
     onSubmit: async () => {
       if (!isCenter && emailValidated === "success") {
         console.log(memberInfo);
-        const register_result = await postRequest("members/signup", memberInfo);
+        const register_result = await postRequest("members/signup", {
+          data: memberInfo,
+        });
         console.log(register_result);
         if (register_result.message === "success") {
           console.log("회원가입 성공");
@@ -187,10 +191,9 @@ const RegisterPage = () => {
       }
       if (isCenter && centerValidated && emailValidated) {
         console.log(centerInfo);
-        const register_result2 = await postRequest(
-          "centers/signup",
-          centerInfo
-        );
+        const register_result2 = await postRequest("centers/signup", {
+          data: centerInfo,
+        });
         console.log(register_result2);
         if (register_result2.message === "success") {
           console.log("회원가입 성공");
