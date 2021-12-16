@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { ListItemButton } from "@mui/material";
+import { ListItemButton, Typography } from "@mui/material";
 import { List } from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
 import { ListItem } from "@mui/material";
 import Proptypes from "prop-types";
+
 const Notify = ({ list = [], onClick }) => {
   const [hoverId, setHoverId] = useState("");
+
   return (
     <>
       <List
@@ -20,25 +22,26 @@ const Notify = ({ list = [], onClick }) => {
               onClick={() => {
                 onClick(post.id);
               }}
-              onMouseEnter={() => setHoverId(post.id)}
+              onMouseEnter={() => setHoverId(post)}
             >
               <List>
                 <ListItemText
-                  primary={post.title}
                   sx={{
                     color: "primary.main",
-                    typography: "h3",
                   }}
-                ></ListItemText>
+                >
+                  <Typography variant="h5">기부 원해요</Typography>
+                </ListItemText>
+
                 <ListItemText
-                  primary={post.text}
                   sx={{
                     color: `${
                       hoverId === post.id ? "primary.main" : "gray_dark.dark"
                     }`,
-                    typography: "body1",
                   }}
-                ></ListItemText>
+                >
+                  <Typography variant="body1">{post.previewMessage}</Typography>
+                </ListItemText>
               </List>
             </ListItemButton>
           </ListItem>
