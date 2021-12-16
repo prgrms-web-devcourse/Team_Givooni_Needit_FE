@@ -16,7 +16,7 @@ import Slider from "@/components/base/Slider";
 import BaseButton from "@/components/base/BaseButton";
 import Profile from "@/components/base/Profile";
 import theme from "@/styles/theme";
-import { getRequest } from "@/api/axios";
+import { getRequest, postRequest } from "@/api/axios";
 import { StateContext } from "@/context/index";
 import { useParams } from "react-router-dom";
 const style = {
@@ -40,6 +40,10 @@ const giveUncomplete = {
   tag: "",
 };
 const Detail = () => {
+  localStorage.setItem(
+    "neetit_access_token",
+    `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJndXJpQGVtYWlsLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTYzOTY3OTIzN30.Bq0AmjoJpB55QGeyUfOPO7C9rkND4oFVo67Lfq72Yw0`
+  );
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
   const [open, setOpen] = useState(false);
@@ -47,11 +51,12 @@ const Detail = () => {
   const [modalImgLink, setModalImgLink] = useState("");
   const state = useContext(StateContext);
   const { postId } = useParams();
+  const bearerToken = localStorage.getItem("neetit_access_token");
+  let requestTarget =
+    window.location.href.split("/").indexOf("donations") > -1
+      ? "donations"
+      : "wishes";
   useEffect(async () => {
-    let requestTarget =
-      window.location.href.split("/").indexOf("donations") > -1
-        ? "donations"
-        : "wishes";
     const writeApi = await getRequest(`${requestTarget}/${postId}`);
     setDetailData(writeApi.data);
     isCommentExist();
@@ -77,13 +82,22 @@ const Detail = () => {
       });
     return isExist;
   };
-  const clickGiveCommentBtn = () => {
+  const clickGiveCommentBtn = async () => {
     if (giveButton.text === "기부신청") {
       //api 실행
       //   const apiData = {
       //     "data": 1, // 해당 기부희망댓글의 식별자 아이디 반환
       //     "message": "success"
       //   }
+
+      await postRequest(`${requestTarget}/${postId}/comments`, {
+        data: {
+          comment: "기부신청",
+        },
+        headers: {
+          Authorization: bearerToken,
+        },
+      });
       setGiveButton(giveComplete);
     } else if (giveButton.text === "기부완료") {
       // 자신의 comment 삭제 이벤트
