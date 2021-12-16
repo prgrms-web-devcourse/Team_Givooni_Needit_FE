@@ -13,6 +13,7 @@ import axios from "axios";
 import Cleave from "cleave.js/react";
 import "cleave.js/dist/addons/cleave-phone.kr";
 import { postRequest } from "@/api/axios";
+import { useNavigate } from "react-router";
 
 const RegisterContainer = styled.div`
   margin-top: 5rem;
@@ -32,6 +33,7 @@ const AlignContainer = styled.div`
 `;
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const [isCenter, setIsCenter] = useState(false);
   const [centerValidated, setCenterValidated] = useState(false);
   const [centerName, setCenterName] = useState("홍길동");
@@ -40,7 +42,6 @@ const RegisterPage = () => {
   const [validateStatus, setValidateStatus] = useState("");
   const [myEmail, setEmail] = useState("");
   const [myCode, setCode] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [emailValidated, setEmailValidated] = useState("");
   const [memberInfo, setMemberInfo] = useState({
     address: "서울시 강남구",
@@ -62,17 +63,15 @@ const RegisterPage = () => {
   // const ref = useRef();
 
   const onPhoneChange = (e) => {
-    setPhoneNumber(e.target.value.replaceAll(" ", ""));
-    console.log(phoneNumber);
     if (isCenter) {
       setCenterInfo({
         ...centerInfo,
-        contact: phoneNumber,
+        contact: e.target.value.replaceAll(" ", ""),
       });
     } else {
       setMemberInfo({
         ...memberInfo,
-        contact: phoneNumber,
+        contact: e.target.value.replaceAll(" ", ""),
       });
     }
   };
@@ -172,16 +171,27 @@ const RegisterPage = () => {
           password: "",
           centername: "",
         },
+
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async () => {
       if (!isCenter && emailValidated === "success") {
-        alert("member" + JSON.stringify(values, null, 2));
-        console.log(memberInfo);
-        await postRequest("members/signup", memberInfo);
+        const register_result = await postRequest("members/signup", memberInfo);
+        console.log(register_result);
+        if (register_result.message === "success") {
+          console.log("회원가입 성공");
+          navigate("/login");
+        }
       }
       if (isCenter && centerValidated && emailValidated) {
-        alert("center" + JSON.stringify(values, null, 2));
-        postRequest("centers/signup", centerInfo);
+        const register_result2 = await postRequest(
+          "centers/signup",
+          centerInfo
+        );
+        console.log(register_result2);
+        if (register_result2.message === "success") {
+          console.log("회원가입 성공");
+          navigate("/login");
+        }
       }
     },
   });
@@ -207,11 +217,10 @@ const RegisterPage = () => {
               onChange={formik.handleChange}
               onKeyUp={(e) => {
                 setEmail(e.target.value);
-                setEmailValidated("");
                 if (isCenter) {
                   setCenterInfo({
-                    email: e.target.value,
                     ...centerInfo,
+                    email: e.target.value,
                   });
                 } else {
                   setMemberInfo({
@@ -384,7 +393,8 @@ const RegisterPage = () => {
                     type="button"
                     btnType={centerValidated ? undefined : "gray_dark"}
                     text="기관 회원 인증"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       validation();
                       if (validateStatus === "02")
                         alert("유효하지 않은 사업자 정보입니다.");
