@@ -79,6 +79,8 @@ const MessageDetail = ({ list, sendMessage }) => {
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
+          position: "fixed",
+          botton: "0",
         }}
       >
         <CalendarTodayIcon

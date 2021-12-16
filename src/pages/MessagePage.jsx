@@ -1,7 +1,8 @@
 import Header from "@/components/base/Header";
-// import MessageDetail from "@/components/domain/Message/MessageDetail";
+import MessageDetail from "@/components/domain/Message/MessageDetail";
 import Message from "@/components/domain/Message/Message";
 import Nav from "@/components/base/Nav";
+import { useParams } from "react-router-dom";
 const dummyData = [
   {
     id: 1,
@@ -76,17 +77,20 @@ const dummyMessage = [
   },
 ];
 const MessagePage = () => {
-  console.log(dummyData);
-  console.log(dummyMessage);
+  const { id } = useParams();
   return (
     <>
       <Header type="main" />
-      <Message list={dummyData} callback={(id) => console.log(id)} />
-      {/* <MessageDetail
-        list={dummyMessage}
-        sendMessage={(value) => console.log(value)}
-      /> */}
-      <Nav />
+      {id ? (
+        <MessageDetail
+          list={dummyMessage}
+          sendMessage={(value) => console.log(value)}
+        />
+      ) : (
+        <Message list={dummyData} callback={(id) => console.log(id)} />
+      )}
+
+      {id || <Nav />}
     </>
   );
 };
