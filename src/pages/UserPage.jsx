@@ -1,5 +1,5 @@
 import User from "@/components/domain/User/User";
-const CenterPage = () => {
+const UserPage = () => {
   return (
     <>
       <User />
@@ -7,4 +7,4 @@ const CenterPage = () => {
   );
 };
 
-export default CenterPage;
+export default UserPage;

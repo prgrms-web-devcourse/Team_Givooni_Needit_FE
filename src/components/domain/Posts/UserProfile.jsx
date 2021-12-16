@@ -12,7 +12,7 @@ const useStyles = makeStyles({
 
 // 사이즈 크기 자유롭게
 
-const MemberProfile = ({ width, height, users }) => {
+const UserProfile = ({ width, height, users }) => {
   const classes = useStyles({ width, height });
   //Avatar 태그 클릭시 이벤트
   const clickAvatarHandler = (id) => {
@@ -39,17 +39,17 @@ const MemberProfile = ({ width, height, users }) => {
   );
 };
 
-MemberProfile.defaultProps = {
+UserProfile.defaultProps = {
   max: 3,
   width: 40,
   height: 40,
 };
 
-MemberProfile.propTypes = {
+UserProfile.propTypes = {
   max: PropTypes.number,
   width: PropTypes.number,
   height: PropTypes.number,
   users: PropTypes.array,
 };
 
-export default MemberProfile;
+export default UserProfile;

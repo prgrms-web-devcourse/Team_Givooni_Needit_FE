@@ -5,11 +5,12 @@ import BaseButton from "@/components/base/BaseButton";
 import Input from "@/components/base/Input";
 import PasswordInput from "@/components/base/PasswordInput";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 import theme from "@/styles/theme";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axios from "axios";
+import { postRequest } from "@/api/axios";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ const LoginForm = styled.form`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
   const handleOpen = () => setOpen(false);
   // const handleClose = () => setOpen(true);
@@ -54,18 +56,12 @@ const Login = () => {
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       console.log(values);
-      await axios
-        .post("http://13.209.72.103:8080/users/login", JSON.stringify(values), {
-          headers: {
-            "Content-Type": `application/json`,
-          },
-        })
-        .then((res) => {
-          if (res.data.message === "success") {
-            history.push("/member");
-            // context api에 저장하기
-          }
-        });
+      const data = await postRequest("users/login", values);
+      data ? console.log(data) : undefined;
+      if (data.message === "success") {
+        alert("성공!");
+        navigate("/member");
+      }
     },
   });
 
