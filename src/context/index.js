@@ -6,6 +6,7 @@ const initialState = {
   selectedPost: "",
   selectedCenter: "",
   selectedTags: [],
+  selectedCategory: "",
   selectedTown: "",
   currentPage: "",
 };
@@ -35,6 +36,8 @@ function contextReducer(state, action) {
         ...state,
         selectedTags: [...state.selectedTags, nextState],
       };
+    case "setCategory":
+      return { ...state, selectedCategory: nextState };
     case "setTown":
       return { ...state, selectedTown: nextState };
     case "setCurrentPage":

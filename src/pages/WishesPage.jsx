@@ -25,6 +25,7 @@ const WishesPage = () => {
         page: 1,
         size: 5,
         tags: tags.join(),
+        category: state.selectedCategory,
       },
     }).then((res) => setPostList(res.data.content));
   }, [state]);
@@ -47,8 +48,6 @@ const WishesPage = () => {
   //   }
   //   return () => observer && observer.disconnect();
   // }, [postList]);
-
-  console.log("테스트");
 
   return (
     <PostsViewContainer>
