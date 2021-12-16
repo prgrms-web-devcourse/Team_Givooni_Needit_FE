@@ -8,7 +8,7 @@ import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import { useState, useContext, useEffect } from "react";
 import { StateContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
-
+import { useLocation } from "react-router-dom";
 const subArea = [
   { id: 1, name: "아동 · 청소년" },
   { id: 2, name: "어르신" },
@@ -32,9 +32,36 @@ const Writes = () => {
   const [Imgs, setImgs] = useState([]);
   const [quality, setQuality] = useState("");
 
+  const location = useLocation();
+  let preTitle,
+    preContent,
+    preTag = [],
+    preCategory = [],
+    preImgs = [],
+    writeId;
+  if (location.state) {
+    preTitle = location.state.prewriteData.title;
+    preContent = location.state.prewriteData.content;
+    preTag = location.state.prewriteData.tags.map((val) => {
+      let result;
+      subArea.map((obj, i) => {
+        if (obj.name === val) result = { id: i + 1, text: val };
+      });
+      return result;
+    });
+    preCategory = location.state.prewriteData.category;
+    preImgs = location.state.prewriteData.images;
+    writeId = location.state.writeId;
+  }
+
   useEffect(() => {
+    setTitle(preTitle);
+    setContent(preContent);
+    setTag(preTag);
+    setCategory(preCategory);
+    setImgs(preImgs);
     setQuality("좋음");
-  });
+  }, []);
 
   const state = useContext(StateContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,7 +93,8 @@ const Writes = () => {
 
   //API에 필요한 6가지 항목
   const submitWrites = () => {
-    console.log(title, content, category, apiTag, quality, Imgs);
+    //writeId가 있으면 수정API요청 / writeId가 없으면 새로운 글쓰기 요청
+    console.log(title, content, category, apiTag, quality, Imgs, writeId);
   };
 
   const handleImageUpload = (e) => {
@@ -85,7 +113,6 @@ const Writes = () => {
 
       let reader = new FileReader();
       reader.onload = () => {
-        console.log(reader.result);
         fileURLs[i] = reader.result;
         setImgs([...Imgs, fileURLs]);
       };
@@ -95,9 +122,7 @@ const Writes = () => {
 
   const isToggleOn = (toggleId) => {
     let isSame = false;
-    console.log(tag);
     tag.map(({ id }) => {
-      console.log(id, toggleId);
       if (id === toggleId) isSame = true;
     });
 
@@ -110,7 +135,7 @@ const Writes = () => {
         {/* <Header type="main" /> */}
 
         <TitleContainer>
-          <Input type="게시글 제목" onChange={writeTitle} />
+          <Input type="게시글 제목" onChange={writeTitle} value={title} />
         </TitleContainer>
         <InformationContainer>
           <LocationContainer>
@@ -132,8 +157,12 @@ const Writes = () => {
               <option value="카테고리" disabled selected hidden>
                 카테고리
               </option>
-              <option value="물품나눔">물품나눔</option>
-              <option value="재능기부">재능기부</option>
+              <option value="물품나눔" selected={preCategory === "물품나눔"}>
+                물품나눔
+              </option>
+              <option value="재능기부" selected={preCategory === "재능기부"}>
+                재능기부
+              </option>
             </CustomSelect>
           </CategoryContainer>
         </InformationContainer>
@@ -150,7 +179,13 @@ const Writes = () => {
           />
         </TagsContainer>
         <ContentContainer>
-          <Input multiline type="물품소개" rows={5} onChange={writeContent} />
+          <Input
+            multiline
+            type="물품소개"
+            rows={5}
+            onChange={writeContent}
+            value={content}
+          />
         </ContentContainer>
         <LineBar />
         <ImageWrapContainer>
