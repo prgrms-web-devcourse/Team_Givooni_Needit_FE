@@ -51,7 +51,7 @@ const Writes = () => {
     });
     preCategory = location.state.prewriteData.category;
     preImgs = location.state.prewriteData.images;
-    writeId = location.state.writeId;
+    writeId = location.state.prewriteData.id;
   }
 
   useEffect(() => {
