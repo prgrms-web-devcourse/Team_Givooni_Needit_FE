@@ -19,7 +19,7 @@ const postRequest = async (url = "", options = {}) => {
   const returnResult = await axios({
     method: "post",
     url: `${API_BASE_URL}/${url}`,
-    data: options,
+    ...options,
   })
     .then((response) => response.data)
     .catch((error) => {
@@ -33,7 +33,7 @@ const putRequest = async (url = "", options = {}) => {
   const returnResult = await axios({
     method: "put",
     url: `${API_BASE_URL}/${url}`,
-    data: options,
+    ...options,
   })
     .then((response) => response.data)
     .catch((error) => {
@@ -47,7 +47,7 @@ const deleteRequest = async (url = "", options = {}) => {
   const returnResult = await axios({
     method: "delete",
     url: `${API_BASE_URL}/${url}`,
-    data: options,
+    ...options,
   })
     .then((response) => response.data)
     .catch((error) => {
