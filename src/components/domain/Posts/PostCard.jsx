@@ -90,7 +90,7 @@ const PostCard = ({ data }) => {
                   color="primary"
                   sx={{ my: "6px" }}
                 >
-                  {data.member}
+                  {data.userName}
                 </Typography>
                 {Math.floor(Math.random()) * 2 ? (
                   <FavoriteIcon
@@ -130,7 +130,7 @@ const PostCard = ({ data }) => {
                 typography="body2"
                 fontWeight={300}
               >
-                {"서울특별시 강남구"}
+                {data.userAddress}
               </Typography>
             </Box>
 
