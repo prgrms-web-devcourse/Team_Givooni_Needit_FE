@@ -1,6 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import PostCard from "@/components/domain/Member/PostCard";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import Header from "@/components/base/Header";
+import Nav from "@/components/base/Nav";
+import PostCard from "./PostCard";
 import styled from "styled-components";
+import TagFilter from "./TagFilter";
+import PostFilter from "./PostFilter";
+import { StateContext } from "@/context";
 
 const DUMMY1 = {
   message: "success",
@@ -117,8 +122,7 @@ const DUMMY3 = {
     ],
   },
 };
-
-const UserPosts = () => {
+const Posts = () => {
   const [postList, setPostList] = useState([
     DUMMY1,
     DUMMY2,
@@ -152,23 +156,33 @@ const UserPosts = () => {
     return () => observer && observer.disconnect();
   }, [postList]);
 
+  const state = useContext(StateContext);
+  console.log(state);
+
   return (
-    <>
+    <PostsViewContainer>
+      <Header type="member" />
+      <TagFilter />
+      <PostFilter />
       <PostContainer>
         {postList.map((post, id) => {
           return <PostCard key={id} DUMMY={post} />;
         })}
       </PostContainer>
+      <Nav />
       <LoadingContainer ref={fetchBox}></LoadingContainer>
-    </>
+    </PostsViewContainer>
   );
 };
 
-export default UserPosts;
+export default Posts;
+
+const PostsViewContainer = styled.div``;
 
 const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 16px;
   gap: 10px;
 `;
 
