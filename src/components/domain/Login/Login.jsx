@@ -52,11 +52,12 @@ const Login = () => {
       email: "",
       password: "",
     },
+
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
       console.log(values);
-      const data = await postRequest("users/login", values);
+      const data = await postRequest("users/login", { data: values });
       data ? console.log(data) : undefined;
       if (data.message === "success") {
         alert("성공!");
