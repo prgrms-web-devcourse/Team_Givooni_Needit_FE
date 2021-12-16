@@ -9,15 +9,16 @@ import { StateContext } from "@/context";
 import { getRequest } from "@/api/axios";
 
 const WishesPage = () => {
-  const [postList, setPostList] = useState([]);
   const state = useContext(StateContext);
   const tags = state.selectedTags.map((tag) => tag["id"]);
+  const [postList, setPostList] = useState([]);
 
   // const fetchBox = useRef();
 
   // const fetchPostList = () => {
   //   setPostList([...postList]);
   // };
+  // setLocation(state.userAddress);
 
   useEffect(() => {
     getRequest("wishes/search", {
@@ -26,6 +27,7 @@ const WishesPage = () => {
         size: 5,
         tags: tags.join(),
         category: state.selectedCategory,
+        location: state.selectedTown,
       },
     }).then((res) => setPostList(res.data.content));
   }, [state]);
@@ -55,7 +57,7 @@ const WishesPage = () => {
       <TagFilter />
       <PostFilter />
       <PostContainer>
-        {postList.map((post, id) => {
+        {postList?.map((post, id) => {
           return <PostCard key={id} data={post} />;
         })}
       </PostContainer>
