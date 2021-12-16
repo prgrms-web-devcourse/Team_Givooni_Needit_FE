@@ -1,12 +1,14 @@
 import theme from "@/styles/theme";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DispatchContext } from "@/context/index";
 
 /*global kakao*/
 
 const Gps = () => {
   const [latitude, setLatitude] = useState("37.566826");
   const [longitude, setLongitude] = useState("126.9786567");
-  const [address, setAddress] = useState("서울특별시 중구 세종대로 110");
+  const [address, setAddress] = useState("위치를 찾는 중입니다.");
+  const dispatch = useContext(DispatchContext);
 
   const kakaomap = () => {
     useEffect(() => {
@@ -63,6 +65,10 @@ const Gps = () => {
             setAddress(
               result[0].region_1depth_name + " " + result[0].region_2depth_name
             );
+            dispatch({
+              type: "setTown",
+              nextState: address,
+            });
           }
         };
 

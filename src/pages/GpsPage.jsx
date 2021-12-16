@@ -3,6 +3,7 @@ import Header from "@/components/base/Header";
 import styled from "styled-components";
 import BaseButton from "@/components/base/BaseButton";
 import theme from "@/styles/theme";
+import { useNavigate } from "react-router";
 
 const GpsContainer = styled.div`
   display: grid;
@@ -15,9 +16,10 @@ const GpsContainer = styled.div`
 `;
 
 const GpsPage = () => {
+  const navigate = useNavigate();
   return (
     <>
-      <Header type="main" />
+      <Header type="plain" />
       <GpsContainer>
         <Gps />
         현재 계신 위치와 동일한가요?
@@ -29,8 +31,13 @@ const GpsPage = () => {
             gap: "1.2rem",
           }}
         >
-          <BaseButton text="확인" />
-          <BaseButton type={1} text="아니오" />
+          <BaseButton
+            text="확인"
+            onClick={() => {
+              navigate("/register");
+            }}
+          />
+          <BaseButton btnType="white" text="아니오" />
         </div>
       </GpsContainer>
     </>
