@@ -89,9 +89,9 @@ const Detail = () => {
     return isExist;
   };
 
-  const clickGiveCommentBtn = await () => {
+  const clickGiveCommentBtn = async () => {
     if (giveButton.text === "기부신청") {
-      async postRequest(`/${requestTarget}/${postId}/comments`, {
+      await postRequest(`/${requestTarget}/${postId}/comments`, {
         data: {
           comment: "기부신청",
         },
