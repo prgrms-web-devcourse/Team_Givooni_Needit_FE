@@ -91,7 +91,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
               <List
                 sx={{
                   backgroundColor: "gray.light",
-
+                  boxShadow: 2,
                   borderRadius: "8px",
                 }}
               >
@@ -130,6 +130,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
                     }`,
                     marginRight: "8px",
                     borderRadius: "8px",
+                    boxShadow: 2,
                   }}
                 >
                   <ListItemText
@@ -155,6 +156,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
                         : "white.main"
                     }`,
                     borderRadius: "8px",
+                    boxShadow: 2,
                   }}
                 >
                   <ListItemText
