@@ -54,9 +54,11 @@ const Detail = () => {
   const state = useContext(StateContext);
   const { postId } = useParams();
   useEffect(async () => {
-    //api
-    const writeApi = await getRequest(`donations/${postId}`);
-    console.log("!!");
+    let requestTarget =
+      window.location.href.split("/").indexOf("donations") > -1
+        ? "donations"
+        : "wishes";
+    const writeApi = await getRequest(`${requestTarget}/${postId}`);
     setDetailData(writeApi.data);
     isCommentExist();
   }, []);
