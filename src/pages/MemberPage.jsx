@@ -1,6 +1,10 @@
-import Member from "@/components/domain/Member/Member";
+import User from "@/components/domain/User/User";
 const MemberPage = () => {
-  return <Member />;
+  return (
+    <>
+      <User />
+    </>
+  );
 };
 
 export default MemberPage;

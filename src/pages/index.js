@@ -1,10 +1,14 @@
 export { default as Login } from "./LoginPage";
-export { default as Center } from "./CenterPage";
-export { default as Member } from "./MemberPage";
+export { default as Wishes } from "./WishesPage";
+export { default as Donations } from "./DonationsPage";
 export { default as Message } from "./MessagePage";
 export { default as Notify } from "./NotifyPage";
 export { default as Register } from "./RegisterPage";
 export { default as Schedule } from "./SchedulePage";
-export { default as Username } from "./UsernamePage";
+export { default as Center } from "./CenterPage";
+export { default as Member } from "./MemberPage";
+export { default as User } from "./UserPage";
 export { default as Writes } from "./WritesPage";
 export { default as Gps } from "./GpsPage";
+export { default as Detail } from "./DetailPage";
+export { default as Search } from "./SearchPage";
