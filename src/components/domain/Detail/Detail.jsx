@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -17,7 +17,6 @@ import BaseButton from "@/components/base/BaseButton";
 import Profile from "@/components/base/Profile";
 import theme from "@/styles/theme";
 import { getRequest, postRequest, deleteRequest } from "@/api/axios";
-import { StateContext } from "@/context/index";
 import { useParams, Link } from "react-router-dom";
 
 const style = {
@@ -43,21 +42,27 @@ const giveUncomplete = {
 const Detail = () => {
   localStorage.setItem(
     "neetit_access_token",
-    `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aWVAZW1haWwuY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjM5NzI3NDMzfQ.0UtklXxqhb55glnSM5tGrtQhdSsqEIVBgzp-GJogtUg`
+    `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW1iZXJAZW1haWwuY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjM5NzI4ODc5fQ.xufeMbRch6M0EElyRC5ZC6A1QfTWZ19a_cpptX5Bf0Y`
   );
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
   const [open, setOpen] = useState(false);
   const [giveButton, setGiveButton] = useState(giveUncomplete);
   const [modalImgLink, setModalImgLink] = useState("");
-  const state = useContext(StateContext);
   const { postId } = useParams();
   const bearerToken = localStorage.getItem("neetit_access_token");
   let requestTarget =
     window.location.href.split("/").indexOf("donations") > -1
       ? "donations"
       : "wishes";
+  const [userId, setUserId] = useState("");
   useEffect(async () => {
+    const userData = await getRequest(`users`, {
+      headers: {
+        Authorization: bearerToken,
+      },
+    });
+    setUserId(userData.data.id);
     const writeApi = await getRequest(`${requestTarget}/${postId}`);
     setDetailData(writeApi.data);
     isCommentExist();
@@ -76,7 +81,7 @@ const Detail = () => {
     let isExist = false;
     detailData.comments &&
       detailData.comments.map((comment) => {
-        if (comment.userId === state.userId) {
+        if (comment.userId === userId) {
           setGiveButton(giveComplete);
           isExist = true;
         }
@@ -146,7 +151,7 @@ const Detail = () => {
                 />
               </TextSliderContainer>
             </TextSliderAvatarContainer>
-            {state.userId === detailData.userId ? (
+            {userId === detailData.userId ? (
               <MoreVertIcon
                 onClick={() => {
                   setIsClickMoreVert(!isClickMoreVert);
@@ -221,7 +226,7 @@ const Detail = () => {
                   참여자 수 {detailData.userCnt}명
                 </CustomCommentNum>
               </ProfileContainer>
-              {state.userId !== detailData.userId ? (
+              {userId !== detailData.userId ? (
                 <BaseButton
                   width={80}
                   height={28}
@@ -251,7 +256,7 @@ const Detail = () => {
                         />
                         <MemberName>{part.userName}</MemberName>
                       </MemberContainer>
-                      {part.userId === state.userId ? (
+                      {part.userId === userId ? (
                         <DeleteOutlineIcon
                           onClick={() => {
                             deleteMyComment(part.id);
