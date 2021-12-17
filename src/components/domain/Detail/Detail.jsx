@@ -131,6 +131,11 @@ const Detail = () => {
         Authorization: bearerToken,
       },
     });
+
+    const filterComments = detailData.comments.filter((comment) => {
+      return comment.userId !== loginUserId;
+    });
+    setDetailData({ ...detailData, comments: filterComments });
   };
 
   const clickDeleteWriteHandler = async () => {
