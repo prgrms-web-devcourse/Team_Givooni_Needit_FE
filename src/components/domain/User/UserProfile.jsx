@@ -4,13 +4,20 @@ import styled from "styled-components";
 import { Box, Avatar, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { Call as CallIcon, Map as MapIcon } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = ({ data, mine = false }) => {
+  let navigate = useNavigate();
+  const logout = () => {
+    navigate("/login", { replace: true });
+    localStorage.removeItem("needit_access_token");
+  };
+
   return (
     <UserProfileContainer>
       <Avatar
         alt={data.name ? data.name : data.nickname}
-        src={data.profileImageUrl}
+        src={data.image ? data.image : data.profileImageUrl}
         sx={{
           width: "28vw",
           height: "28vw",
@@ -38,6 +45,7 @@ const UserProfile = ({ data, mine = false }) => {
                 height={24}
                 btnType="white"
                 text="로그아웃"
+                onClick={logout}
                 typography="subtitle2"
                 style={{
                   display: "flex",
@@ -45,7 +53,8 @@ const UserProfile = ({ data, mine = false }) => {
               />
             )}
           </Box>
-          {data.owner && (
+          {data.nickname}
+          {data.contact && (
             <Box>
               <Box display="flex" sx={{ mt: "14px" }}>
                 <CallIcon />
