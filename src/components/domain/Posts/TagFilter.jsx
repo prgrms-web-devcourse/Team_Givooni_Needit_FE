@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import BaseButton from "@/components/base/BaseButton";
 import styled from "styled-components";
-import { useState } from "react";
 import theme from "@/styles/theme";
+import Toggle from "@/components/base/Toggle";
 
-const TagFilter = ({
-  tag = [
+const TagFilter = () => {
+  const tag = [
     "아동·청소년",
     "어르신",
     "장애인",
@@ -16,17 +16,7 @@ const TagFilter = ({
     "동물",
     "환경",
     "기타",
-  ],
-}) => {
-  const [filter, setfilter] = useState([]);
-  const onFilter = (e) => {
-    const tagname = e.target.innerText;
-    filter.includes(tagname)
-      ? setfilter(filter.filter((value) => value !== tagname))
-      : setfilter([...filter, tagname]);
-  };
-
-  console.log(filter);
+  ];
 
   return (
     <TagContainer>
@@ -39,16 +29,7 @@ const TagFilter = ({
         fontSize="14px"
       />
       {tag.map((tag, idx) => (
-        <BaseButton
-          key={idx}
-          height="20px"
-          width={`${tag.length + 2}rem`}
-          typography="body2"
-          fontSize="14px"
-          text={tag}
-          onClick={onFilter}
-          btnType={filter.includes(tag) ? null : "gray"}
-        />
+        <Toggle key={idx} id={idx + 1} text={tag} />
       ))}
     </TagContainer>
   );
@@ -62,6 +43,7 @@ TagFilter.propTypes = {
 
 const TagContainer = styled.div`
   display: flex;
+  align-items: center;
   gap: 4px;
   padding: 8px 4px;
   border-bottom: 1px solid ${theme.palette.gray.main};

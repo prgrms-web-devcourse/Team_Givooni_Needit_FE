@@ -10,3 +10,5 @@ export { default as Member } from "./MemberPage";
 export { default as User } from "./UserPage";
 export { default as Writes } from "./WritesPage";
 export { default as Gps } from "./GpsPage";
+export { default as Detail } from "./DetailPage";
+export { default as Search } from "./SearchPage";

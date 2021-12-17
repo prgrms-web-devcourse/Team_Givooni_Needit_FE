@@ -7,6 +7,7 @@ import {
   Register,
   Wishes,
   Donations,
+  Detail,
   User,
   Member,
   Center,
@@ -15,6 +16,7 @@ import {
   Notify,
   Writes,
   Gps,
+  Search,
 } from "./pages";
 
 function App() {
@@ -27,9 +29,12 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/wishes" element={<Wishes />} />
           <Route path="/donations" element={<Donations />} />
+          <Route path="/donations/:postId" element={<Detail />} />
+          <Route path="/wishes/:postId" element={<Detail />} />
           <Route path="/user" element={<User />} />
           <Route path="/member/:memberId" element={<Member />} />
           <Route path="/center/:centerId" element={<Center />} />
+          <Route path="/message" element={<Message />} />
           <Route
             path="/message/:postId/:postType/:recieverId"
             element={<Message />}
@@ -38,6 +43,7 @@ function App() {
           <Route path="/notify" element={<Notify />} />
           <Route path="/writes" element={<Writes />} />
           <Route path="/Gps" element={<Gps />} />
+          <Route path="/Search" element={<Search />} />
         </Routes>
         <br />
         <Link to="login">login</Link>
