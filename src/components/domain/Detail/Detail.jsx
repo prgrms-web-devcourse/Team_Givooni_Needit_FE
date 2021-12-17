@@ -48,7 +48,7 @@ const Detail = () => {
   const [modalImgLink, setModalImgLink] = useState("");
   const { postId } = useParams();
   const [followed, setFollowed] = useState(false);
-  const [writeUserId, setWriteUserId] = useState("");
+  const [loginUserId, setLoginUserId] = useState("");
   const bearerToken = "Bearer ".concat(
     localStorage.getItem("neetit_access_token")
   );
@@ -59,49 +59,52 @@ const Detail = () => {
 
   useEffect(async () => {
     //user의 고유Id 저장
-    const userData = await getRequest(`users`, {
+    const noFilterUserData = await getRequest(`users`, {
       headers: {
         Authorization: bearerToken,
       },
     });
-    setWriteUserId(userData.data.myProfile.id);
+    const userApiData = noFilterUserData.data;
+    setLoginUserId(userApiData.myProfile.id);
 
     //작성글에 대한 데이터 저장
-    const writeApi = await getRequest(`${requestTarget}/${postId}`);
-    setDetailData(writeApi.data);
+    const noFilterWriteData = await getRequest(`${requestTarget}/${postId}`);
+    const writeApiData = noFilterWriteData.data;
+    setDetailData(writeApiData);
 
     //comment가 이미 작성되었는지 확인
-    isCommentExist(writeApi.data, userData.data.myProfile.id);
+    isCommentExist(writeApiData, userApiData.myProfile.id);
     //관심센터에 등록되어 있는지 확인
-    IsFollow(userData.data.myFavorite, writeApi.data);
+    IsFollow(writeApiData, userApiData.myFavorite);
   }, []);
 
   //comment가 로그인한 대상이 작성했는지 체크
-  const isCommentExist = (writeData, writeUserIdData) => {
-    writeData.comments &&
-      writeData.comments.map((comment) => {
-        if (comment.userId === writeUserIdData) {
+  const isCommentExist = (writeApiData, userApiIdData) => {
+    writeApiData.comments &&
+      writeApiData.comments.map((comment) => {
+        if (comment.userId === userApiIdData) {
           setGiveButton(giveComplete);
         }
       });
   };
 
-  const IsFollow = (userFollow, write) => {
+  // follow 대상인지 아닌지에 따라 팔로우 하트 혹은 언팔로우 하트 추가
+  const IsFollow = (writeApiData, userApiFollowData) => {
     let result = false;
-    userFollow.map((follow) => {
-      if (follow.centerId === write.userId) result = true;
+    userApiFollowData.map((follow) => {
+      if (follow.centerId === writeApiData.userId) result = true;
     });
-
     setFollowed(result);
   };
 
+  //사진 모달을 클릭시 동작
   const modalImgOpen = ({ target }) => {
     setModalImgLink(target.currentSrc);
     setImgOpen(true);
   };
   const modalImgClose = () => setImgOpen(false);
-  // follow 대상인지 아닌지에 따라 팔로우 하트 혹은 언팔로우 하트 추가
 
+  //기부 버튼 클릭시 동작
   const clickGiveCommentBtn = async () => {
     if (giveButton.text === "기부신청") {
       await postRequest(`${requestTarget}/${postId}/comments`, {
@@ -127,7 +130,7 @@ const Detail = () => {
     });
   };
 
-  const clickDeleteWriteHanlder = async () => {
+  const clickDeleteWriteHandler = async () => {
     await deleteRequest(`${requestTarget}/${postId}`, {
       headers: {
         Authorization: bearerToken,
@@ -171,7 +174,8 @@ const Detail = () => {
                 />
               </TextSliderContainer>
             </TextSliderAvatarContainer>
-            {detailData.userId === writeUserId ? (
+            {/* 작성자 === 로그인유저이면 편집을 그외에는 관심하트를  */}
+            {detailData.userId === loginUserId ? (
               <MoreVertIcon
                 onClick={() => {
                   setIsClickMoreVert(!isClickMoreVert);
@@ -200,7 +204,7 @@ const Detail = () => {
                 <Link to={`/${requestTarget}`}>
                   <CustomDeleteOutlineIcon
                     onClick={() => {
-                      clickDeleteWriteHanlder();
+                      clickDeleteWriteHandler();
                     }}
                   />
                 </Link>
@@ -248,7 +252,8 @@ const Detail = () => {
                   참여자 수 {detailData.userCnt}명
                 </CustomCommentNum>
               </ProfileContainer>
-              {detailData.userId !== writeUserId ? (
+              {/* 글쓴이 === 로그인 대상이 아니면 기부참여버튼 추가 */}
+              {detailData.userId !== loginUserId ? (
                 <BaseButton
                   width={80}
                   height={28}
@@ -258,7 +263,6 @@ const Detail = () => {
                   tag={giveButton.tag}
                   btnType={giveButton.btnType}
                   onClick={() => {
-                    console.log("!!!!");
                     clickGiveCommentBtn();
                   }}
                 />
@@ -278,7 +282,7 @@ const Detail = () => {
                         />
                         <MemberName>{part.userName}</MemberName>
                       </MemberContainer>
-                      {part.userId === writeUserId ? (
+                      {part.userId === loginUserId ? (
                         <DeleteOutlineIcon
                           onClick={() => {
                             deleteMyComment(part.id);
