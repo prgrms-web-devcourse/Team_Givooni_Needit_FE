@@ -42,7 +42,7 @@ const giveUncomplete = {
 const Detail = () => {
   localStorage.setItem(
     "neetit_access_token",
-    `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjZW50ZXJAZW1haWwuY29tIiwiYXV0aCI6IlJPTEVfQ0VOVEVSIiwiZXhwIjoxNjM5NzMwMTY3fQ.EzX281EcmollOR1bFvcWgzf7PNmSjI_5NByzXYfKH3Q`
+    `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjZW50ZXJAZW1haWwuY29tIiwiYXV0aCI6IlJPTEVfQ0VOVEVSIiwiZXhwIjoxNjM5NzMxNDEzfQ.r3JAd1Bi4YxfmeT5p0ZmeU6ZF5EOEPxe3dP-XDQyZZA`
   );
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
@@ -64,11 +64,14 @@ const Detail = () => {
         Authorization: bearerToken,
       },
     });
-    setUserId(userData.data.id);
+    console.log(userData);
+    setUserId(userData.data.myProfile.id);
+
     const writeApi = await getRequest(`${requestTarget}/${postId}`);
     setDetailData(writeApi.data);
     isCommentExist();
   }, []);
+  console.log(detailData, userId);
   const modalImgOpen = ({ target }) => {
     setModalImgLink(target.currentSrc);
     setOpen(true);
