@@ -16,6 +16,7 @@ import {
   Notify,
   Writes,
   Gps,
+  Search,
 } from "./pages";
 
 function App() {
@@ -34,11 +35,15 @@ function App() {
           <Route path="/member/:memberId" element={<Member />} />
           <Route path="/center/:centerId" element={<Center />} />
           <Route path="/message" element={<Message />} />
-          <Route path="/message/:id" element={<Message />} />
+          <Route
+            path="/message/:postId/:postType/:recieverId"
+            element={<Message />}
+          />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/notify" element={<Notify />} />
           <Route path="/writes" element={<Writes />} />
           <Route path="/Gps" element={<Gps />} />
+          <Route path="/Search" element={<Search />} />
         </Routes>
         <br />
         <Link to="login">login</Link>
