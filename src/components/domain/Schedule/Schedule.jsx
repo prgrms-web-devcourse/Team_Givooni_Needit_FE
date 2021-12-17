@@ -2,80 +2,158 @@ import Header from "@/components/base/Header";
 import BaseButton from "@/components/base/BaseButton";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CalendarTodayOutlined,
   Mood,
+  Person,
   SentimentNeutral,
   SentimentVeryDissatisfied,
 } from "@mui/icons-material";
 import theme from "@/styles/theme";
+import { getRequest } from "@/api/axios";
+import { useNavigate } from "react-router";
 
 const Schedule = () => {
   const [visible, setVisible] = useState(false);
+  const [schedules, setSchedules] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(async () => {
+    const result = await getRequest("contract");
+    setSchedules(result.data);
+  }, []);
+
   return (
     <>
       <Header type="searchOut" fixed={true} />
       <AlignContainer>
         <>
-          {DUMMY_DATA.map((data) => {
-            return (
-              <CardContainer
-                key={data.contractId}
-                onClick={() => console.log(data.contractId)}
-              >
-                <div>
-                  <CalendarTodayOutlined
-                    sx={{ height: "1rem", color: theme.palette.primary.main }}
-                  />
-                  {data.contractDate}
-                </div>
-                <div>기부글의 제목은 도대체 무엇일까요?</div>
-                <div style={{ display: "flex", gap: "0.5rem" }}>
-                  <BaseButton
-                    height="2rem"
-                    width="6rem"
-                    style={{ fontSize: "0.8rem" }}
-                    text={data.status === "done" ? "기부 완료" : "기부 진행"}
-                  />
-                  {data.status === "done" && (
+          {schedules.map(
+            ({
+              contractDate,
+              contractId,
+              contractStatus,
+              contractWith,
+              postContent,
+              postId,
+              postTitle,
+              postType,
+            }) => {
+              const date = contractDate.split("T").slice(0, 1);
+              const time = contractDate.split("T").slice(-1);
+              const realTime = String(time).split(".").slice(0, 1);
+              const hour = String(realTime).split(":").slice(0, 1);
+              const minute = String(realTime).split(":").slice(1, 2);
+              return (
+                <CardContainer key={contractId}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "0.5rem",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingBottom: "0.5rem",
+                      borderBottom: `1px solid ${theme.palette.gray.main}`,
+                    }}
+                    onClick={() => {
+                      if (postType === "WISH") navigate(`wishes/${postId}`);
+                      else navigate(`donations/${postId}`);
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.3rem",
+                      }}
+                    >
+                      <CalendarTodayOutlined
+                        sx={{
+                          height: "1.2rem",
+                          color: theme.palette.primary.main,
+                        }}
+                      />
+                      <div>
+                        {date} | {hour} : {minute}
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: theme.palette.primary.main,
+                      }}
+                    >
+                      <Person /> {contractWith}
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => {
+                      if (postType === "WISH") navigate(`wishes/${postId}`);
+                      else navigate(`donations/${postId}`);
+                    }}
+                  >
+                    {postTitle}
+                  </div>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
                     <BaseButton
                       btnType="white"
-                      width="9rem"
                       height="2rem"
-                      text="기부는 어떠셨나요?"
+                      width="6rem"
                       style={{ fontSize: "0.8rem" }}
-                      onClick={() => setVisible(true)}
+                      text={postContent}
                     />
-                  )}
-                </div>
-                <ModalDim style={{ display: visible ? "block" : "none" }}>
-                  <ModalContainer>
-                    <button
-                      style={{
-                        position: "relative",
-                        left: "7.5rem",
-                        backgroundColor: "transparent",
-                        color: theme.palette.primary.main,
-                        border: "none",
-                      }}
-                      onClick={() => setVisible(false)}
-                    >
-                      닫기
-                    </button>
-                    <div>해당 기부 경험은 어떠셨나요?</div>
-                    <MoodContainer>
-                      <Mood onClick={() => setVisible(false)} />
-                      <SentimentNeutral onClick={() => setVisible(false)} />
-                      <SentimentVeryDissatisfied
-                        onClick={() => setVisible(false)}
+                    <BaseButton
+                      height="2rem"
+                      width="6rem"
+                      style={{ fontSize: "0.8rem" }}
+                      text={
+                        contractStatus === "done" ? "기부 완료" : "기부 진행"
+                      }
+                    />
+                    {contractStatus === "done" && (
+                      <BaseButton
+                        style={{
+                          backgroundColor: "white",
+                          color: theme.palette.primary.main,
+                          fontSize: "0.8rem",
+                        }}
+                        width="9rem"
+                        height="2rem"
+                        text="기부는 어떠셨나요?"
+                        onClick={() => setVisible(true)}
                       />
-                    </MoodContainer>
-                  </ModalContainer>
-                </ModalDim>
-              </CardContainer>
-            );
-          })}
+                    )}
+                  </div>
+                  <ModalDim style={{ display: visible ? "block" : "none" }}>
+                    <ModalContainer>
+                      <button
+                        style={{
+                          position: "relative",
+                          left: "7.5rem",
+                          backgroundColor: "transparent",
+                          color: theme.palette.primary.main,
+                          border: "none",
+                        }}
+                        onClick={() => setVisible(false)}
+                      >
+                        닫기
+                      </button>
+                      <div>해당 기부 경험은 어떠셨나요?</div>
+                      <MoodContainer>
+                        <Mood onClick={() => setVisible(false)} />
+                        <SentimentNeutral onClick={() => setVisible(false)} />
+                        <SentimentVeryDissatisfied
+                          onClick={() => setVisible(false)}
+                        />
+                      </MoodContainer>
+                    </ModalContainer>
+                  </ModalDim>
+                </CardContainer>
+              );
+            }
+          )}
         </>
       </AlignContainer>
       <Nav />
@@ -89,7 +167,7 @@ const AlignContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-top: 5rem;
+  margin-top: 4.5rem;
   padding: 1rem 0 0 0.5rem;
   box-sizing: border-box;
   width: 99vw;
@@ -140,27 +218,3 @@ const MoodContainer = styled.div`
   justify-content: center;
   margin-bottom: 1rem;
 `;
-
-const DUMMY_DATA = [
-  {
-    contractId: 14510,
-    contractDate: "2021-12-31",
-    status: "ing",
-    donationId: 2,
-    donationWishId: null,
-  },
-  {
-    contractId: 10493,
-    contractDate: "2021-03-09",
-    status: "done",
-    donationId: null,
-    donationWishId: 3,
-  },
-  {
-    contractId: 12345, // 기부 예약 식별자,
-    contractDate: "2019-12-25", // 기부 예약 일정,
-    status: "done", // 기부 예약 상태
-    donationId: 1, // 기부 예약이 '기부할래요' 예약이라면 해당 게시글의 식별자. 그렇지 않다면 null,
-    donationWishId: null, // 기부 예약이 '기부원해요' 예약이라면 해당 게시글의 식별자. 그렇지 않다면 null,
-  },
-];
