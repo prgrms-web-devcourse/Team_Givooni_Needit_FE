@@ -6,7 +6,7 @@ const access_token = localStorage.getItem("needit_access_token");
 
 const instance = axios.create({
   headers: {
-    Authorization: access_token,
+    Authorization: "Bearer " + access_token,
   },
 });
 
