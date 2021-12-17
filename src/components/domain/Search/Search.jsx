@@ -4,14 +4,24 @@ import Input from "@/components/base/Input";
 import Nav from "@/components/base/Nav";
 import useDebounce from "@/hooks/useDebounce";
 import theme from "@/styles/theme";
+import {
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import styled from "styled-components";
+import PostCard from "../Posts/PostCard";
 
 const Search = () => {
   const [value, setValue] = useState("");
   const [centersResult, setCentersResult] = useState([]);
   const [donationsResult, setDonationsResult] = useState([]);
   const [wishesResult, setWishesResult] = useState([]);
+  const [viewCenters, setViewCenters] = useState(true);
+  const [viewDonations, setViewDonations] = useState(true);
+  const [viewWishes, setViewWishes] = useState(true);
 
   useDebounce(
     async () => {
@@ -26,7 +36,7 @@ const Search = () => {
         const donationsData = await getRequest("donations/search", {
           params: {
             page: 1,
-            size: 10,
+            size: 20,
             title: value,
           },
         });
@@ -60,42 +70,83 @@ const Search = () => {
               setValue(e.target.value);
             }}
           />
-          <ListContainer>
-            센터
-            {centersResult.map(
-              (
-                { profileImageUrl, name, address, introduction, centerId },
-                index
-              ) => (
-                <Card
-                  key={index}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    alert(centerId);
-                  }}
-                >
-                  <Image src={profileImageUrl} />
-                  <div>
-                    <div>{name}</div>
-                    <div>{address}</div>
-                    <div>{introduction}</div>
-                  </div>
-                </Card>
-              )
-            )}
-          </ListContainer>
-          <ListContainer>
-            기부 게시물
-            {donationsResult.map((res, index) => (
-              <Card key={index}>{res.title}</Card>
-            ))}
-          </ListContainer>
-          <ListContainer>
-            기부 희망 게시물
-            {wishesResult.map((res, index) => (
-              <Card key={index}>{res.title}</Card>
-            ))}
-          </ListContainer>
+          <FormGroup
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={viewCenters}
+                  onClick={() => setViewCenters(!viewCenters)}
+                />
+              }
+              label={<Typography variant="body2">기관 사용자</Typography>}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={viewDonations}
+                  onClick={() => setViewDonations(!viewDonations)}
+                />
+              }
+              label={<Typography variant="body2">기부 원해요!</Typography>}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={viewWishes}
+                  onClick={() => setViewWishes(!viewWishes)}
+                />
+              }
+              label={<Typography variant="body2">기부 받아요!</Typography>}
+            />
+          </FormGroup>
+          {viewCenters && (
+            <ListContainer>
+              기관 사용자
+              {centersResult?.map(
+                (
+                  { profileImageUrl, name, address, introduction, centerId },
+                  index
+                ) => (
+                  <Card
+                    key={index}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log(centerId);
+                    }}
+                  >
+                    <Image src={profileImageUrl} />
+                    <div>
+                      <CenterName>{name}</CenterName>
+                      <CenterDescription>{address}</CenterDescription>
+                      <CenterDescription>{introduction}</CenterDescription>
+                    </div>
+                  </Card>
+                )
+              )}
+            </ListContainer>
+          )}
+          {viewDonations && (
+            <ListContainer>
+              기부 원해요!
+              {donationsResult?.map((res, id) => (
+                <PostCard key={id} data={res} />
+              ))}
+            </ListContainer>
+          )}
+          {viewWishes && (
+            <ListContainer>
+              기부 받아요!
+              {viewWishes &&
+                wishesResult?.map((res, index) => (
+                  <PostCard key={index} data={res}></PostCard>
+                ))}
+            </ListContainer>
+          )}
         </form>
       </AlignContainer>
       <Nav />
@@ -133,10 +184,24 @@ const AlignContainer = styled.div`
 
 const ListContainer = styled.div`
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 `;
 
 const Image = styled.img`
   width: 3.2rem;
   height: 3.2rem;
   border-radius: 50%;
+`;
+
+const CenterName = styled.div`
+  color: ${theme.palette.primary.main};
+  font-size: 0.95rem;
+  font-weight: 500;
+`;
+
+const CenterDescription = styled.div`
+  color: ${theme.palette.gray_dark.light};
+  font-size: 0.7rem;
 `;
