@@ -58,8 +58,8 @@ const Login = () => {
       alert(JSON.stringify(values, null, 2));
       const data = await postRequest("users/login", { data: values });
       if (data.message === "success") {
-        const { accessToken, grantType } = data.data;
-        const needit_token = grantType + " " + accessToken;
+        const { accessToken } = data.data;
+        const needit_token = accessToken;
         localStorage.setItem("needit_access_token", needit_token);
         navigate("/wishes");
       }
