@@ -26,14 +26,7 @@ const PostCard = ({ data }) => {
           borderRadius: "8px",
         }}
       >
-        <Link
-          to={
-            data.boardType === "WISH"
-              ? `/wishes/${data.id}`
-              : `/donations/${data.id}`
-          }
-          style={{ textDecoration: "none" }}
-        >
+        <Link to={`./${data.id}`} style={{ textDecoration: "none" }}>
           <CardMainContainer>
             <Box sx={{ width: "100%" }}>
               <CardHeader>
