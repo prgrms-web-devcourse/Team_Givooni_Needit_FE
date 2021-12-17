@@ -1,10 +1,112 @@
-import User from "@/components/domain/User/User";
+import React, { useState, useEffect } from "react";
+import Header from "@/components/base/Header";
+import Nav from "@/components/base/Nav";
+import styled from "styled-components";
+import { Button, Box, Typography } from "@mui/material";
+import theme from "@/styles/theme";
+import UserPosts from "@/components/domain/User/UserPosts";
+import UserLikes from "@/components/domain/User/UserLikes";
+import UserProfile from "@/components/domain/User/UserProfile";
+import { getRequest } from "@/api/axios";
+const token = localStorage.getItem("needit_access_token");
+
 const UserPage = () => {
-  return (
-    <>
-      <User />
-    </>
+  const [userData, setUserData] = useState("");
+  const [myProfile, setMyProfile] = useState("");
+
+  useEffect(() => {
+    getRequest("users", { headers: { Authorization: `Bearer ${token}` } }).then(
+      (res) => {
+        setUserData(res.data);
+        res.data.myProfile.role === "MEMBER"
+          ? getRequest(`members/${res.data.myProfile.id}`).then((res) =>
+              setMyProfile(res.data)
+            )
+          : getRequest(`centers/${res.data.myProfile.id}`).then((res) =>
+              setMyProfile(res.data)
+            );
+      }
+    );
+  }, []);
+
+  const buttonStyle = {
+    display: "flex",
+    background: theme.palette.gray.light,
+    width: "100%",
+    height: "40px",
+    color: theme.palette.primary.main,
+    my: "15px",
+    border: `1px solid ${theme.palette.gray.main}`,
+    borderRadius: "20px",
+  };
+  const [component, setComponent] = useState("UserIntro");
+
+  const buttonList = [
+    ["UserPosts", "작성한 글"],
+    ["UserIntro", "자기소개"],
+    ["UserLikes", "관심센터"],
+  ];
+
+  const userInpo = {
+    UserIntro: (
+      <UserIntro>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          {myProfile.introduction}
+        </Typography>
+      </UserIntro>
+    ),
+    UserPosts: <UserPosts />,
+    UserLikes: <UserLikes myFavorites={userData.myFavorite} />,
+  };
+
+  return userData ? (
+    <UserContainer>
+      <Header type="plain" />
+
+      <Box sx={{ p: "16px" }}>
+        <UserProfile data={myProfile} />
+        <Box
+          sx={{
+            display: "flex",
+            mx: "auto",
+            width: "95%",
+            gap: "10px",
+            justifyContent: "center",
+          }}
+        >
+          {buttonList.map((list, index) => {
+            if (component !== list[0])
+              return (
+                <Button
+                  key={index}
+                  color="gray_dark"
+                  sx={buttonStyle}
+                  onClick={() => setComponent(list[0])}
+                >
+                  {list[1]}
+                </Button>
+              );
+          })}
+        </Box>
+        {userInpo[component]}
+      </Box>
+      <Nav />
+    </UserContainer>
+  ) : (
+    <div>Loading...</div>
   );
 };
 
 export default UserPage;
+
+const UserContainer = styled.div``;
+
+const UserIntro = styled.div`
+  background: #f6f6f6;
+  border: 1px solid #e8e8e8;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 170px;
+  padding: 10px;
+  overflow: auto;
+`;

@@ -2,62 +2,16 @@ import React from "react";
 import { Typography, Box, Avatar, IconButton } from "@mui/material";
 import styled from "styled-components";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
+import PropTypes from "prop-types";
 
-const DUMMY_DATA = {
-  post: [
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-  ],
-};
-
-const UserLikes = () => {
+const UserLikes = ({ myFavorites }) => {
   return (
     <LikeProfileContainer>
-      {DUMMY_DATA.post.map((like, idx) => {
+      {myFavorites?.map((like, idx) => {
         return (
           <LikeProfile key={idx}>
             <Box sx={{ display: "flex", gap: "10px" }}>
-              <Avatar />
+              <Avatar src={like.profileImageUrl} />
               <Typography
                 color="primary"
                 variant="subtitle1"
@@ -66,7 +20,7 @@ const UserLikes = () => {
                   alignItems: "center",
                 }}
               >
-                {like.member}
+                {like.name}
               </Typography>
             </Box>
             <IconButton color="like">
@@ -80,6 +34,10 @@ const UserLikes = () => {
 };
 
 export default UserLikes;
+
+UserLikes.propTypes = {
+  myFavorites: PropTypes.object,
+};
 
 const LikeProfileContainer = styled.div`
   display: flex;
