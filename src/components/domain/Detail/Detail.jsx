@@ -43,32 +43,48 @@ const giveUncomplete = {
 const Detail = () => {
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [imgOpen, setImgOpen] = useState(false);
   const [giveButton, setGiveButton] = useState(giveUncomplete);
   const [modalImgLink, setModalImgLink] = useState("");
   const { postId } = useParams();
   const [followed, setFollowed] = useState(false);
+  const [writeUserId, setWriteUserId] = useState("");
   const bearerToken = "Bearer ".concat(
     localStorage.getItem("neetit_access_token")
   );
-  let requestTarget =
+  const requestTarget =
     window.location.href.split("/").indexOf("donations") > -1
       ? "donations"
       : "wishes";
-  const [userId, setUserId] = useState("");
+
   useEffect(async () => {
+    //user의 고유Id 저장
     const userData = await getRequest(`users`, {
       headers: {
         Authorization: bearerToken,
       },
     });
-    setUserId(userData.data.myProfile.id);
+    setWriteUserId(userData.data.myProfile.id);
 
+    //작성글에 대한 데이터 저장
     const writeApi = await getRequest(`${requestTarget}/${postId}`);
     setDetailData(writeApi.data);
-    isCommentExist();
+
+    //comment가 이미 작성되었는지 확인
+    isCommentExist(writeApi.data, userData.data.myProfile.id);
+    //관심센터에 등록되어 있는지 확인
     IsFollow(userData.data.myFavorite, writeApi.data);
   }, []);
+
+  //comment가 로그인한 대상이 작성했는지 체크
+  const isCommentExist = (writeData, writeUserIdData) => {
+    writeData.comments &&
+      writeData.comments.map((comment) => {
+        if (comment.userId === writeUserIdData) {
+          setGiveButton(giveComplete);
+        }
+      });
+  };
 
   const IsFollow = (userFollow, write) => {
     let result = false;
@@ -81,23 +97,11 @@ const Detail = () => {
 
   const modalImgOpen = ({ target }) => {
     setModalImgLink(target.currentSrc);
-    setOpen(true);
+    setImgOpen(true);
   };
-  const modalImgClose = () => setOpen(false);
+  const modalImgClose = () => setImgOpen(false);
   // follow 대상인지 아닌지에 따라 팔로우 하트 혹은 언팔로우 하트 추가
 
-  //comment가 로그인한 대상이 작성했는지 체크
-  const isCommentExist = () => {
-    let isExist = false;
-    detailData.comments &&
-      detailData.comments.map((comment) => {
-        if (comment.userId === userId) {
-          setGiveButton(giveComplete);
-          isExist = true;
-        }
-      });
-    return isExist;
-  };
   const clickGiveCommentBtn = async () => {
     if (giveButton.text === "기부신청") {
       await postRequest(`${requestTarget}/${postId}/comments`, {
@@ -167,7 +171,7 @@ const Detail = () => {
                 />
               </TextSliderContainer>
             </TextSliderAvatarContainer>
-            {userId === detailData.userId ? (
+            {detailData.userId === writeUserId ? (
               <MoreVertIcon
                 onClick={() => {
                   setIsClickMoreVert(!isClickMoreVert);
@@ -219,7 +223,7 @@ const Detail = () => {
                 return <CustomImg src={link} key={i} onClick={modalImgOpen} />;
               })}
             <Modal
-              open={open}
+              open={imgOpen}
               onClose={modalImgClose}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
@@ -244,7 +248,7 @@ const Detail = () => {
                   참여자 수 {detailData.userCnt}명
                 </CustomCommentNum>
               </ProfileContainer>
-              {userId !== detailData.userId ? (
+              {detailData.userId !== writeUserId ? (
                 <BaseButton
                   width={80}
                   height={28}
@@ -274,7 +278,7 @@ const Detail = () => {
                         />
                         <MemberName>{part.userName}</MemberName>
                       </MemberContainer>
-                      {part.userId === userId ? (
+                      {part.userId === writeUserId ? (
                         <DeleteOutlineIcon
                           onClick={() => {
                             deleteMyComment(part.id);
