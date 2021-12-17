@@ -5,6 +5,7 @@ import BaseButton from "@/components/base/BaseButton";
 import Input from "@/components/base/Input";
 import PasswordInput from "@/components/base/PasswordInput";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 import theme from "@/styles/theme";
 import styled from "styled-components";
 import { useFormik } from "formik";
@@ -30,6 +31,7 @@ const LoginForm = styled.form`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
   const handleOpen = () => setOpen(false);
   // const handleClose = () => setOpen(true);
@@ -50,15 +52,16 @@ const Login = () => {
       email: "",
       password: "",
     },
+
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       alert(JSON.stringify(values, null, 2));
-      console.log(values);
-      const data = await postRequest("users/login", JSON.stringify(values));
+      const data = await postRequest("users/login", { data: values });
       if (data.message === "success") {
-        alert("성공!");
-        history.push("/member");
-        // context api에 저장하기
+        const { accessToken } = data.data;
+        const needit_token = accessToken;
+        localStorage.setItem("needit_access_token", needit_token);
+        navigate("/wishes");
       }
     },
   });
