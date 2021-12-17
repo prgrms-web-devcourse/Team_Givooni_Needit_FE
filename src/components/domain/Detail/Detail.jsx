@@ -134,7 +134,13 @@ const Detail = () => {
       },
     });
   };
-  const follow = () => {};
+  const follow = async () => {
+    await postRequest(`favorites/${detailData.userId}`, {
+      headers: {
+        Authorization: bearerToken,
+      },
+    });
+  };
 
   return (
     <>
