@@ -164,7 +164,7 @@ const Login = () => {
               text="회원가입"
             />
           </Link>
-          <Link to="/member" style={{ textDecoration: "none" }}>
+          <Link to="/donations" style={{ textDecoration: "none" }}>
             <Typography variant="h6" sx={{ color: primary }}>
               로그인 없이 둘러보기
             </Typography>
@@ -199,7 +199,7 @@ const Login = () => {
                 회원가입
               </Typography>
             </Link>
-            <Link to="/member" style={{ textDecoration: "none" }}>
+            <Link to="/donations" style={{ textDecoration: "none" }}>
               <Typography variant="h6" sx={{ color: primary }}>
                 로그인 없이 둘러보기
               </Typography>

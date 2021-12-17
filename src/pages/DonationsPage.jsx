@@ -11,7 +11,7 @@ import { getRequest } from "@/api/axios";
 const DonationsPage = () => {
   const state = useContext(StateContext);
   const tags = state.selectedTags.map((tag) => tag["id"]);
-  const [postList, setPostList] = useState([]);
+  const [postList, setPostList] = useState("");
 
   console.log("테스트");
 
@@ -27,7 +27,7 @@ const DonationsPage = () => {
     }).then((res) => setPostList(res.data.content));
   }, [state]);
 
-  return (
+  return postList ? (
     <PostsViewContainer>
       <Header type="member" />
       <TagFilter />
@@ -39,6 +39,8 @@ const DonationsPage = () => {
       </PostContainer>
       <Nav />
     </PostsViewContainer>
+  ) : (
+    <div>loading</div>
   );
 };
 

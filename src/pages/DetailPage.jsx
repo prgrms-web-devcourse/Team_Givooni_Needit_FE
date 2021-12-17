@@ -1,10 +1,10 @@
-import Detail from "@/components/domain/Detail/Detail";
-const DetailPage = () => {
-  return (
-    <>
-      <Detail />
-    </>
-  );
-};
+// import Detail from "@/components/domain/Detail/Detail";
+// const DetailPage = () => {
+//   return (
+//     <>
+//       <Detail />
+//     </>
+//   );
+// };
 
-export default DetailPage;
+// export default DetailPage;
