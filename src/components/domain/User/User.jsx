@@ -7,7 +7,13 @@ import theme from "@/styles/theme";
 import { useState } from "react";
 import UserPosts from "./UserPosts";
 import UserLikes from "./UserLikes";
+import { useParams } from "react-router";
+import { getRequest } from "@/api/axios";
+
 const User = () => {
+  const { centerId } = useParams();
+  getRequest(`centers/${centerId}`).then((res) => console.log(res));
+
   const buttonStyle = {
     display: "flex",
     background: theme.palette.gray.light,
