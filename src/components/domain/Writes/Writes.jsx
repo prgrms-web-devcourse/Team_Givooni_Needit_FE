@@ -9,6 +9,7 @@ import { useState, useContext, useEffect } from "react";
 import { StateContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
 import { useLocation } from "react-router-dom";
+import { getRequest, postRequest } from "@/api/axios";
 const subArea = [
   { id: 1, name: "아동 · 청소년" },
   { id: 2, name: "어르신" },
@@ -31,6 +32,11 @@ const Writes = () => {
   const [category, setCategory] = useState("");
   const [Imgs, setImgs] = useState([]);
   const [quality, setQuality] = useState("");
+  const [userRole, setUserRole] = useState("");
+
+  const bearerToken = "Bearer ".concat(
+    localStorage.getItem("neetit_access_token")
+  );
 
   const location = useLocation();
   let preTitle,
@@ -54,13 +60,20 @@ const Writes = () => {
     writeId = location.state.prewriteData.id;
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     setTitle(preTitle);
     setContent(preContent);
     setTag(preTag);
     setCategory(preCategory);
     setImgs(preImgs);
     setQuality("좋음");
+
+    const userData = await getRequest(`users`, {
+      headers: {
+        Authorization: bearerToken,
+      },
+    });
+    setUserRole(userData.data.myProfile.role);
   }, []);
 
   const state = useContext(StateContext);
@@ -92,9 +105,32 @@ const Writes = () => {
   };
 
   //API에 필요한 6가지 항목
-  const submitWrites = () => {
+  const submitWrites = async (e) => {
     //writeId가 있으면 수정API요청 / writeId가 없으면 새로운 글쓰기 요청
     console.log(title, content, category, apiTag, quality, Imgs, writeId);
+    //writeId (기존의 글쓰기가 존재한다면 수정API)
+    if (writeId) {
+      console.log("!");
+    } else {
+      // const target = userRole === "CENTER" ? "wishes" : "donations";
+      // let form = new FormData();
+      // form.append("request", {
+      //   category: "재능기부",
+      //   content: "기부할래요",
+      //   quality: "나쁨",
+      //   tags: [1, 2],
+      //   title: "재능 기부",
+      // });
+      // form.append("file", null);
+      // const Result = await postRequest(`${target}`, {
+      //   data: form,
+      //   headers: {
+      //     Authorization: bearerToken,
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // });
+      // console.log(Result, "!!!!!!!!");
+    }
   };
 
   const handleImageUpload = (e) => {
@@ -110,7 +146,6 @@ const Writes = () => {
 
     for (let i = 0; i < filesLength; i++) {
       file = fileArr[i];
-
       let reader = new FileReader();
       reader.onload = () => {
         fileURLs[i] = reader.result;
