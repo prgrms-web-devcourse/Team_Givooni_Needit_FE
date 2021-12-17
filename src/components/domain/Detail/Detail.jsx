@@ -1,22 +1,23 @@
+import { Avatar, Box, Modal } from "@mui/material";
+import {
+  Favorite as FavoriteIcon,
+  MoreVert as MoreVertIcon,
+  MailOutline as MailOutlineIcon,
+  FavoriteBorder as FavoriteBorderIcon,
+  DeleteOutline as DeleteOutlineIcon,
+  Edit as EditIcon,
+} from "@mui/icons-material";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import EditIcon from "@mui/icons-material/Edit";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
+
 import Nav from "@/components/base/Nav";
 import Header from "@/components/base/Header";
 import Slider from "@/components/base/Slider";
-// import Input from "@/components/base/Input";
 import BaseButton from "@/components/base/BaseButton";
 import Profile from "@/components/base/Profile";
 import theme from "@/styles/theme";
 import { getRequest, postRequest, deleteRequest } from "@/api/axios";
+
 import { useParams, Link } from "react-router-dom";
 
 const style = {
@@ -40,10 +41,6 @@ const giveUncomplete = {
   tag: "",
 };
 const Detail = () => {
-  localStorage.setItem(
-    "neetit_access_token",
-    `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjZW50ZXJAZW1haWwuY29tIiwiYXV0aCI6IlJPTEVfQ0VOVEVSIiwiZXhwIjoxNjM5NzMxNDEzfQ.r3JAd1Bi4YxfmeT5p0ZmeU6ZF5EOEPxe3dP-XDQyZZA`
-  );
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
   const [open, setOpen] = useState(false);
@@ -64,14 +61,12 @@ const Detail = () => {
         Authorization: bearerToken,
       },
     });
-    console.log(userData);
     setUserId(userData.data.myProfile.id);
 
     const writeApi = await getRequest(`${requestTarget}/${postId}`);
     setDetailData(writeApi.data);
     isCommentExist();
   }, []);
-  console.log(detailData, userId);
   const modalImgOpen = ({ target }) => {
     setModalImgLink(target.currentSrc);
     setOpen(true);
@@ -95,12 +90,6 @@ const Detail = () => {
   };
   const clickGiveCommentBtn = async () => {
     if (giveButton.text === "기부신청") {
-      //api 실행
-      //   const apiData = {
-      //     "data": 1, // 해당 기부희망댓글의 식별자 아이디 반환
-      //     "message": "success"
-      //   }
-
       await postRequest(`${requestTarget}/${postId}/comments`, {
         data: {
           comment: "기부신청",
@@ -117,24 +106,19 @@ const Detail = () => {
   };
 
   const deleteMyComment = async (commentID) => {
-    const result = await deleteRequest(
-      `${requestTarget}/${postId}/comments/${commentID}`,
-      {
-        headers: {
-          Authorization: bearerToken,
-        },
-      }
-    );
-    console.log(result);
-  };
-
-  const clickDeleteWriteHanlder = async () => {
-    const result = await deleteRequest(`${requestTarget}/${postId}`, {
+    await deleteRequest(`${requestTarget}/${postId}/comments/${commentID}`, {
       headers: {
         Authorization: bearerToken,
       },
     });
-    console.log(result);
+  };
+
+  const clickDeleteWriteHanlder = async () => {
+    await deleteRequest(`${requestTarget}/${postId}`, {
+      headers: {
+        Authorization: bearerToken,
+      },
+    });
   };
 
   return (
