@@ -43,7 +43,7 @@ const giveUncomplete = {
 const Detail = () => {
   localStorage.setItem(
     "neetit_access_token",
-    `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJndXJpQGVtYWlsLmNvbSIsImF1dGgiOiJST0xFX01FTUJFUiIsImV4cCI6MTYzOTY3OTIzN30.Bq0AmjoJpB55QGeyUfOPO7C9rkND4oFVo67Lfq72Yw0`
+    `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aWVAZW1haWwuY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjM5NzI3NDMzfQ.0UtklXxqhb55glnSM5tGrtQhdSsqEIVBgzp-GJogtUg`
   );
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
@@ -118,6 +118,15 @@ const Detail = () => {
     console.log(result);
   };
 
+  const clickDeleteWriteHanlder = async () => {
+    const result = await deleteRequest(`${requestTarget}/${postId}`, {
+      headers: {
+        Authorization: bearerToken,
+      },
+    });
+    console.log(result);
+  };
+
   return (
     <>
       <MainContainer>
@@ -165,7 +174,7 @@ const Detail = () => {
                 </Link>
                 <DeleteOutlineIcon
                   onClick={() => {
-                    console.log("삭제기능구현");
+                    clickDeleteWriteHanlder();
                   }}
                 />
               </>
