@@ -47,6 +47,7 @@ const Detail = () => {
   const [giveButton, setGiveButton] = useState(giveUncomplete);
   const [modalImgLink, setModalImgLink] = useState("");
   const { postId } = useParams();
+  const [userFollowArr, setUserFollowArr] = useState([]);
   const bearerToken = "Bearer ".concat(
     localStorage.getItem("neetit_access_token")
   );
@@ -61,6 +62,7 @@ const Detail = () => {
         Authorization: bearerToken,
       },
     });
+    if (userData.data.myFavorite) setUserFollowArr(userData.data.myFavorite);
     setUserId(userData.data.myProfile.id);
 
     const writeApi = await getRequest(`${requestTarget}/${postId}`);
@@ -74,7 +76,11 @@ const Detail = () => {
   const modalImgClose = () => setOpen(false);
   // follow 대상인지 아닌지에 따라 팔로우 하트 혹은 언팔로우 하트 추가
   const IsFollow = () => {
-    return false;
+    let result = false;
+    userFollowArr.map((follow) => {
+      if (follow.centerId === detailData.userId) result = true;
+    });
+    return result;
   };
   //comment가 로그인한 대상이 작성했는지 체크
   const isCommentExist = () => {
@@ -121,6 +127,15 @@ const Detail = () => {
     });
   };
 
+  const unfollow = async () => {
+    await deleteRequest(`favorites/${detailData.userId}`, {
+      headers: {
+        Authorization: bearerToken,
+      },
+    });
+  };
+  const follow = () => {};
+
   return (
     <>
       <MainContainer>
@@ -147,9 +162,9 @@ const Detail = () => {
                 }}
               />
             ) : IsFollow() ? (
-              <FavoriteIcon />
+              <FavoriteIcon onClick={unfollow} />
             ) : (
-              <FavoriteBorderIcon />
+              <FavoriteBorderIcon onClick={follow} />
             )}
             {isClickMoreVert ? (
               <>
