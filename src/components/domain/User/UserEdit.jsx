@@ -2,25 +2,18 @@ import React, { useRef, useState } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
-import BaseButton from "@/components/base/BaseButton";
-import { Box, Avatar } from "@mui/material";
+import { Box, Avatar, Button } from "@mui/material";
 import { Call as CallIcon, Map as MapIcon } from "@mui/icons-material";
+import PropTypes from "prop-types";
 
-const DUMMY = {
-  memberId: 4,
-  nickname: "updated 스펜서",
-  profileImageUrl: "spencer.jpg",
-  contact: "010-1359-0329",
-  address: "인천시 계양구 계양산로134번길 21",
-  intro: "하이 마이네임 이즈 수현, 아임 엠마! 아임 지연!  ",
-};
-
-const UserEdit = () => {
-  const [previewImg, setPreviewImg] = useState(null);
-  const [contactInput, setContactInput] = useState(DUMMY["contact"]);
-  const [addressInput, setAddressInput] = useState(DUMMY["address"]);
-  const [introInput, setIntroInput] = useState(DUMMY["intro"]);
+const UserEdit = ({ myProfile, Intro }) => {
+  const [previewImg, setPreviewImg] = useState(myProfile.image);
+  const [contactInput, setContactInput] = useState(myProfile.contact);
+  const [addressInput, setAddressInput] = useState(myProfile.address);
+  const [introInput, setIntroInput] = useState(Intro);
   const profileInput = useRef();
+
+  console.log(myProfile);
 
   const uploadImage = () => {
     profileInput.current.click();
@@ -50,9 +43,25 @@ const UserEdit = () => {
     profileInput.current.backgroundImage = `url(${reader.result})`;
   };
 
+  const editUserData = () => {
+    console.log("완료~");
+  };
+
   return (
     <UsernameContainer>
-      <Header type="edit" />
+      <Header type="plain" fixed />
+      <Button
+        sx={{
+          position: "fixed",
+          top: "20px",
+          right: "20px",
+          zIndex: "10000",
+          fontSize: "16px",
+        }}
+        onClick={editUserData}
+      >
+        완료
+      </Button>
       <Box sx={{ p: "16px" }}>
         <input
           ref={profileInput}
@@ -64,7 +73,6 @@ const UserEdit = () => {
         <UserProfileContainer>
           <Avatar
             onClick={uploadImage}
-            alt={DUMMY.nickname}
             src={previewImg}
             sx={{
               width: "28vw",
@@ -82,21 +90,10 @@ const UserEdit = () => {
                 display: "flex",
                 alignItems: "center",
                 width: "60vw",
-                gap: "5px",
                 mb: "6px",
               }}
             >
-              <h5>{DUMMY.nickname}</h5>
-              <BaseButton
-                width="5rem"
-                height={24}
-                btnType="white"
-                text="수정완료"
-                typography="subtitle2"
-                style={{
-                  display: "flex",
-                }}
-              />
+              <h5>{myProfile.name}</h5>
             </Box>
             <Box display="flex" sx={{ mt: "14px" }}>
               <CallIcon />
@@ -127,6 +124,11 @@ const UserEdit = () => {
 };
 
 export default UserEdit;
+
+UserEdit.propTypes = {
+  myProfile: PropTypes.object,
+  Intro: PropTypes.string,
+};
 
 const UsernameContainer = styled.div``;
 
