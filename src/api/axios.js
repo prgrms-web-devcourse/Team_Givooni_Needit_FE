@@ -57,4 +57,17 @@ const deleteRequest = async (url = "", options = {}) => {
   return returnResult;
 };
 
-export { getRequest, postRequest, putRequest, deleteRequest };
+const patchRequest = async (url = "", options = {}) => {
+  const returnResult = await axios({
+    method: "patch",
+    url: `${API_BASE_URL}/${url}`,
+    ...options,
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error);
+    });
+
+  return returnResult;
+};
+export { getRequest, postRequest, putRequest, deleteRequest, patchRequest };

@@ -5,13 +5,13 @@ import Nav from "@/components/base/Nav";
 import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
 
-// context api로 새로운 list를 갱신시키는 함수 (훅으로 만들 생각)
+// getUserList()
 function dispatchMessageList() {
   console.log("새로운 리스트 받아오기");
 }
 
 // 예약생성 api 함수
-function reserveDonation(date, postId, postType, recieverId) {
+function reserveDonation(postId, postType, recieverId, date) {
   console.log(date, "시간으로 예약함");
   console.log("기타필요한데이터", postId, postType, recieverId);
   dispatchMessageList();
@@ -21,7 +21,7 @@ function contract(contractId, contractStatus) {
   console.log(`기부예약${contractId}가 ${contractStatus}되었습니다.`);
   dispatchMessageList();
 }
-// context api에서 받아오기
+
 const userList = [
   {
     postId: 1,
@@ -50,7 +50,7 @@ const userList = [
     contract: null,
   },
 ];
-// context api 에서 받아오기
+
 const messageList = [
   {
     messageId: 1, // 채팅 메시지의 식별자.
