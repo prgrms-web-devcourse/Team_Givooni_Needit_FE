@@ -49,6 +49,7 @@ const Detail = () => {
   const { postId } = useParams();
   const [followed, setFollowed] = useState(false);
   const [loginUserId, setLoginUserId] = useState("");
+  const [loginUserRole, setLoginUserRole] = useState("");
   const bearerToken = "Bearer ".concat(
     localStorage.getItem("neetit_access_token")
   );
@@ -66,6 +67,7 @@ const Detail = () => {
     });
     const userApiData = noFilterUserData.data;
     setLoginUserId(userApiData.myProfile.id);
+    setLoginUserRole(userApiData.myProfile.role);
 
     //작성글에 대한 데이터 저장
     const noFilterWriteData = await getRequest(`${requestTarget}/${postId}`);
@@ -91,9 +93,10 @@ const Detail = () => {
   // follow 대상인지 아닌지에 따라 팔로우 하트 혹은 언팔로우 하트 추가
   const IsFollow = (writeApiData, userApiFollowData) => {
     let result = false;
-    userApiFollowData.map((follow) => {
-      if (follow.centerId === writeApiData.userId) result = true;
-    });
+    userApiFollowData &&
+      userApiFollowData.map((follow) => {
+        if (follow.centerId === writeApiData.userId) result = true;
+      });
     setFollowed(result);
   };
 
@@ -155,6 +158,22 @@ const Detail = () => {
     });
   };
 
+  //같은 userId를 가진 센터와 멤버의 충돌을 막기 위해 사용
+  const checkWriter = () => {
+    return (
+      detailData.userId === loginUserId &&
+      ((requestTarget === "wishes" && loginUserRole === "CENTER") ||
+        (requestTarget === "donations" && loginUserRole === "MEMBER"))
+    );
+  };
+
+  const checkIsExistButton = () => {
+    return (
+      (requestTarget === "wishes" && loginUserRole === "MEMBER") ||
+      (requestTarget === "donations" && loginUserRole === "CENTER")
+    );
+  };
+
   return (
     <>
       <MainContainer>
@@ -175,7 +194,7 @@ const Detail = () => {
               </TextSliderContainer>
             </TextSliderAvatarContainer>
             {/* 작성자 === 로그인유저이면 편집을 그외에는 관심하트를  */}
-            {detailData.userId === loginUserId ? (
+            {checkWriter() ? (
               <MoreVertIcon
                 onClick={() => {
                   setIsClickMoreVert(!isClickMoreVert);
@@ -253,7 +272,7 @@ const Detail = () => {
                 </CustomCommentNum>
               </ProfileContainer>
               {/* 글쓴이 === 로그인 대상이 아니면 기부참여버튼 추가 */}
-              {detailData.userId !== loginUserId ? (
+              {checkIsExistButton() ? (
                 <BaseButton
                   width={80}
                   height={28}
