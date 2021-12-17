@@ -42,7 +42,7 @@ const giveUncomplete = {
 const Detail = () => {
   localStorage.setItem(
     "neetit_access_token",
-    `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW1iZXJAZW1haWwuY29tIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjM5NzI4ODc5fQ.xufeMbRch6M0EElyRC5ZC6A1QfTWZ19a_cpptX5Bf0Y`
+    `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjZW50ZXJAZW1haWwuY29tIiwiYXV0aCI6IlJPTEVfQ0VOVEVSIiwiZXhwIjoxNjM5NzMwMTY3fQ.EzX281EcmollOR1bFvcWgzf7PNmSjI_5NByzXYfKH3Q`
   );
   const [detailData, setDetailData] = useState({});
   const [isClickMoreVert, setIsClickMoreVert] = useState(false);
@@ -50,7 +50,9 @@ const Detail = () => {
   const [giveButton, setGiveButton] = useState(giveUncomplete);
   const [modalImgLink, setModalImgLink] = useState("");
   const { postId } = useParams();
-  const bearerToken = localStorage.getItem("neetit_access_token");
+  const bearerToken = "Bearer ".concat(
+    localStorage.getItem("neetit_access_token")
+  );
   let requestTarget =
     window.location.href.split("/").indexOf("donations") > -1
       ? "donations"
@@ -135,7 +137,7 @@ const Detail = () => {
   return (
     <>
       <MainContainer>
-        <Header type="main" fixed={true} />
+        <Header type="plain" fixed={true} />
         <WriteContainer>
           <WriteSubContainer>
             <TextSliderAvatarContainer>
