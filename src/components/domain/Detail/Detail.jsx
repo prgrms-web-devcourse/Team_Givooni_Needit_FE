@@ -179,11 +179,13 @@ const Detail = () => {
                     }}
                   />
                 </Link>
-                <DeleteOutlineIcon
-                  onClick={() => {
-                    clickDeleteWriteHanlder();
-                  }}
-                />
+                <Link to={`/${requestTarget}`}>
+                  <CustomDeleteOutlineIcon
+                    onClick={() => {
+                      clickDeleteWriteHanlder();
+                    }}
+                  />
+                </Link>
               </>
             ) : (
               <></>
@@ -318,6 +320,10 @@ const TextSliderContainer = styled.div`
   flex-direction: column;
   margin-left: 8px;
   font-weight: bold;
+`;
+
+const CustomDeleteOutlineIcon = styled(DeleteOutlineIcon)`
+  color: ${theme.palette.primary.main};
 `;
 
 const CustomEditIcon = styled(EditIcon)`
