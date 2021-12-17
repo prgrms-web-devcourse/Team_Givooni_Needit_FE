@@ -5,7 +5,6 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const access_token = localStorage.getItem("needit_access_token");
 
 const instance = axios.create({
-  timeout: 3000,
   headers: {
     Authorization: access_token,
   },
