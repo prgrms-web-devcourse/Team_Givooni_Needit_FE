@@ -306,7 +306,11 @@ const Detail = () => {
                         />
                         <MemberName>{part.userName}</MemberName>
                       </MemberContainer>
-                      {part.userId === loginUserId ? (
+                      {part.userId === loginUserId &&
+                      ((requestTarget === "wishes" &&
+                        loginUserRole === "MEMBER") ||
+                        (requestTarget === "donations" &&
+                          loginUserRole === "CENTER")) ? (
                         <DeleteOutlineIcon
                           onClick={() => {
                             deleteMyComment(part.id);
