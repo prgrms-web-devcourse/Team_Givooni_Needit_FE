@@ -8,15 +8,29 @@ import { useState } from "react";
 
 const districtor = (address) => {
   // 행정구역 시도 구분
-  if (
-    ["서울", "부산", "대구", "인천", "광주", "대전", "울산"].includes(address)
-  ) {
-    address = address + "시";
+  if (["부산", "대구", "인천", "광주", "대전", "울산"].includes(address)) {
+    address = address + "광역시";
+  } else if (address === "서울") {
+    address = "서울특별시";
   } else if (address === "세종특별자치시") {
     address = "세종시";
   } else if (address === "제주특별자치도") {
     address = "제주도";
-  } else address = address + "도";
+  } else if (address === "충북") {
+    address = "충청북도";
+  } else if (address === "충남") {
+    address = "충청남도";
+  } else if (address === "경남") {
+    address = "경상남도";
+  } else if (address === "경북") {
+    address = "경상북도";
+  } else if (address === "전북") {
+    address = "전라북도";
+  } else if (address === "전남") {
+    address = "전라남도";
+  } else if (["강원", "경기"].includes(address)) {
+    address = address + "도";
+  }
   return address;
 };
 
