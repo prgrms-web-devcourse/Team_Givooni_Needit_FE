@@ -2,34 +2,40 @@ import React, { useRef, useState } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
-import BaseButton from "@/components/base/BaseButton";
-import { Box, Avatar } from "@mui/material";
-import { Call as CallIcon, Map as MapIcon } from "@mui/icons-material";
+import { Box, Avatar, Button, Chip } from "@mui/material";
+import {
+  Call as CallIcon,
+  Map as MapIcon,
+  VpnKey as VpnKeyIcon,
+} from "@mui/icons-material";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
-const DUMMY = {
-  memberId: 4,
-  nickname: "updated 스펜서",
-  profileImageUrl: "spencer.jpg",
-  contact: "010-1359-0329",
-  address: "인천시 계양구 계양산로134번길 21",
-  intro: "하이 마이네임 이즈 수현, 아임 엠마! 아임 지연!  ",
-};
-
-const UserEdit = () => {
-  const [previewImg, setPreviewImg] = useState(null);
-  const [contactInput, setContactInput] = useState(DUMMY["contact"]);
-  const [addressInput, setAddressInput] = useState(DUMMY["address"]);
-  const [introInput, setIntroInput] = useState(DUMMY["intro"]);
+const UserEdit = ({ myProfile, Intro }) => {
+  const [previewImg, setPreviewImg] = useState(myProfile.image);
+  const [contactInput, setContactInput] = useState(myProfile.contact);
+  const [addressInput, setAddressInput] = useState(myProfile.address);
+  const [passwordInput, setPasswordInput] = useState("need1234");
+  const [passwordConfirmInput, setPasswordConfirmInput] = useState("");
+  const [introInput, setIntroInput] = useState(Intro);
+  const [imageFile, setImageFile] = useState(myProfile.image);
   const profileInput = useRef();
+  const navigate = useNavigate();
 
   const uploadImage = () => {
     profileInput.current.click();
   };
-
   const handleFileChange = (e) => {
     preview(e.target.files[0]);
+    setImageFile(e.target.files[0]);
   };
-
+  const handlePasswordChange = (e) => {
+    setPasswordInput(e.target.value);
+  };
+  const handlePasswordConfirmChange = (e) => {
+    setPasswordConfirmInput(e.target.value);
+  };
   const handleContactChange = (e) => {
     setContactInput(e.target.value);
   };
@@ -38,6 +44,51 @@ const UserEdit = () => {
   };
   const handleIntroChange = (e) => {
     setIntroInput(e.target.value);
+  };
+
+  let submitData;
+  myProfile.role === "MEMBER"
+    ? (submitData = {
+        address: addressInput,
+        contact: contactInput,
+        email: myProfile.email,
+        nickname: myProfile.name,
+        password: passwordInput,
+        introduction: introInput,
+      })
+    : (submitData = {
+        address: addressInput,
+        contact: contactInput,
+        email: myProfile.email,
+        name: myProfile.name,
+        password: passwordInput,
+        introduction: introInput,
+        owner: myProfile.owner,
+        registrationCode: myProfile.registrationCode,
+      });
+
+  const handleSubmit = () => {
+    if (!passwordInput || passwordInput !== passwordConfirmInput) {
+      alert("비밀번호를 확인해주세요");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append(
+      "request",
+      new Blob([JSON.stringify(submitData)], { type: "application/json" })
+    );
+    axios({
+      method: "put",
+      url: `${process.env.REACT_APP_API_BASE_URL}/${
+        myProfile.role === "MEMBER" ? "members" : "centers"
+      }`,
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("needit_access_token"),
+      },
+    }).then(navigate(0));
   };
 
   const preview = (image) => {
@@ -50,21 +101,43 @@ const UserEdit = () => {
     profileInput.current.backgroundImage = `url(${reader.result})`;
   };
 
+  const editUserData = () => {
+    handleSubmit();
+  };
+
   return (
     <UsernameContainer>
-      <Header type="edit" />
+      <Header type="plain" fixed />
+      <Button
+        sx={{
+          position: "fixed",
+          top: "20px",
+          right: "20px",
+          zIndex: "10000",
+          fontSize: "16px",
+        }}
+        onClick={editUserData}
+      >
+        완료
+      </Button>
       <Box sx={{ p: "16px" }}>
-        <input
-          ref={profileInput}
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        />
+        <form
+          form
+          name="file"
+          encType="multipart/form-data"
+          onSubmit={handleSubmit}
+        >
+          <input
+            ref={profileInput}
+            type="file"
+            accept=".jpg, .png"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+        </form>
         <UserProfileContainer>
           <Avatar
             onClick={uploadImage}
-            alt={DUMMY.nickname}
             src={previewImg}
             sx={{
               width: "28vw",
@@ -82,23 +155,27 @@ const UserEdit = () => {
                 display: "flex",
                 alignItems: "center",
                 width: "60vw",
-                gap: "5px",
                 mb: "6px",
               }}
             >
-              <h5>{DUMMY.nickname}</h5>
-              <BaseButton
-                width="5rem"
-                height={24}
-                btnType="white"
-                text="수정완료"
-                typography="subtitle2"
-                style={{
-                  display: "flex",
-                }}
-              />
+              <Box>
+                <Chip icon={<VpnKeyIcon />} label="비밀번호" />
+                <UserPasswordEdit
+                  value={passwordInput}
+                  type="password"
+                  onChange={handlePasswordChange}
+                />
+              </Box>
+              <Box>
+                <Chip icon={<VpnKeyIcon />} label="비밀번호 확인" />
+                <UserPasswordEdit
+                  value={passwordConfirmInput}
+                  type="password"
+                  onChange={handlePasswordConfirmChange}
+                />
+              </Box>
             </Box>
-            <Box display="flex" sx={{ mt: "14px" }}>
+            <Box display="flex">
               <CallIcon />
               <UserDataEdit
                 value={contactInput}
@@ -128,6 +205,11 @@ const UserEdit = () => {
 
 export default UserEdit;
 
+UserEdit.propTypes = {
+  myProfile: PropTypes.object,
+  Intro: PropTypes.string,
+};
+
 const UsernameContainer = styled.div``;
 
 const UserIntroEdit = styled.textarea`
@@ -145,6 +227,22 @@ const UserIntroEdit = styled.textarea`
   resize: none;
   &:focus {
     outline: none;
+  }
+`;
+
+const UserPasswordEdit = styled.input`
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  font-size: 12px;
+  font-family: "Spoqa Han Sans Neo";
+  padding-left: 10px;
+  resize: none;
+  &:focus {
+    outline: #fd9f28;
+    border: 1px solid #fd9f28;
   }
 `;
 
