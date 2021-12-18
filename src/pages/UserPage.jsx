@@ -28,8 +28,6 @@ const UserPage = () => {
     });
   }, []);
 
-  console.log(myProfile);
-
   const buttonStyle = {
     display: "flex",
     background: theme.palette.gray.light,

@@ -10,6 +10,7 @@ import {
 } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const UserEdit = ({ myProfile, Intro }) => {
   const [previewImg, setPreviewImg] = useState(myProfile.image);
@@ -18,10 +19,9 @@ const UserEdit = ({ myProfile, Intro }) => {
   const [passwordInput, setPasswordInput] = useState("need1234");
   const [passwordConfirmInput, setPasswordConfirmInput] = useState("");
   const [introInput, setIntroInput] = useState(Intro);
-  const [imageFile, setImageFile] = useState(Intro);
+  const [imageFile, setImageFile] = useState(myProfile.image);
   const profileInput = useRef();
-
-  console.log(myProfile);
+  const navigate = useNavigate();
 
   const uploadImage = () => {
     profileInput.current.click();
@@ -46,6 +46,27 @@ const UserEdit = ({ myProfile, Intro }) => {
     setIntroInput(e.target.value);
   };
 
+  let submitData;
+  myProfile.role === "MEMBER"
+    ? (submitData = {
+        address: addressInput,
+        contact: contactInput,
+        email: myProfile.email,
+        nickname: myProfile.name,
+        password: passwordInput,
+        introduction: introInput,
+      })
+    : (submitData = {
+        address: addressInput,
+        contact: contactInput,
+        email: myProfile.email,
+        name: myProfile.name,
+        password: passwordInput,
+        introduction: introInput,
+        owner: myProfile.owner,
+        registrationCode: myProfile.registrationCode,
+      });
+
   const handleSubmit = () => {
     if (!passwordInput || passwordInput !== passwordConfirmInput) {
       alert("비밀번호를 확인해주세요");
@@ -55,29 +76,19 @@ const UserEdit = ({ myProfile, Intro }) => {
     formData.append("file", imageFile);
     formData.append(
       "request",
-      new Blob(
-        [
-          JSON.stringify({
-            address: addressInput,
-            contact: contactInput,
-            email: myProfile.email,
-            nickname: myProfile.name,
-            password: passwordInput,
-            introduction: introInput,
-          }),
-        ],
-        { type: "application/json" }
-      )
+      new Blob([JSON.stringify(submitData)], { type: "application/json" })
     );
     axios({
       method: "put",
-      url: `${process.env.REACT_APP_API_BASE_URL}/members`,
+      url: `${process.env.REACT_APP_API_BASE_URL}/${
+        myProfile.role === "MEMBER" ? "members" : "centers"
+      }`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: "Bearer " + localStorage.getItem("needit_access_token"),
       },
-    });
+    }).then(navigate(0));
   };
 
   const preview = (image) => {
@@ -220,7 +231,8 @@ const UserIntroEdit = styled.textarea`
 `;
 
 const UserPasswordEdit = styled.input`
-  border: none;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
   box-sizing: border-box;
   width: 100%;
   height: auto;
@@ -229,7 +241,8 @@ const UserPasswordEdit = styled.input`
   padding-left: 10px;
   resize: none;
   &:focus {
-    outline: none;
+    outline: #fd9f28;
+    border: 1px solid #fd9f28;
   }
 `;
 
