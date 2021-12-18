@@ -313,11 +313,17 @@ const Detail = () => {
                           }}
                         />
                       ) : (
-                        <MailOutlineIcon
-                          onClick={() => {
-                            console.log("메일보내기 기능");
-                          }}
-                        />
+                        <Link
+                          to={`/message/${postId}/${
+                            requestTarget === "wishes" ? "WISH" : "DONATION"
+                          }/${part.userId}`}
+                        >
+                          <CustomMailOutlineIcon
+                            onClick={() => {
+                              console.log("메일보내기 기능");
+                            }}
+                          />
+                        </Link>
                       )}
                     </MemberDeleteContainer>
                     <JoinCommentContainer>
@@ -369,6 +375,9 @@ const TextSliderContainer = styled.div`
 `;
 
 const CustomDeleteOutlineIcon = styled(DeleteOutlineIcon)`
+  color: ${theme.palette.primary.main};
+`;
+const CustomMailOutlineIcon = styled(MailOutlineIcon)`
   color: ${theme.palette.primary.main};
 `;
 
