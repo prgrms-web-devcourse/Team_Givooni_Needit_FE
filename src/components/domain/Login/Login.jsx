@@ -55,7 +55,6 @@ const Login = () => {
 
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
       const data = await postRequest("users/login", { data: values });
       if (data.message === "success") {
         const { accessToken } = data.data;
@@ -153,7 +152,7 @@ const Login = () => {
       {open ? (
         <LoginContainer>
           <BaseButton width={300} text="로그인" onClick={handleOpen} />
-          <Link to="/register" style={{ textDecoration: "none" }}>
+          <Link to="/gps" style={{ textDecoration: "none" }}>
             <BaseButton
               width={300}
               btnType="white"
@@ -164,7 +163,7 @@ const Login = () => {
               text="회원가입"
             />
           </Link>
-          <Link to="/member" style={{ textDecoration: "none" }}>
+          <Link to="/wishes" style={{ textDecoration: "none" }}>
             <Typography variant="h6" sx={{ color: primary }}>
               로그인 없이 둘러보기
             </Typography>
@@ -194,12 +193,12 @@ const Login = () => {
               text="로그인"
               onClick={formik.onSubmit}
             />
-            <Link to="/register" style={{ textDecoration: "none" }}>
+            <Link to="/gps" style={{ textDecoration: "none" }}>
               <Typography variant="h5" sx={{ color: primary }}>
                 회원가입
               </Typography>
             </Link>
-            <Link to="/member" style={{ textDecoration: "none" }}>
+            <Link to="/wishes" style={{ textDecoration: "none" }}>
               <Typography variant="h6" sx={{ color: primary }}>
                 로그인 없이 둘러보기
               </Typography>
