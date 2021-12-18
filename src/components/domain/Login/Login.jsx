@@ -55,7 +55,6 @@ const Login = () => {
 
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
       const data = await postRequest("users/login", { data: values });
       if (data.message === "success") {
         const { accessToken } = data.data;
