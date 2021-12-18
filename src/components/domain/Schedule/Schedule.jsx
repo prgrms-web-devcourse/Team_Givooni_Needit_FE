@@ -81,6 +81,7 @@ const Schedule = () => {
                             fontWeight: "500",
                             position: "relative",
                             top: "2px",
+                            color: theme.palette.primary.main,
                           }}
                         >
                           {date} | {hour} : {minute}
@@ -90,8 +91,8 @@ const Schedule = () => {
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          color: theme.palette.primary.main,
-                          fontSize: "0.9rem",
+                          color: theme.palette.gray_dark.dark,
+                          fontSize: "0.85rem",
                           fontWeight: "500",
                         }}
                       >
@@ -103,7 +104,10 @@ const Schedule = () => {
                         if (postType === "WISH") navigate(`wishes/${postId}`);
                         else navigate(`donations/${postId}`);
                       }}
-                      style={{ fontSize: "0.8rem" }}
+                      style={{
+                        fontSize: "0.8rem",
+                        color: theme.palette.gray_dark.dark,
+                      }}
                     >
                       {postTitle}
                     </div>
