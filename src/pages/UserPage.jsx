@@ -2,22 +2,32 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
-import { Box, Typography, Button } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import theme from "@/styles/theme";
-import UserProfile from "@/components/domain/User/UserProfile";
 import UserPosts from "@/components/domain/User/UserPosts";
 import UserLikes from "@/components/domain/User/UserLikes";
-import { useParams } from "react-router";
+import UserProfile from "@/components/domain/User/UserProfile";
 import { getRequest } from "@/api/axios";
+const token = localStorage.getItem("needit_access_token");
 
-const CenterPage = () => {
-  const { centerId } = useParams();
-  const [centerData, setCenterData] = useState("");
+const UserPage = () => {
+  const [userData, setUserData] = useState("");
+  const [myProfile, setMyProfile] = useState("");
 
   useEffect(() => {
-    getRequest(`centers/${centerId}`).then((res) => setCenterData(res.data));
+    getRequest("users", { headers: { Authorization: `Bearer ${token}` } }).then(
+      (res) => {
+        setUserData(res.data);
+        res.data.myProfile.role === "MEMBER"
+          ? getRequest(`members/${res.data.myProfile.id}`).then((res) =>
+              setMyProfile(res.data)
+            )
+          : getRequest(`centers/${res.data.myProfile.id}`).then((res) =>
+              setMyProfile(res.data)
+            );
+      }
+    );
   }, []);
-  console.log(centerData);
 
   const buttonStyle = {
     display: "flex",
@@ -32,28 +42,29 @@ const CenterPage = () => {
   const [component, setComponent] = useState("UserIntro");
 
   const buttonList = [
-    // ["UserPosts", "작성한 글"],
+    ["UserPosts", "작성한 글"],
     ["UserIntro", "자기소개"],
+    ["UserLikes", "관심센터"],
   ];
 
   const userInpo = {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {centerData.introduction}
+          {myProfile.introduction}
         </Typography>
       </UserIntro>
     ),
     UserPosts: <UserPosts />,
-    UserLikes: <UserLikes />,
+    UserLikes: <UserLikes myFavorites={userData.myFavorite} />,
   };
 
-  return (
+  return userData ? (
     <UserContainer>
       <Header type="plain" />
 
       <Box sx={{ p: "16px" }}>
-        <UserProfile data={centerData} />
+        <UserProfile data={myProfile} />
         <Box
           sx={{
             display: "flex",
@@ -64,27 +75,29 @@ const CenterPage = () => {
           }}
         >
           {buttonList.map((list, index) => {
-            // if (component !== list[0])
-            return (
-              <Button
-                key={index}
-                color="gray_dark"
-                sx={buttonStyle}
-                onClick={() => setComponent(list[0])}
-              >
-                {list[1]}
-              </Button>
-            );
+            if (component !== list[0])
+              return (
+                <Button
+                  key={index}
+                  color="gray_dark"
+                  sx={buttonStyle}
+                  onClick={() => setComponent(list[0])}
+                >
+                  {list[1]}
+                </Button>
+              );
           })}
         </Box>
         {userInpo[component]}
       </Box>
       <Nav />
     </UserContainer>
+  ) : (
+    <div>Loading...</div>
   );
 };
 
-export default CenterPage;
+export default UserPage;
 
 const UserContainer = styled.div``;
 
@@ -97,8 +110,3 @@ const UserIntro = styled.div`
   padding: 10px;
   overflow: auto;
 `;
-
-// const { centerId, memberId } = useParams();
-// centerId
-//   ? getRequest(`centers/${centerId}`).then((res) => console.log(res))
-//   : getRequest(`members/${memberId}`).then((res) => console.log(res));
