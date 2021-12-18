@@ -1,10 +1,13 @@
-import { Box, Typography, Modal } from "@mui/material";
+import { Box, Typography, Modal, Checkbox } from "@mui/material";
 import BaseButton from "@/components/base/BaseButton";
 import Header from "@/components/base/Header";
 import Input from "@/components/base/Input";
 import DaumPostCode from "react-daum-postcode";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
+import { DispatchContext } from "@/context";
+import theme from "@/styles/theme";
 
 const districtor = (address) => {
   // 행정구역 시도 구분
@@ -44,27 +47,36 @@ const DetailAddress = ({ usertype = "center", userAddress }) => {
     ? (userAddress = ["시", "도로명", "상세주소"])
     : (userAddress = false);
 
+  const navigate = useNavigate();
+  const [isCenter, setIsCenter] = useState(false);
   const [open, setOpen] = useState(!userAddress);
   const [firstAddress, setFirstAddress] = useState(userAddress[0]);
   const [secondAddress, setSecondAddress] = useState(userAddress[1]);
   const [thirdAddress, setThirdAddress] = useState(userAddress[2]);
   const [detailAddress, setDetailAddress] = useState("");
   const [warning, setWarning] = useState("hidden");
+  const dispatch = useContext(DispatchContext);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const onChangeAddress = (e) => setDetailAddress(e.target.value);
 
+  const navigation = () => {
+    dispatch({
+      type: "setTown",
+      nextState: `${firstAddress} ${secondAddress} ${thirdAddress} ${detailAddress}`,
+    });
+    navigate("/register");
+  };
+
   const submitAddress = () => {
-    (usertype === "center" &&
+    (isCenter &&
       firstAddress &&
       secondAddress &&
       thirdAddress &&
       detailAddress) ||
-    (usertype === "member" && firstAddress && secondAddress && thirdAddress)
-      ? console.log(
-          `${firstAddress} ${secondAddress} ${thirdAddress} ${detailAddress}`
-        )
+    (!isCenter && firstAddress && secondAddress && thirdAddress)
+      ? navigation()
       : setWarning("visible");
   };
 
@@ -88,11 +100,22 @@ const DetailAddress = ({ usertype = "center", userAddress }) => {
       </div>
       <Header type="plain" />
       <Box sx={centerStyle} style={{ marginTop: "8vh", marginBottom: "8vh" }}>
+        <div style={{ color: theme.palette.primary.main }}>
+          기관사용자이신가요?
+          <Checkbox
+            onChange={() => {
+              setIsCenter(!isCenter);
+            }}
+          />
+        </div>
         <Input value={firstAddress} placeholder="시" />
         <Input value={secondAddress} placeholder="군, 구" />
         <Input value={thirdAddress} placeholder="도로명주소" />
         {usertype === "center" ? (
-          <Input onChange={onChangeAddress} placeholder="상세주소" />
+          <Input
+            onChange={onChangeAddress}
+            placeholder="상세주소 (기관 사용자 입력 필수)"
+          />
         ) : null}
       </Box>
 
@@ -104,7 +127,12 @@ const DetailAddress = ({ usertype = "center", userAddress }) => {
         >
           주소 재검색
         </Typography>
-        <BaseButton text="확인" width={300} func={submitAddress} />
+        <BaseButton
+          text="확인"
+          width={300}
+          func={submitAddress}
+          onClick={submitAddress}
+        />
         <Typography style={{ visibility: warning }} color="error">
           값을 입력해주세요
         </Typography>
