@@ -75,7 +75,7 @@ const Gps = () => {
         geocoder.coord2RegionCode(coord.getLng(), coord.getLat(), callback);
       }
       getAddress(latitude, longitude);
-    }, [latitude, longitude]);
+    }, [latitude, longitude, address]);
   };
 
   kakaomap();
