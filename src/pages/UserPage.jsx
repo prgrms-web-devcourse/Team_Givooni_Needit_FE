@@ -10,27 +10,25 @@ import UserProfile from "@/components/domain/User/UserProfile";
 import UserEdit from "@/components/domain/User/UserEdit";
 import { getRequest } from "@/api/axios";
 
-const token = localStorage.getItem("needit_access_token");
-
 const UserPage = () => {
   const [userData, setUserData] = useState("");
   const [myProfile, setMyProfile] = useState("");
   const [onEdit, setOnEdit] = useState(false);
 
   useEffect(() => {
-    getRequest("users", { headers: { Authorization: `Bearer ${token}` } }).then(
-      (res) => {
-        setUserData(res.data);
-        res.data.myProfile.role === "MEMBER"
-          ? getRequest(`members/${res.data.myProfile.id}`).then((res) =>
-              setMyProfile(res.data)
-            )
-          : getRequest(`centers/${res.data.myProfile.id}`).then((res) =>
-              setMyProfile(res.data)
-            );
-      }
-    );
+    getRequest("users").then((res) => {
+      setUserData(res.data);
+      res.data.myProfile.role === "MEMBER"
+        ? getRequest(`members/${res.data.myProfile.id}`).then((res) =>
+            setMyProfile(res.data)
+          )
+        : getRequest(`centers/${res.data.myProfile.id}`).then((res) =>
+            setMyProfile(res.data)
+          );
+    });
   }, []);
+
+  console.log(myProfile);
 
   const buttonStyle = {
     display: "flex",
