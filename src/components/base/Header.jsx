@@ -109,7 +109,7 @@ const Header = ({ type, view, url, fixed }) => {
       return (
         <Container fixed={fixed}>
           <Link
-            to="/member"
+            to="/"
             style={{
               textDecorationLine: "none",
               color: theme.palette.primary.main,
@@ -127,7 +127,7 @@ const Header = ({ type, view, url, fixed }) => {
     case "main":
       return (
         <Container fixed={fixed}>
-          <Link to="/member">{logo}</Link>
+          <Link to="/">{logo}</Link>
           <RightContainer>
             <Link
               to="/search"
@@ -151,7 +151,7 @@ const Header = ({ type, view, url, fixed }) => {
     case "searchOut":
       return (
         <Container fixed={fixed}>
-          <Link to="/member">{logo}</Link>
+          <Link to="/">{logo}</Link>
           <RightContainer>
             <Link to="/notify">
               <NotificationsIcon
@@ -165,7 +165,7 @@ const Header = ({ type, view, url, fixed }) => {
       return (
         <Container fixed={fixed}>
           <Link
-            to="/member"
+            to="/"
             style={{
               textDecorationLine: "none",
               color: theme.palette.primary.main,
@@ -200,7 +200,7 @@ const Header = ({ type, view, url, fixed }) => {
     case "edit":
       return (
         <Container fixed={fixed}>
-          <Link to="/member">{logo}</Link>
+          <Link to="/">{logo}</Link>
           <RightContainer>
             <Link
               to="/username"
@@ -221,7 +221,7 @@ const Header = ({ type, view, url, fixed }) => {
     case "confirm":
       return (
         <Container fixed={fixed}>
-          <Link to="/member">{logo}</Link>
+          <Link to="/">{logo}</Link>
           <RightContainer>
             <Link
               to="/username"
