@@ -115,14 +115,14 @@ const Schedule = () => {
                       <BaseButton
                         btnType="white"
                         height="2rem"
-                        width="5.8rem"
-                        style={{ fontSize: "0.75rem" }}
+                        width="5.2rem"
+                        style={{ fontSize: "0.65rem" }}
                         text={postContent}
                       />
                       <BaseButton
                         height="2rem"
-                        width="5.1rem"
-                        style={{ fontSize: "0.775rem" }}
+                        width="4.6rem"
+                        style={{ fontSize: "0.65rem" }}
                         text={
                           donationStatus === "DONATING"
                             ? "기부 진행"
@@ -134,10 +134,10 @@ const Schedule = () => {
                           style={{
                             backgroundColor: "white",
                             color: theme.palette.primary.main,
-                            fontSize: "0.75rem",
+                            fontSize: "0.65rem",
                             border: "1px solid",
                           }}
-                          width="8.2rem"
+                          width="7.4rem"
                           height="2rem"
                           text="기부는 어떠셨나요?"
                           onClick={() => setVisible(true)}
