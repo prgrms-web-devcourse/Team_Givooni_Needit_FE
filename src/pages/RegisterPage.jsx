@@ -5,7 +5,7 @@ import Input from "@/components/base/Input";
 import PasswordInput from "@/components/base/PasswordInput";
 import theme from "@/styles/theme";
 import { Checkbox } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -14,6 +14,7 @@ import Cleave from "cleave.js/react";
 import "cleave.js/dist/addons/cleave-phone.kr";
 import { postRequest } from "@/api/axios";
 import { useNavigate } from "react-router";
+import { StateContext } from "@/context/index";
 
 const RegisterContainer = styled.div`
   margin-top: 5rem;
@@ -33,6 +34,7 @@ const AlignContainer = styled.div`
 `;
 
 const RegisterPage = () => {
+  const state = useContext(StateContext);
   const navigate = useNavigate();
   const [isCenter, setIsCenter] = useState(false);
   const [centerValidated, setCenterValidated] = useState(false);
@@ -44,14 +46,14 @@ const RegisterPage = () => {
   const [myCode, setCode] = useState("");
   const [emailValidated, setEmailValidated] = useState("");
   const [memberInfo, setMemberInfo] = useState({
-    address: "서울시 강남구",
+    address: "서울특별시 강남구" || state.selectedTown,
     contact: "",
     email: "",
     nickname: "",
     password: "",
   });
   const [centerInfo, setCenterInfo] = useState({
-    address: "서울시 강남구",
+    address: "서울특별시 강남구" || state.selectedTown,
     contact: "",
     email: "",
     name: "",
@@ -117,13 +119,15 @@ const RegisterPage = () => {
       });
 
   const emailValidation = async () => {
-    await postRequest("email", { email: myEmail });
+    await postRequest("email", { data: { email: myEmail } });
   };
 
   const codeValidation = async () => {
     const result = await postRequest("verifyCode", {
-      code: myCode,
-      email: myEmail,
+      data: {
+        code: myCode,
+        email: myEmail,
+      },
     });
     console.log(result === "인증코드 검증 완료");
     if (result === "인증코드 검증 완료") setEmailValidated("success");
@@ -175,7 +179,10 @@ const RegisterPage = () => {
     validationSchema: validationSchema,
     onSubmit: async () => {
       if (!isCenter && emailValidated === "success") {
-        const register_result = await postRequest("members/signup", memberInfo);
+        console.log(memberInfo);
+        const register_result = await postRequest("members/signup", {
+          data: memberInfo,
+        });
         console.log(register_result);
         if (register_result.message === "success") {
           console.log("회원가입 성공");
@@ -183,10 +190,10 @@ const RegisterPage = () => {
         }
       }
       if (isCenter && centerValidated && emailValidated) {
-        const register_result2 = await postRequest(
-          "centers/signup",
-          centerInfo
-        );
+        console.log(centerInfo);
+        const register_result2 = await postRequest("centers/signup", {
+          data: centerInfo,
+        });
         console.log(register_result2);
         if (register_result2.message === "success") {
           console.log("회원가입 성공");
