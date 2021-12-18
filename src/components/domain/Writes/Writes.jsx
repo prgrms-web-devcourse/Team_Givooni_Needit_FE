@@ -9,7 +9,9 @@ import { useState, useContext, useEffect } from "react";
 import { StateContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
 import { useLocation } from "react-router-dom";
-import { getRequest, postRequest } from "@/api/axios";
+import { getRequest } from "@/api/axios";
+import axios from "axios";
+
 const subArea = [
   { id: 1, name: "아동 · 청소년" },
   { id: 2, name: "어르신" },
@@ -33,6 +35,7 @@ const Writes = () => {
   const [Imgs, setImgs] = useState([]);
   const [quality, setQuality] = useState("");
   const [userRole, setUserRole] = useState("");
+  const [files, setFiles] = useState("");
 
   const bearerToken = "Bearer ".concat(
     localStorage.getItem("neetit_access_token")
@@ -105,23 +108,44 @@ const Writes = () => {
   };
 
   //API에 필요한 6가지 항목
-  const submitWrites = async (e) => {
+  const submitWrites = async () => {
     //writeId가 있으면 수정API요청 / writeId가 없으면 새로운 글쓰기 요청
     console.log(title, content, category, apiTag, quality, Imgs, writeId);
     //writeId (기존의 글쓰기가 존재한다면 수정API)
     if (writeId) {
       console.log("!");
     } else {
-      // const target = userRole === "CENTER" ? "wishes" : "donations";
-      // let form = new FormData();
-      // form.append("request", {
-      //   category: "재능기부",
-      //   content: "기부할래요",
-      //   quality: "나쁨",
-      //   tags: [1, 2],
-      //   title: "재능 기부",
-      // });
-      // form.append("file", null);
+      const target = userRole === "CENTER" ? "wishes" : "donations";
+      console.log(userRole, target);
+      const formData = new FormData();
+      formData.append(
+        "request",
+        new Blob(
+          [
+            JSON.stringify({
+              category: "재능기부",
+              content: "기부할래요",
+              quality: "나쁨",
+              tags: [1, 2],
+              title: "재능 기부",
+            }),
+          ],
+          { type: "application/json" }
+        )
+      );
+      files.map((file) => {
+        formData.append("file", file);
+      });
+
+      await axios({
+        method: "post",
+        url: "https://www.needit.ml/donations",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: bearerToken,
+        },
+      });
       // const Result = await postRequest(`${target}`, {
       //   data: form,
       //   headers: {
@@ -150,6 +174,8 @@ const Writes = () => {
       reader.onload = () => {
         fileURLs[i] = reader.result;
         setImgs([...Imgs, fileURLs]);
+        console.log(e.target.files, "!!!!!!!!!!!!!!!!!!!");
+        setFiles([...files, e.target.files[0]]);
       };
       reader.readAsDataURL(file);
     }
