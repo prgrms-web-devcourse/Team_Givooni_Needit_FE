@@ -4,8 +4,17 @@ import { Avatar } from "@mui/material";
 import { ListItemButton } from "@mui/material";
 import { ListItemText } from "@mui/material";
 import { PropTypes } from "prop-types";
+import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+const Message = ({ list }) => {
+  const navigate = useNavigate();
 
-const Message = ({ list, callback }) => {
+  function pushParams(postId, postType, recieverId) {
+    navigate(`/message/${postId}/${postType}/${recieverId}`);
+  }
+  const me = "MEMBER".toLowerCase();
+  const reciever = "CENTER".toLowerCase();
+
   return (
     <>
       <List
@@ -14,39 +23,49 @@ const Message = ({ list, callback }) => {
         }}
       >
         {list.map((message) => (
-          <ListItemButton key={message.id} onClick={() => callback(message.id)}>
+          <ListItemButton
+            key={message.poistId + message[reciever]}
+            onClick={() => {
+              pushParams(
+                message.postId,
+                message.postType,
+                message[reciever].id
+              );
+            }}
+          >
             <ListItemAvatar>
               <Avatar
-                alt="Remy Sharp"
-                src={
-                  message.img ||
-                  "https://randomuser.me/api/portraits/men/23.jpg"
-                }
+                alt={message[me].name}
+                src={message[me].profileImageUrl}
               />
             </ListItemAvatar>
             <List>
               <ListItemText
-                primary={message.user}
                 sx={{
                   color: "primary.main",
                   typography: "h3",
                 }}
-              ></ListItemText>
+              >
+                <Typography variant="h5">
+                  {message[me].name || message[me].name}
+                </Typography>
+              </ListItemText>
               <ListItemText
                 sx={{
                   color: "gray_dark.dark",
-                  typography: "body1",
                   width: "280px",
                 }}
               >
                 <div
                   style={{
                     overflow: "hidden",
-                    whiteSpace: "nowrap",
                     textOverflow: "ellipsis",
+                    display: "webkitBox",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
                   }}
                 >
-                  {message.text}
+                  <Typography variant="body4">{message.content}</Typography>
                 </div>
               </ListItemText>
             </List>

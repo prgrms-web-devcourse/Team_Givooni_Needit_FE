@@ -6,15 +6,15 @@ import { LocalizationProvider, MobileDateTimePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import BaseButton from "@/components/base/BaseButton";
 
-const AddSchedule = () => {
+const AddSchedule = ({ reserveDonation }) => {
   const [value, setValue] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const schedulerConfirm = () => {
-    console.log(value);
     value && handleClose();
+    reserveDonation(value);
   };
 
   return (
@@ -22,13 +22,15 @@ const AddSchedule = () => {
       <Button
         onClick={handleOpen}
         sx={{
-          maxWidth: "30px",
-          maxHeight: "30px",
+          maxWidth: "70px",
+          maxHeight: "70px",
           minWidth: "30px",
           minHeight: "30px",
+          marginRight: "4px",
+          padding: 0,
         }}
       >
-        <EventIcon />
+        <EventIcon fontSize="large" />
       </Button>
       <Modal open={open} onClose={handleClose}>
         <Box
@@ -83,6 +85,7 @@ const AddSchedule = () => {
 
 AddSchedule.propTypes = {
   text: PropTypes.string,
+  reserveDonation: PropTypes.func,
 };
 
 export default AddSchedule;
