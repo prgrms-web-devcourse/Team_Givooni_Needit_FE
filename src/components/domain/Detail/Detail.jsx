@@ -294,7 +294,7 @@ const Detail = () => {
                               deleteMyComment(part.id);
                             }}
                           />
-                        ) : (
+                        ) : checkWriter() ? (
                           <Link
                             to={`/message/${postId}/${
                               requestTarget === "wishes" ? "WISH" : "DONATION"
@@ -306,6 +306,8 @@ const Detail = () => {
                               }}
                             />
                           </Link>
+                        ) : (
+                          <></>
                         )}
                       </MemberDeleteContainer>
                       <JoinCommentContainer>
