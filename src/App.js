@@ -34,9 +34,9 @@ function App() {
               !!localStorage.getItem("needit_access_token") &&
               jwt_decode(localStorage.getItem("needit_access_token")).auth ===
                 "ROLE_CENTER" ? (
-                <Wishes />
-              ) : (
                 <Donations />
+              ) : (
+                <Wishes />
               )
             }
           />

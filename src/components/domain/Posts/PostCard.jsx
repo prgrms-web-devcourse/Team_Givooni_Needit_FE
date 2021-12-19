@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { Box, Typography } from "@mui/material";
 import theme from "@/styles/theme";
@@ -13,7 +14,17 @@ import {
 import { Link } from "react-router-dom";
 import BaseButton from "@/components/base/BaseButton";
 import PropTypes from "prop-types";
-const PostCard = ({ data }) => {
+// import { getRequest } from "@/api/axios";
+const PostCard = ({ data, isFavorite, isWishes }) => {
+  // const [isFavorite, setIsFavorite] = useState(false);
+  // useEffect(async () => {
+  //   const userFavorite = await getRequest("users");
+  //   const favoriteList = userFavorite.data.myFavorite.map(
+  //     (center) => center.centerId
+  //   );
+  //   setIsFavorite(favoriteList.includes(data.userId));
+  // }, []);
+  console.log(isFavorite);
   return (
     <div style={{ width: "100%" }}>
       <Link
@@ -99,18 +110,22 @@ const PostCard = ({ data }) => {
                 >
                   {data.userName}
                 </Typography>
-                {Math.floor(Math.random()) * 2 ? (
-                  <FavoriteIcon
-                    sx={{ ml: "4px" }}
-                    color="like"
-                    fontSize="small"
-                  />
+                {isWishes ? (
+                  isFavorite ? (
+                    <FavoriteIcon
+                      sx={{ ml: "4px" }}
+                      color="like"
+                      fontSize="small"
+                    />
+                  ) : (
+                    <FavoriteBorderIcon
+                      sx={{ ml: "4px" }}
+                      color="like"
+                      fontSize="small"
+                    />
+                  )
                 ) : (
-                  <FavoriteBorderIcon
-                    sx={{ ml: "4px" }}
-                    color="like"
-                    fontSize="small"
-                  />
+                  ""
                 )}
               </Box>
             </Box>
@@ -170,6 +185,8 @@ export default PostCard;
 PostCard.propTypes = {
   data: PropTypes.any.isRequired,
   history: PropTypes.any.isRequired,
+  isFavorite: PropTypes.bool,
+  isWishes: PropTypes.bool,
 };
 
 const CardMainContainer = styled.div`
