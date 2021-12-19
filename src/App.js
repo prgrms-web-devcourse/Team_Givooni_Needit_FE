@@ -5,15 +5,21 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import {
   Login,
   Register,
-  Center,
+  Wishes,
+  Donations,
+  Detail,
+  User,
   Member,
-  Username,
+  Center,
   Message,
   Schedule,
   Notify,
   Writes,
   Gps,
+  Search,
 } from "./pages";
+import PrivateRoute from "@/utils/PrivateRoute";
+import PublicRoute from "@/utils/PublicRoute";
 
 function App() {
   return (
@@ -21,28 +27,100 @@ function App() {
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/center" element={<Center />} />
-          <Route path="/member" element={<Member />} />
-          <Route path="/username" element={<Username />} />
-          <Route path="/message" element={<Message />} />
-          <Route path="/message/:id" element={<Message />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/notify" element={<Notify />} />
-          <Route path="/writes" element={<Writes />} />
-          <Route path="/Gps" element={<Gps />} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/Gps"
+            element={
+              <PublicRoute>
+                <Gps />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/user"
+            element={
+              <PrivateRoute>
+                <User />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/message"
+            element={
+              <PrivateRoute>
+                <Message />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/message/:postId/:postType/:recieverId"
+            element={
+              <PrivateRoute>
+                <Message />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/schedule"
+            element={
+              <PrivateRoute>
+                <Schedule />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/notify"
+            element={
+              <PrivateRoute>
+                <Notify />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/writes"
+            element={
+              <PrivateRoute>
+                <Writes />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/Search" element={<Search />} />
+          <Route path="/wishes" element={<Wishes />} />
+          <Route path="/donations" element={<Donations />} />
+          <Route path="/donations/:postId" element={<Detail />} />
+          <Route path="/wishes/:postId" element={<Detail />} />
+          <Route path="/member/:memberId" element={<Member />} />
+          <Route path="/center/:centerId" element={<Center />} />
         </Routes>
         <br />
         <Link to="login">login</Link>
         <br />
         <Link to="register">register</Link>
         <br />
-        <Link to="center">center</Link>
+        <Link to="wishes">wishes</Link>
         <br />
-        <Link to="member">member</Link>
+        <Link to="donations">donations</Link>
         <br />
-        <Link to="username">usename</Link>
+        <Link to="user">user</Link>
+        <br />
+        <Link to="member/memberId">member</Link>
+        <br />
+        <Link to="center/centerId">center</Link>
         <br />
         <Link to="message">message</Link>
         <br />

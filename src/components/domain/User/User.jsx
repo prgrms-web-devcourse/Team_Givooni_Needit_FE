@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
 import { Box, Typography, Button } from "@mui/material";
+import UserProfile from "./UserProfile";
 import theme from "@/styles/theme";
-import UserProfile from "@/components/domain/User/UserProfile";
-import UserPosts from "@/components/domain/User/UserPosts";
-import UserLikes from "@/components/domain/User/UserLikes";
+import { useState } from "react";
+import UserPosts from "./UserPosts";
+import UserLikes from "./UserLikes";
 import { useParams } from "react-router";
 import { getRequest } from "@/api/axios";
 
-const CenterPage = () => {
+const User = () => {
   const { centerId } = useParams();
-  const [centerData, setCenterData] = useState("");
-
-  useEffect(() => {
-    getRequest(`centers/${centerId}`).then((res) => setCenterData(res.data));
-  }, []);
-  console.log(centerData);
+  getRequest(`centers/${centerId}`).then((res) => console.log(res));
 
   const buttonStyle = {
     display: "flex",
@@ -32,7 +27,8 @@ const CenterPage = () => {
   const [component, setComponent] = useState("UserIntro");
 
   const buttonList = [
-    // ["UserPosts", "작성한 글"],
+    ["UserPosts", "작성한 글"],
+    ["UserLikes", "관심센터"],
     ["UserIntro", "자기소개"],
   ];
 
@@ -40,7 +36,7 @@ const CenterPage = () => {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {centerData.introduction}
+          자기소개
         </Typography>
       </UserIntro>
     ),
@@ -50,10 +46,10 @@ const CenterPage = () => {
 
   return (
     <UserContainer>
-      <Header type="plain" />
+      <Header type="edit" />
 
       <Box sx={{ p: "16px" }}>
-        <UserProfile data={centerData} />
+        <UserProfile />
         <Box
           sx={{
             display: "flex",
@@ -64,17 +60,17 @@ const CenterPage = () => {
           }}
         >
           {buttonList.map((list, index) => {
-            // if (component !== list[0])
-            return (
-              <Button
-                key={index}
-                color="gray_dark"
-                sx={buttonStyle}
-                onClick={() => setComponent(list[0])}
-              >
-                {list[1]}
-              </Button>
-            );
+            if (component !== list[0])
+              return (
+                <Button
+                  key={index}
+                  color="gray_dark"
+                  sx={buttonStyle}
+                  onClick={() => setComponent(list[0])}
+                >
+                  {list[1]}
+                </Button>
+              );
           })}
         </Box>
         {userInpo[component]}
@@ -84,7 +80,7 @@ const CenterPage = () => {
   );
 };
 
-export default CenterPage;
+export default User;
 
 const UserContainer = styled.div``;
 
@@ -97,8 +93,3 @@ const UserIntro = styled.div`
   padding: 10px;
   overflow: auto;
 `;
-
-// const { centerId, memberId } = useParams();
-// centerId
-//   ? getRequest(`centers/${centerId}`).then((res) => console.log(res))
-//   : getRequest(`members/${memberId}`).then((res) => console.log(res));

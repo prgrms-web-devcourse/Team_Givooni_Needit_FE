@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import theme from "@/styles/theme";
 import {
@@ -22,10 +22,25 @@ import {
 
 const Nav = () => {
   const primary = theme.palette.primary.main;
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(6);
+
+  useEffect(() => {
+    const path = window.location.pathname?.split("/")[1];
+    if (["donations", "wishes", "review"].includes(path)) {
+      setValue(0);
+    } else if (["schedule"].includes(path)) {
+      setValue(2);
+    } else if (["writes"].includes(path)) {
+      setValue(3);
+    } else if (["message"].includes(path)) {
+      setValue(4);
+    } else if (["user", "center", "member"].includes(path)) {
+      setValue(5);
+    } else setValue(6);
+  }, [window.location.pathname]);
 
   // 메뉴 펼치기
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -101,7 +116,7 @@ const Nav = () => {
             }}
             onClick={handleClose}
             component={Link}
-            to="/center"
+            to="/donations"
           >
             <AccountBalanceIcon />
             센터뷰
@@ -118,7 +133,7 @@ const Nav = () => {
             }}
             onClick={handleClose}
             component={Link}
-            to="/member"
+            to="/wishes"
           >
             <FavoriteIcon />
             멤버뷰
@@ -147,7 +162,7 @@ const Nav = () => {
         />
         <BottomNavigationAction
           component={Link}
-          to="/username"
+          to="/user"
           label="내정보"
           icon={<AccountCircleIcon />}
           sx={{ minWidth: "60px", p: 0.5 }}

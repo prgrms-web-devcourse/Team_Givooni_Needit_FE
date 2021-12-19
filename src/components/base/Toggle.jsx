@@ -3,8 +3,9 @@ import { useState, useContext } from "react";
 import styled from "styled-components";
 import { PropTypes } from "prop-types";
 import { DispatchContext } from "@/context";
+
 const Tag = styled(Chip)`
-  background-color: ${(props) => !props.checked && "#9e9e9e"};
+  background-color: ${(props) => !props.checked && "#E8E8E8"};
   color: white;
 `;
 function Toggle({ id, text, toggleOn = false }) {
@@ -17,7 +18,7 @@ function Toggle({ id, text, toggleOn = false }) {
       else type = "removeTag";
       dispatch({
         type,
-        nextState: id,
+        nextState: { id, text },
       });
       setChecked((prev) => !prev);
     } catch (e) {
@@ -25,7 +26,20 @@ function Toggle({ id, text, toggleOn = false }) {
     }
   };
   return (
-    <Tag label={text} color="primary" checked={checked} onClick={onClick} />
+    <button
+      onClick={onClick}
+      style={{
+        background: "none",
+        border: "none",
+      }}
+    >
+      <Tag
+        label={text}
+        color="primary"
+        checked={checked}
+        style={{ height: "20px", fontSize: "14px" }}
+      />
+    </button>
   );
 }
 Toggle.propTypes = {
