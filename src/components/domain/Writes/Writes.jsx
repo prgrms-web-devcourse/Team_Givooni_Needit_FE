@@ -9,15 +9,15 @@ import { useState, useContext, useEffect } from "react";
 import { StateContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
 import { useLocation } from "react-router-dom";
-import { getRequest, postRequest } from "@/api/axios";
+import { getRequest, postRequest, putRequest } from "@/api/axios";
 
 const subArea = [
-  { id: 1, name: "아동 · 청소년" },
+  { id: 1, name: "아동·청소년" },
   { id: 2, name: "어르신" },
   { id: 3, name: "장애인" },
   { id: 4, name: "다문화" },
   { id: 5, name: "지구촌" },
-  { id: 6, name: "가족 · 여성" },
+  { id: 6, name: "가족·여성" },
   { id: 7, name: "시민사회" },
   { id: 8, name: "동물" },
   { id: 9, name: "환경" },
@@ -109,12 +109,50 @@ const Writes = () => {
   //API에 필요한 6가지 항목
   const submitWrites = async () => {
     //writeId가 있으면 수정API요청 / writeId가 없으면 새로운 글쓰기 요청
-    console.log(title, content, category, apiTag, quality, Imgs, writeId);
+    console.log(title, content, category, tag, apiTag, quality, Imgs, writeId);
     //writeId (기존의 글쓰기가 존재한다면 수정API)
+    const target = userRole === "CENTER" ? "wishes" : "donations";
     if (writeId) {
       console.log("!");
+      if (category && content && title) {
+        const formData = new FormData();
+        formData.append(
+          "request",
+          new Blob(
+            [
+              JSON.stringify({
+                category,
+                content,
+                quality,
+                tags: apiTag,
+                title,
+              }),
+            ],
+            { type: "application/json" }
+          )
+        );
+        if (files.length === 0) {
+          formData.append("file", new Blob([JSON.stringify(" ")]), {
+            type: "application/json",
+          });
+        } else {
+          files.map((file) => {
+            formData.append("file", file);
+          });
+        }
+
+        const Result = await putRequest(`${target}/${writeId}`, {
+          data: formData,
+          headers: {
+            Authorization: bearerToken,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(Result);
+      } else {
+        alert("글 작성에 필요한 값을 아직 작성하지 않았습니다");
+      }
     } else {
-      const target = userRole === "CENTER" ? "wishes" : "donations";
       if (category && content && title) {
         const formData = new FormData();
         formData.append(
@@ -187,7 +225,7 @@ const Writes = () => {
 
     return isSame;
   };
-
+  console.log(tag, "!!!!!!!!!!!!!");
   return (
     <>
       <MainContainer>
