@@ -119,18 +119,20 @@ const RegisterPage = () => {
       });
 
   const emailValidation = async () => {
-    await postRequest("email", { data: { email: myEmail } });
+    const result = await postRequest("email", { data: { email: myEmail } });
+    if (result.message === "success") setEmailValidated("ing");
+    else console.log("email 전송 실패");
   };
 
   const codeValidation = async () => {
-    const result = await postRequest("verifyCode", {
+    const result = await postRequest("verify-code", {
       data: {
         code: myCode,
         email: myEmail,
       },
     });
-    console.log(result === "인증코드 검증 완료");
-    if (result === "인증코드 검증 완료") setEmailValidated("success");
+    console.log(result, result.message === "success");
+    if (result.message === "success") setEmailValidated("success");
   };
 
   const validationSchema = !isCenter
@@ -271,7 +273,6 @@ const RegisterPage = () => {
                     if (myEmail) {
                       emailValidation();
                       // handleStart();
-                      setEmailValidated("ing");
                     }
                   }}
                 />
