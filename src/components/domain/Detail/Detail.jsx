@@ -50,9 +50,6 @@ const Detail = () => {
   const [followed, setFollowed] = useState(false);
   const [loginUserId, setLoginUserId] = useState("");
   const [loginUserRole, setLoginUserRole] = useState("");
-  const bearerToken = "Bearer ".concat(
-    localStorage.getItem("neetit_access_token")
-  );
   const requestTarget =
     window.location.href.split("/").indexOf("donations") > -1
       ? "donations"
@@ -60,11 +57,7 @@ const Detail = () => {
 
   useEffect(async () => {
     //user의 고유Id 저장
-    const noFilterUserData = await getRequest(`users`, {
-      headers: {
-        Authorization: bearerToken,
-      },
-    });
+    const noFilterUserData = await getRequest(`users`);
     const userApiData = noFilterUserData.data;
     setLoginUserId(userApiData.myProfile.id);
     setLoginUserRole(userApiData.myProfile.role);
@@ -114,9 +107,6 @@ const Detail = () => {
         data: {
           comment: "기부신청",
         },
-        headers: {
-          Authorization: bearerToken,
-        },
       });
       setGiveButton(giveComplete);
     } else if (giveButton.text === "기부완료") {
@@ -126,11 +116,7 @@ const Detail = () => {
   };
 
   const deleteMyComment = async (commentID) => {
-    await deleteRequest(`${requestTarget}/${postId}/comments/${commentID}`, {
-      headers: {
-        Authorization: bearerToken,
-      },
-    });
+    await deleteRequest(`${requestTarget}/${postId}/comments/${commentID}`);
 
     const filterComments = detailData.comments.filter((comment) => {
       return comment.userId !== loginUserId;
@@ -139,28 +125,16 @@ const Detail = () => {
   };
 
   const clickDeleteWriteHandler = async () => {
-    await deleteRequest(`${requestTarget}/${postId}`, {
-      headers: {
-        Authorization: bearerToken,
-      },
-    });
+    await deleteRequest(`${requestTarget}/${postId}`);
   };
 
   const unfollow = async () => {
     setFollowed(false);
-    await deleteRequest(`favorites/${detailData.userId}`, {
-      headers: {
-        Authorization: bearerToken,
-      },
-    });
+    await deleteRequest(`favorites/${detailData.userId}`);
   };
   const follow = async () => {
     setFollowed(true);
-    await postRequest(`favorites/${detailData.userId}`, {
-      headers: {
-        Authorization: bearerToken,
-      },
-    });
+    await postRequest(`favorites/${detailData.userId}`);
   };
 
   //같은 userId를 가진 센터와 멤버의 충돌을 막기 위해 사용
