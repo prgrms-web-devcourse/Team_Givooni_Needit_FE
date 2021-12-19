@@ -54,6 +54,9 @@ const Detail = () => {
       ? "donations"
       : "wishes";
 
+  const bearerToken = "Bearer ".concat(
+    localStorage.getItem("needit_access_token")
+  );
   useEffect(async () => {
     //user의 고유Id 저장
     const noFilterUserData = await getRequest(`users`);
@@ -102,9 +105,13 @@ const Detail = () => {
   //기부 버튼 클릭시 동작
   const clickGiveCommentBtn = async () => {
     if (giveButton.text === "기부신청") {
+      console.log(requestTarget, postId, bearerToken);
       await postRequest(`${requestTarget}/${postId}/comments`, {
         data: {
-          comment: "기부신청",
+          comment: "기부희망",
+        },
+        headers: {
+          Authorization: bearerToken,
         },
       });
       setGiveButton(giveComplete);
