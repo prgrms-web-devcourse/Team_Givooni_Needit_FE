@@ -16,12 +16,11 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
   const result = JSON.parse(payLoad);
   const [text, setText] = useState("");
   const me = result.auth.split("_")[1].toLowerCase();
-  console.log(list);
   return (
     <>
       <List
         sx={{
-          mt: "5rem",
+          mb: "5rem",
         }}
       >
         {list.map((message) => {
