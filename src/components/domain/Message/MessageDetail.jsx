@@ -16,6 +16,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
   const result = JSON.parse(payLoad);
   const [text, setText] = useState("");
   const me = result.auth.split("_")[1].toLowerCase();
+  console.log(list);
   return (
     <>
       <List
@@ -128,7 +129,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
                   }}
                   sx={{
                     backgroundColor: `${
-                      message.contract.status === "ACCEPTED"
+                      message.contract.contractStatus === "ACCEPTED"
                         ? "primary.main"
                         : "white.main"
                     }`,
@@ -142,7 +143,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
                     sx={{
                       textAlign: "center",
                       color: `${
-                        message.contract.status === "ACCEPTED"
+                        message.contract.contractStatus === "ACCEPTED"
                           ? "white.main"
                           : "black"
                       }`,
@@ -155,7 +156,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
                   }}
                   sx={{
                     backgroundColor: `${
-                      message.contract.status === "REFUSED"
+                      message.contract.contractStatus === "REFUSED"
                         ? "primary.main"
                         : "white.main"
                     }`,
@@ -168,7 +169,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
                     sx={{
                       textAlign: "center",
                       color: `${
-                        message.contract.status === "REFUSED"
+                        message.contract.contractStatus === "REFUSED"
                           ? "white.main"
                           : "black"
                       }`,
