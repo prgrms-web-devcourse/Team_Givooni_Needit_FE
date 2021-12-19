@@ -16,23 +16,23 @@ import PropTypes from "prop-types";
 const PostCard = ({ data }) => {
   return (
     <div style={{ width: "100%" }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          p: "12px",
-          backgroundColor: theme.palette.gray.light,
-          border: `solid 1px ${theme.palette.gray.main}`,
-          borderRadius: "8px",
-        }}
+      <Link
+        to={
+          data.boardType === "WISH"
+            ? `/wishes/${data.id}`
+            : `/donations/${data.id}`
+        }
+        style={{ textDecoration: "none" }}
       >
-        <Link
-          to={
-            data.boardType === "WISH"
-              ? `/wishes/${data.id}`
-              : `/donations/${data.id}`
-          }
-          style={{ textDecoration: "none" }}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            p: "12px",
+            backgroundColor: theme.palette.gray.light,
+            border: `solid 1px ${theme.palette.gray.main}`,
+            borderRadius: "8px",
+          }}
         >
           <CardMainContainer>
             <Box sx={{ width: "100%" }}>
@@ -115,52 +115,52 @@ const PostCard = ({ data }) => {
               </Box>
             </Box>
           </CardMainContainer>
-        </Link>
-        <Box
-          sx={{
-            borderTop: `solid 1px ${theme.palette.gray.main}`,
-            ml: "-12px",
-            width: "calc(100% + 24px)",
-          }}
-        >
-          <CardFooterContainer>
-            <Box display="flex" marginRight="auto">
-              <LocationOnIcon
-                fontSize="small"
-                sx={{
-                  color: "text.secondary",
-                  mt: "-4px",
-                }}
-              />
-              <Typography
-                color="text.secondary"
-                typography="body2"
-                fontWeight={300}
-              >
-                {data.userAddress}
-              </Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                gap: "4px",
-              }}
-            >
-              {data.tags.map((tag, index) => (
+          <Box
+            sx={{
+              borderTop: `solid 1px ${theme.palette.gray.main}`,
+              ml: "-12px",
+              width: "calc(100% + 24px)",
+            }}
+          >
+            <CardFooterContainer>
+              <Box display="flex" marginRight="auto">
+                <LocationOnIcon
+                  fontSize="small"
+                  sx={{
+                    color: "text.secondary",
+                    mt: "-4px",
+                  }}
+                />
                 <Typography
-                  key={index}
                   color="text.secondary"
                   typography="body2"
                   fontWeight={300}
                 >
-                  #{tag}
+                  {data.userAddress}
                 </Typography>
-              ))}
-            </Box>
-          </CardFooterContainer>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "4px",
+                }}
+              >
+                {data.tags.map((tag, index) => (
+                  <Typography
+                    key={index}
+                    color="text.secondary"
+                    typography="body2"
+                    fontWeight={300}
+                  >
+                    #{tag}
+                  </Typography>
+                ))}
+              </Box>
+            </CardFooterContainer>
+          </Box>
         </Box>
-      </Box>
+      </Link>
     </div>
   );
 };
