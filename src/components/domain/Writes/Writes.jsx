@@ -75,15 +75,28 @@ const Writes = () => {
       },
     });
     await setUserRole(userData.data.myProfile.role);
-    preImageArr.map(async (url) => {
-      const response = await fetch(url);
-      const data = await response.blob();
-      const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-      const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-      const metadata = { type: `image/${ext}` };
-      setFiles([...files, new File([data], filename, metadata)]);
-    });
+
     setImgs(preImageArr);
+
+    async function a() {
+      const bb = await b();
+      Promise.all(bb).then((values) => {
+        setFiles(values);
+      });
+    }
+
+    function b() {
+      return preImageArr.map(async (url) => {
+        const response = await fetch(url);
+        const data = await response.blob();
+        const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+        const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+        const metadata = { type: `image/${ext}` };
+        return new File([data], filename, metadata);
+      });
+    }
+
+    a();
   }, []);
 
   const state = useContext(StateContext);
