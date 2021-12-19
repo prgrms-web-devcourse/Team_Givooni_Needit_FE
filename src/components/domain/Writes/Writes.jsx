@@ -45,7 +45,6 @@ const Writes = () => {
     preContent,
     preTag = [],
     preCategory = [],
-    preImgs = [],
     writeId;
   if (location.state) {
     preTitle = location.state.prewriteData.title;
@@ -58,7 +57,6 @@ const Writes = () => {
       return result;
     });
     preCategory = location.state.prewriteData.category;
-    preImgs = location.state.prewriteData.images;
     writeId = location.state.prewriteData.id;
   }
 
@@ -67,7 +65,6 @@ const Writes = () => {
     setContent(preContent);
     setTag(preTag);
     setCategory(preCategory);
-    setImgs(preImgs);
     setQuality("좋음");
 
     const userData = await getRequest(`users`, {
