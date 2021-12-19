@@ -45,7 +45,8 @@ const Writes = () => {
     preContent,
     preTag = [],
     preCategory = [],
-    writeId;
+    writeId,
+    preImageArr;
   if (location.state) {
     preTitle = location.state.prewriteData.title;
     preContent = location.state.prewriteData.content;
@@ -57,6 +58,7 @@ const Writes = () => {
       return result;
     });
     preCategory = location.state.prewriteData.category;
+    preImageArr = location.state.prewriteData.images;
     writeId = location.state.prewriteData.id;
   }
 
@@ -72,7 +74,16 @@ const Writes = () => {
         Authorization: bearerToken,
       },
     });
-    setUserRole(userData.data.myProfile.role);
+    await setUserRole(userData.data.myProfile.role);
+    preImageArr.map(async (url) => {
+      const response = await fetch(url);
+      const data = await response.blob();
+      const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+      const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+      const metadata = { type: `image/${ext}` };
+      setFiles([...files, new File([data], filename, metadata)]);
+    });
+    setImgs(preImageArr);
   }, []);
 
   const state = useContext(StateContext);
@@ -108,6 +119,7 @@ const Writes = () => {
     //writeId가 있으면 수정API요청 / writeId가 없으면 새로운 글쓰기 요청
     //writeId (기존의 글쓰기가 존재한다면 수정API)
     const target = userRole === "CENTER" ? "wishes" : "donations";
+    console.log(Imgs);
     if (writeId) {
       if (category && content && title) {
         const formData = new FormData();
@@ -207,6 +219,7 @@ const Writes = () => {
         fileURLs[i] = reader.result;
         setImgs([...Imgs, fileURLs]);
         setFiles([...files, e.target.files[0]]);
+        console.log(fileURLs, e.target.files[0]);
       };
       reader.readAsDataURL(file);
     }
