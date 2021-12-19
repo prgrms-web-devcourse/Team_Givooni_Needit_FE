@@ -18,6 +18,8 @@ import {
   Gps,
   Search,
 } from "./pages";
+import PrivateRoute from "@/utils/PrivateRoute";
+import PublicRoute from "@/utils/PublicRoute";
 
 function App() {
   return (
@@ -25,25 +27,85 @@ function App() {
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/Gps"
+            element={
+              <PublicRoute>
+                <Gps />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/user"
+            element={
+              <PrivateRoute>
+                <User />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/message"
+            element={
+              <PrivateRoute>
+                <Message />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/message/:postId/:postType/:recieverId"
+            element={
+              <PrivateRoute>
+                <Message />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/schedule"
+            element={
+              <PrivateRoute>
+                <Schedule />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/notify"
+            element={
+              <PrivateRoute>
+                <Notify />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/writes"
+            element={
+              <PrivateRoute>
+                <Writes />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/Search" element={<Search />} />
           <Route path="/wishes" element={<Wishes />} />
           <Route path="/donations" element={<Donations />} />
           <Route path="/donations/:postId" element={<Detail />} />
           <Route path="/wishes/:postId" element={<Detail />} />
-          <Route path="/user" element={<User />} />
           <Route path="/member/:memberId" element={<Member />} />
           <Route path="/center/:centerId" element={<Center />} />
-          <Route path="/message" element={<Message />} />
-          <Route
-            path="/message/:postId/:postType/:recieverId"
-            element={<Message />}
-          />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/notify" element={<Notify />} />
-          <Route path="/writes" element={<Writes />} />
-          <Route path="/Gps" element={<Gps />} />
-          <Route path="/Search" element={<Search />} />
         </Routes>
         <br />
         <Link to="login">login</Link>
