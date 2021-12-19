@@ -10,8 +10,12 @@ import { Container } from "@mui/material";
 import Input from "@/components/base/Input";
 import { ListItemButton } from "@mui/material";
 const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
+  const token = localStorage.getItem("needit_access_token");
+  const base64 = token.split(".")[1];
+  const payLoad = Buffer.from(base64, "base64");
+  const result = JSON.parse(payLoad);
   const [text, setText] = useState("");
-  const me = "MEMBER".toLowerCase();
+  const me = result.auth.split("_")[1].toLowerCase();
   return (
     <>
       <List
@@ -221,7 +225,6 @@ MessageDetail.propTypes = {
   sendMessage: PropTypes.func,
   reserveDonation: PropTypes.func,
   contract: PropTypes.func,
-
 };
 
 export default MessageDetail;
