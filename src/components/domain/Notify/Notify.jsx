@@ -1,5 +1,58 @@
-const Notify = () => {
-  return <div>Notify</div>;
+import { useState } from "react";
+import { ListItemButton, Typography } from "@mui/material";
+import { List } from "@mui/material";
+import ListItemText from "@mui/material/ListItemText";
+import { ListItem } from "@mui/material";
+import Proptypes from "prop-types";
+
+const Notify = ({ list = [], onClick }) => {
+  const [hoverId, setHoverId] = useState("");
+
+  return (
+    <>
+      <List
+        sx={{
+          mt: "5rem",
+        }}
+      >
+        {list.map((post) => (
+          <ListItem key={post.id}>
+            <ListItemButton
+              alignItems="flex-start"
+              onClick={() => {
+                onClick(post.id);
+              }}
+              onMouseEnter={() => setHoverId(post)}
+            >
+              <List>
+                <ListItemText
+                  sx={{
+                    color: "primary.main",
+                  }}
+                >
+                  <Typography variant="h5">기부 원해요</Typography>
+                </ListItemText>
+
+                <ListItemText
+                  sx={{
+                    color: `${
+                      hoverId === post.id ? "primary.main" : "gray_dark.dark"
+                    }`,
+                  }}
+                >
+                  <Typography variant="body1">{post.previewMessage}</Typography>
+                </ListItemText>
+              </List>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </>
+  );
 };
 
+Notify.propTypes = {
+  list: Proptypes.array,
+  onClick: Proptypes.func,
+};
 export default Notify;
