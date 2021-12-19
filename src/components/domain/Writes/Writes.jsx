@@ -37,7 +37,7 @@ const Writes = () => {
   const [files, setFiles] = useState("");
 
   const bearerToken = "Bearer ".concat(
-    localStorage.getItem("neetit_access_token")
+    localStorage.getItem("needit_access_token")
   );
 
   const location = useLocation();
@@ -106,11 +106,9 @@ const Writes = () => {
   //API에 필요한 6가지 항목
   const submitWrites = async () => {
     //writeId가 있으면 수정API요청 / writeId가 없으면 새로운 글쓰기 요청
-    console.log(title, content, category, tag, apiTag, quality, Imgs, writeId);
     //writeId (기존의 글쓰기가 존재한다면 수정API)
     const target = userRole === "CENTER" ? "wishes" : "donations";
     if (writeId) {
-      console.log("!");
       if (category && content && title) {
         const formData = new FormData();
         formData.append(
@@ -129,7 +127,7 @@ const Writes = () => {
           )
         );
         if (files.length === 0) {
-          formData.append("file", new Blob([JSON.stringify(" ")]), {
+          formData.append("file", new Blob([JSON.stringify("")]), {
             type: "application/json",
           });
         } else {
@@ -222,7 +220,6 @@ const Writes = () => {
 
     return isSame;
   };
-  console.log(tag, "!!!!!!!!!!!!!");
   return (
     <>
       <MainContainer>
