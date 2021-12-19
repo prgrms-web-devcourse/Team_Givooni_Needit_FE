@@ -17,11 +17,7 @@ const Message = ({ list }) => {
 
   return (
     <>
-      <List
-        sx={{
-          mt: "5rem",
-        }}
-      >
+      <List>
         {list.map((message) => (
           <ListItemButton
             key={message.poistId + message[reciever]}
