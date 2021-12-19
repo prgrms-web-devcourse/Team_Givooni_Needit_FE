@@ -163,13 +163,7 @@ const Detail = () => {
                 <Avatar sx={{ width: 50, height: 50 }} />
                 <TextSliderContainer>
                   <div>{detailData.userName}</div>
-                  <Slider
-                    id="기부진행"
-                    toggle={true}
-                    onChange={(data) => {
-                      console.log(data);
-                    }}
-                  />
+                  <Slider />
                 </TextSliderContainer>
               </TextSliderAvatarContainer>
               {/* 작성자 === 로그인유저이면 편집을 그외에는 관심하트를  */}

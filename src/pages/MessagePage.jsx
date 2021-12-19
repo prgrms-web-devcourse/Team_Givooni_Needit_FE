@@ -56,7 +56,7 @@ const MessagePage = () => {
         <Message list={userList} />
       )}
 
-      {postId || <Nav />}
+      {postId ? "" : <Nav />}
     </>
   );
 };

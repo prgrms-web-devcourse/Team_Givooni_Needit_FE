@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router";
+import { getRequest, patchRequest } from "@/api/axios";
 const ToggleContainer = styled.label`
   display: inline-block;
   cursor: pointer;
@@ -50,34 +51,51 @@ const ToggleInput = styled.input`
     }
   }
 `;
-
-const Toggle = ({ id, onChange, disabled, toggle }) => {
-  const [checked, setChecked] = useState(toggle);
-  const handleChange = () => {
-    setChecked((prev) => !prev);
-    onChange({
-      id,
-      toggle: !checked,
-    });
+async function changeStatus(type, id, status) {
+  const result = await patchRequest(`${type}/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({ status }), // 상태 종류 : 기부진행, 기부종료
+  });
+  return result.message;
+}
+async function getStatus(type, id) {
+  const result = await getRequest(`${type}/${id}`);
+  return result.data.status;
+}
+const Toggle = () => {
+  const { pathname } = useLocation();
+  const postType = pathname.split("/")[1];
+  const { postId } = useParams();
+  const [status, setStatus] = useState("");
+  const [checked, setChecked] = useState(false);
+  async function init() {
+    const status = await getStatus(postType, postId);
+    setStatus(status);
+    if (status === "기부진행") setChecked(true);
+    else setChecked(false);
+  }
+  useEffect(async () => {
+    init();
+  }, []);
+  const handleChange = async () => {
+    try {
+      const statusString = status === "기부종료" ? "기부진행" : "기부종료";
+      const result = await changeStatus(postType, postId, statusString);
+      init();
+      if (result !== "success") throw new Error("애러애러");
+    } catch (e) {
+      alert("작성자만 상태를 변경 할 수 있습니다.");
+      return;
+    }
   };
 
   return (
     <ToggleContainer>
-      <ToggleInput
-        type="checkbox"
-        checked={checked}
-        disabled={disabled}
-        onChange={handleChange}
-      />
+      <ToggleInput type="checkbox" checked={checked} onChange={handleChange} />
       <ToggleSwitch />
     </ToggleContainer>
   );
-};
-
-Toggle.propTypes = {
-  id: PropTypes.string,
-  onChange: PropTypes.func,
-  disabled: PropTypes.bool,
-  toggle: PropTypes.bool,
 };
 export default Toggle;
