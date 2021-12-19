@@ -11,6 +11,7 @@ import Toggle from "@/components/base/Toggle";
 import { useLocation } from "react-router-dom";
 import { getRequest, postRequest, putRequest } from "@/api/axios";
 
+//cors문제발생
 const subArea = [
   { id: 1, name: "아동·청소년" },
   { id: 2, name: "어르신" },
@@ -87,7 +88,9 @@ const Writes = () => {
 
     function b() {
       return preImageArr.map(async (url) => {
+        console.log(url);
         const response = await fetch(url);
+        console.log(response);
         const data = await response.blob();
         const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
         const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
@@ -132,7 +135,7 @@ const Writes = () => {
     //writeId가 있으면 수정API요청 / writeId가 없으면 새로운 글쓰기 요청
     //writeId (기존의 글쓰기가 존재한다면 수정API)
     const target = userRole === "CENTER" ? "wishes" : "donations";
-    console.log(Imgs);
+    console.log(files);
     if (writeId) {
       if (category && content && title) {
         const formData = new FormData();
