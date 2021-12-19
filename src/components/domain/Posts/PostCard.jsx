@@ -14,17 +14,8 @@ import {
 import { Link } from "react-router-dom";
 import BaseButton from "@/components/base/BaseButton";
 import PropTypes from "prop-types";
-// import { getRequest } from "@/api/axios";
+
 const PostCard = ({ data, isFavorite, isWishes }) => {
-  // const [isFavorite, setIsFavorite] = useState(false);
-  // useEffect(async () => {
-  //   const userFavorite = await getRequest("users");
-  //   const favoriteList = userFavorite.data.myFavorite.map(
-  //     (center) => center.centerId
-  //   );
-  //   setIsFavorite(favoriteList.includes(data.userId));
-  // }, []);
-  console.log(isFavorite);
   return (
     <div style={{ width: "100%" }}>
       <Link
