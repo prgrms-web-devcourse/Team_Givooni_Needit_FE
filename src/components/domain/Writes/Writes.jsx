@@ -1,4 +1,4 @@
-// import Header from "@/components/base/Header";
+import Header from "@/components/base/Header";
 import Input from "@/components/base/Input";
 import BaseButton from "@/components/base/BaseButton";
 import Nav from "@/components/base/Nav";
@@ -229,7 +229,7 @@ const Writes = () => {
   return (
     <>
       <MainContainer>
-        {/* <Header type="main" /> */}
+        <Header type="plain" fixed={true} />
 
         <TitleContainer>
           <Input type="게시글 제목" onChange={writeTitle} value={title} />
@@ -372,7 +372,7 @@ const MainContainer = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 18px;
+  margin-top: 98px;
   margin-bottom: 10px;
 `;
 
