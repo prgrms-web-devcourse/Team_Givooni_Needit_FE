@@ -135,7 +135,6 @@ const MessagePage = () => {
       )}
 
       {postId || <Nav />}
-
     </>
   );
 };

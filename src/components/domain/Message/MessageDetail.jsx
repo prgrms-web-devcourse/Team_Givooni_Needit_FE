@@ -221,7 +221,6 @@ MessageDetail.propTypes = {
   sendMessage: PropTypes.func,
   reserveDonation: PropTypes.func,
   contract: PropTypes.func,
-
 };
 
 export default MessageDetail;
