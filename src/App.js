@@ -1,7 +1,7 @@
 import GlobalStyle from "@/styles/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import theme from "@/styles/theme";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Login,
   Register,
@@ -20,6 +20,7 @@ import {
 } from "./pages";
 import PrivateRoute from "@/utils/PrivateRoute";
 import PublicRoute from "@/utils/PublicRoute";
+import jwt_decode from "jwt-decode";
 
 function App() {
   return (
@@ -27,6 +28,18 @@ function App() {
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/"
+            element={
+              !!localStorage.getItem("needit_access_token") &&
+              jwt_decode(localStorage.getItem("needit_access_token")).auth ===
+                "ROLE_CENTER" ? (
+                <Wishes />
+              ) : (
+                <Donations />
+              )
+            }
+          />
           <Route
             path="/login"
             element={
@@ -107,28 +120,6 @@ function App() {
           <Route path="/member/:memberId" element={<Member />} />
           <Route path="/center/:centerId" element={<Center />} />
         </Routes>
-        <br />
-        <Link to="login">login</Link>
-        <br />
-        <Link to="register">register</Link>
-        <br />
-        <Link to="wishes">wishes</Link>
-        <br />
-        <Link to="donations">donations</Link>
-        <br />
-        <Link to="user">user</Link>
-        <br />
-        <Link to="member/memberId">member</Link>
-        <br />
-        <Link to="center/centerId">center</Link>
-        <br />
-        <Link to="message">message</Link>
-        <br />
-        <Link to="schedule">schedule</Link>
-        <br />
-        <Link to="notify">notify</Link>
-        <br />
-        <Link to="writes">writes</Link>
       </BrowserRouter>
     </ThemeProvider>
   );
