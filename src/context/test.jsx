@@ -1,6 +1,6 @@
-import { StateContext, DispatchContext } from "./index";
+import { StateContext, DispatchContext } from "@/context/index";
 import React, { useContext, useEffect } from "react";
-import Toggle from "@/components/Toggle";
+import Toggle from "@/components/base/Toggle";
 function Test() {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
@@ -45,6 +45,12 @@ function Test() {
       nextState: e.target.value,
     });
   };
+  const handleUserId = (e) => {
+    dispatch({
+      type: "setUserId",
+      nextState: e.target.value,
+    });
+  };
   return (
     <>
       <p>로그인 유저변경</p>
@@ -59,6 +65,8 @@ function Test() {
       <input type="text" onChange={handleSelectedTown} />
       <p>최근 페이지변경</p>
       <input type="text" onChange={handleCurrentPage} />
+      <p>유저 아아디변경</p>
+      <input type="text" onChange={handleUserId} />
       <br />
       <br />
       <Toggle id="1" text="1번태그" toggleOn={false} />
@@ -77,6 +85,7 @@ function Test() {
       <div>{`선택된 센터 : ${state.selectedCenter}`}</div>
       <div>{`선택된 동네 : ${state.selectedTown}`}</div>
       <div>{`최근 페이지 : ${state.currentPage}`}</div>
+      <div>{`유저 아이디 : ${state.userId}`}</div>
       <ul style={{ display: "flex" }}>
         <span>선택된 태그들 : </span>
         {state.selectedTags.map((tag) => (

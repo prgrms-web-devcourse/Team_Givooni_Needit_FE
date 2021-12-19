@@ -5,6 +5,7 @@ import BaseButton from "@/components/base/BaseButton";
 import Input from "@/components/base/Input";
 import PasswordInput from "@/components/base/PasswordInput";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 import theme from "@/styles/theme";
 import styled from "styled-components";
 import { useFormik } from "formik";
@@ -30,6 +31,7 @@ const LoginForm = styled.form`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
   const handleOpen = () => setOpen(false);
   // const handleClose = () => setOpen(true);
@@ -50,15 +52,15 @@ const Login = () => {
       email: "",
       password: "",
     },
+
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
-      console.log(values);
-      const data = await postRequest("users/login", JSON.stringify(values));
+      const data = await postRequest("users/login", { data: values });
       if (data.message === "success") {
-        alert("성공!");
-        history.push("/member");
-        // context api에 저장하기
+        const { accessToken } = data.data;
+        const needit_token = accessToken;
+        localStorage.setItem("needit_access_token", needit_token);
+        navigate("/wishes");
       }
     },
   });
@@ -150,7 +152,7 @@ const Login = () => {
       {open ? (
         <LoginContainer>
           <BaseButton width={300} text="로그인" onClick={handleOpen} />
-          <Link to="/register" style={{ textDecoration: "none" }}>
+          <Link to="/gps" style={{ textDecoration: "none" }}>
             <BaseButton
               width={300}
               btnType="white"
@@ -161,7 +163,7 @@ const Login = () => {
               text="회원가입"
             />
           </Link>
-          <Link to="/member" style={{ textDecoration: "none" }}>
+          <Link to="/wishes" style={{ textDecoration: "none" }}>
             <Typography variant="h6" sx={{ color: primary }}>
               로그인 없이 둘러보기
             </Typography>
@@ -191,12 +193,12 @@ const Login = () => {
               text="로그인"
               onClick={formik.onSubmit}
             />
-            <Link to="/register" style={{ textDecoration: "none" }}>
+            <Link to="/gps" style={{ textDecoration: "none" }}>
               <Typography variant="h5" sx={{ color: primary }}>
                 회원가입
               </Typography>
             </Link>
-            <Link to="/member" style={{ textDecoration: "none" }}>
+            <Link to="/wishes" style={{ textDecoration: "none" }}>
               <Typography variant="h6" sx={{ color: primary }}>
                 로그인 없이 둘러보기
               </Typography>

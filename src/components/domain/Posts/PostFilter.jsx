@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Fade, Menu, MenuItem, Button } from "@mui/material";
 import LocationSelector from "@/components/base/LocationSelector";
+import { DispatchContext } from "@/context";
 
 const PostFilter = () => {
   const [category, setCategory] = useState("전체");
@@ -13,8 +14,21 @@ const PostFilter = () => {
   };
   const handleClose = (e) => {
     setAnchorEl(null);
-    e.target.innerText ? setCategory(e.target.innerText) : null;
+    if (e.target.innerText) {
+      setCategory(e.target.innerText);
+      e.target.innerText === "전체"
+        ? dispatch({
+            type: "setCategory",
+            nextState: null,
+          })
+        : dispatch({
+            type: "setCategory",
+            nextState: e.target.innerText,
+          });
+    }
   };
+
+  const dispatch = useContext(DispatchContext);
 
   return (
     <PostFilterContainer>

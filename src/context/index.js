@@ -2,10 +2,12 @@ import React, { useReducer, createContext } from "react";
 import { PropTypes } from "prop-types";
 const initialState = {
   loginUser: "",
+  userId: "",
   selectedUser: "",
   selectedPost: "",
   selectedCenter: "",
   selectedTags: [],
+  selectedCategory: "",
   selectedTown: "",
   currentPage: "",
 };
@@ -13,6 +15,8 @@ const initialState = {
 function contextReducer(state, action) {
   const { nextState, type } = action;
   switch (type) {
+    case "setUserId":
+      return { ...state, userId: nextState };
     case "initTags":
       return { ...state, selectedTags: [] };
     case "setLoginUser":
@@ -35,6 +39,8 @@ function contextReducer(state, action) {
         ...state,
         selectedTags: [...state.selectedTags, nextState],
       };
+    case "setCategory":
+      return { ...state, selectedCategory: nextState };
     case "setTown":
       return { ...state, selectedTown: nextState };
     case "setCurrentPage":

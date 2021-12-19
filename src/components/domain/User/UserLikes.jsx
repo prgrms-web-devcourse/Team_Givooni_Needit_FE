@@ -1,85 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Box, Avatar, IconButton } from "@mui/material";
 import styled from "styled-components";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
+import PropTypes from "prop-types";
+import { deleteRequest } from "@/api/axios";
 
-const DUMMY_DATA = {
-  post: [
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-    {
-      id: 1, // 기부글 식별자
-      title: "기부",
-      memberId: 1,
-      member: "부리",
-    },
-  ],
-};
+const UserLikes = ({ myFavorites }) => {
+  const [likes, setlikes] = useState(myFavorites);
 
-const UserLikes = () => {
+  const handleLike = (idx) => {
+    console.log(myFavorites[idx].centerId);
+    deleteRequest(`favorites/${myFavorites[idx].centerId}`);
+    setlikes(likes.filter((_, index) => index !== idx));
+  };
+
   return (
     <LikeProfileContainer>
-      {DUMMY_DATA.post.map((like, idx) => {
-        return (
-          <LikeProfile key={idx}>
-            <Box sx={{ display: "flex", gap: "10px" }}>
-              <Avatar />
-              <Typography
-                color="primary"
-                variant="subtitle1"
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                {like.member}
-              </Typography>
-            </Box>
-            <IconButton color="like">
-              <FavoriteIcon />
-            </IconButton>
-          </LikeProfile>
-        );
-      })}
+      {likes[0] ? (
+        likes?.map((like, idx) => {
+          return (
+            <LikeProfile key={idx}>
+              <Box sx={{ display: "flex", gap: "10px" }}>
+                <Avatar src={like.profileImageUrl} />
+                <Typography
+                  color="primary"
+                  variant="subtitle1"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {like.name}
+                </Typography>
+              </Box>
+              <IconButton color="like" onClick={() => handleLike(idx)}>
+                <FavoriteIcon />
+              </IconButton>
+            </LikeProfile>
+          );
+        })
+      ) : (
+        <LikeProfile>
+          <Box
+            sx={{ display: "flex", width: "100%", justifyContent: "center" }}
+          >
+            <Typography color="primary" variant="subtitle1">
+              등록된 관심센터가 없습니다
+            </Typography>
+          </Box>
+        </LikeProfile>
+      )}
     </LikeProfileContainer>
   );
 };
 
 export default UserLikes;
+
+UserLikes.propTypes = {
+  myFavorites: PropTypes.object,
+};
 
 const LikeProfileContainer = styled.div`
   display: flex;

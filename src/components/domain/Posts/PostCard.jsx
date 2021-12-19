@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import BaseButton from "@/components/base/BaseButton";
 import PropTypes from "prop-types";
-const PostCard = ({ DUMMY }) => {
+const PostCard = ({ data }) => {
   return (
     <div style={{ width: "100%" }}>
       <Box
@@ -27,7 +27,11 @@ const PostCard = ({ DUMMY }) => {
         }}
       >
         <Link
-          to={`/center/${DUMMY.data.id}`}
+          to={
+            data.boardType === "WISH"
+              ? `/wishes/${data.id}`
+              : `/donations/${data.id}`
+          }
           style={{ textDecoration: "none" }}
         >
           <CardMainContainer>
@@ -38,17 +42,13 @@ const PostCard = ({ DUMMY }) => {
                 >
                   <Box sx={{ display: "flex", gap: "6px" }}>
                     <BaseButton
-                      tag={
-                        DUMMY.data.status === "기부진행"
-                          ? "primary"
-                          : "gray_dark"
-                      }
+                      tag={data.status === "기부진행" ? "primary" : "gray_dark"}
                       width="auto"
                       height="22px"
-                      text={DUMMY.data.status}
+                      text={data.status}
                       typography="body2"
                     />
-                    {DUMMY.data.category === "재능기부" ? (
+                    {data.category === "재능기부" ? (
                       <PaletteIcon color="primary" fontSize="small" />
                     ) : (
                       <CardGiftcardIcon color="primary" fontSize="small" />
@@ -59,7 +59,7 @@ const PostCard = ({ DUMMY }) => {
                       color="primary"
                       sx={{ mr: "2px", fontSize: "" }}
                     />
-                    {format(new Date(DUMMY.data.createdDate), "MM.dd")}
+                    {format(new Date(data.createdDate), "MM.dd")}
                   </Typography>
                 </CardHeaderInfo>
               </CardHeader>
@@ -70,7 +70,7 @@ const PostCard = ({ DUMMY }) => {
                   color="primary"
                   sx={{ my: "4px" }}
                 >
-                  {DUMMY.data.title}
+                  {data.title}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -83,7 +83,7 @@ const PostCard = ({ DUMMY }) => {
                     fontWeight: 300,
                   }}
                 >
-                  {DUMMY.data.content}
+                  {data.content}
                 </Typography>
               </CardContent>
               <Box
@@ -97,7 +97,7 @@ const PostCard = ({ DUMMY }) => {
                   color="primary"
                   sx={{ my: "6px" }}
                 >
-                  {DUMMY.data.member}
+                  {data.userName}
                 </Typography>
                 {Math.floor(Math.random()) * 2 ? (
                   <FavoriteIcon
@@ -137,7 +137,7 @@ const PostCard = ({ DUMMY }) => {
                 typography="body2"
                 fontWeight={300}
               >
-                {"서울특별시 강남구"}
+                {data.userAddress}
               </Typography>
             </Box>
 
@@ -147,7 +147,7 @@ const PostCard = ({ DUMMY }) => {
                 gap: "4px",
               }}
             >
-              {DUMMY.data.tags.map((tag, index) => (
+              {data.tags.map((tag, index) => (
                 <Typography
                   key={index}
                   color="text.secondary"
@@ -168,7 +168,7 @@ const PostCard = ({ DUMMY }) => {
 export default PostCard;
 
 PostCard.propTypes = {
-  DUMMY: PropTypes.any.isRequired,
+  data: PropTypes.any.isRequired,
   history: PropTypes.any.isRequired,
 };
 

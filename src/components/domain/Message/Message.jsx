@@ -14,6 +14,7 @@ const Message = ({ list }) => {
   }
   const me = "MEMBER".toLowerCase();
   const reciever = "CENTER".toLowerCase();
+
   return (
     <>
       <List

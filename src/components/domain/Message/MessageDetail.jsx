@@ -190,6 +190,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
         }}
       >
         <AddSchedule reserveDonation={(date) => reserveDonation(date)} />
+
         <Input
           type="message"
           sx={{
@@ -220,6 +221,7 @@ MessageDetail.propTypes = {
   sendMessage: PropTypes.func,
   reserveDonation: PropTypes.func,
   contract: PropTypes.func,
+
 };
 
 export default MessageDetail;

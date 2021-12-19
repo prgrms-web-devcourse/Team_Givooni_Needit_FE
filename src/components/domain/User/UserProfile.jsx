@@ -1,26 +1,23 @@
 import React from "react";
-// import { useParams } from "react-router";
 import BaseButton from "@/components/base/BaseButton";
 import styled from "styled-components";
-// import {
-//   Mood as MoodIcon,
-//   SentimentSatisfied as SentimentSatisfiedIcon,
-//   SentimentVeryDissatisfied as SentimentVeryDissatisfiedIcon,
-// } from "@mui/icons-material";
-import { Box, Avatar } from "@mui/material";
+import { Box, Avatar, Typography } from "@mui/material";
+import PropTypes from "prop-types";
+import { Call as CallIcon, Map as MapIcon } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
-const DUMMY = {
-  memberId: 4,
-  nickname: "updated 스펜서",
-  profileImageUrl: "spencer.jpg",
-};
+const UserProfile = ({ data, mine = false }) => {
+  let navigate = useNavigate();
+  const logout = () => {
+    navigate("/login", { replace: true });
+    localStorage.removeItem("needit_access_token");
+  };
 
-const UserProfile = () => {
   return (
     <UserProfileContainer>
       <Avatar
-        alt={DUMMY.nickname}
-        src="/example.jpg"
+        alt={data.name ? data.name : data.nickname}
+        src={data.image ? data.image : data.profileImageUrl}
         sx={{
           width: "28vw",
           height: "28vw",
@@ -30,28 +27,47 @@ const UserProfile = () => {
         }}
       />
       <Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            width: "60vw",
-            height: "100%",
-            gap: "5px",
-            mb: "6px",
-          }}
-        >
-          <h5>{DUMMY.nickname}</h5>
-          <BaseButton
-            width="5rem"
-            height={24}
-            btnType="white"
-            text="로그아웃"
-            typography="subtitle2"
-            style={{
+        <Box>
+          <Box
+            sx={{
               display: "flex",
+              alignItems: "center",
+              width: "60vw",
+              height: "100%",
+              gap: "5px",
+              mb: "6px",
             }}
-          />
+          >
+            <h5>{data.name ? data.name : data.nickname}</h5>
+            {mine && (
+              <BaseButton
+                width="5rem"
+                height={24}
+                btnType="white"
+                text="로그아웃"
+                onClick={logout}
+                typography="subtitle2"
+                style={{
+                  display: "flex",
+                }}
+              />
+            )}
+          </Box>
+          {data.nickname}
+          {data.contact && (
+            <Box>
+              <Box display="flex" sx={{ mt: "14px" }}>
+                <CallIcon />
+                <Typography>{data.contact}</Typography>
+              </Box>
+              <Box display="flex">
+                <MapIcon />
+                <Typography display="inline">{data.address}</Typography>
+              </Box>
+            </Box>
+          )}
         </Box>
+
         {/* <Box sx={{ display: "flex", gap: "4px" }}>
           <Chip icon={<MoodIcon />} label="11" variant="outlined" />
           <Chip
@@ -72,6 +88,19 @@ const UserProfile = () => {
 
 export default UserProfile;
 
+UserProfile.propTypes = {
+  data: PropTypes.object,
+  mine: PropTypes.bool,
+};
+
 const UserProfileContainer = styled.div`
   display: flex;
 `;
+
+// const UserData = styled.div`
+//   border: none;
+//   width: 100%;
+//   height: auto;
+//   font-size: 12px;
+//   font-family: "Spoqa Han Sans Neo";
+// `;
