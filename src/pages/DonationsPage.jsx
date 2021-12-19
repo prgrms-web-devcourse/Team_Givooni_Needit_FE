@@ -7,25 +7,29 @@ import TagFilter from "@/components/domain/Posts/TagFilter";
 import PostFilter from "@/components/domain/Posts/PostFilter";
 import { StateContext } from "@/context";
 import { getRequest } from "@/api/axios";
+import { Box } from "@mui/material";
+import BaseButton from "@/components/base/BaseButton";
 
 const DonationsPage = () => {
   const state = useContext(StateContext);
   const tags = state.selectedTags.map((tag) => tag["id"]);
   const [postList, setPostList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [morePage, setMorePage] = useState(true);
 
-  console.log("테스트");
-
-  useEffect(() => {
-    getRequest("donations/search", {
+  useEffect(async () => {
+    const fetchPost = await getRequest("donations/search", {
       params: {
         page: 1,
-        size: 20,
+        size: 10 * page,
         tags: tags.join(),
         category: state.selectedCategory,
         location: state.selectedTown,
       },
-    }).then((res) => setPostList(res.data.content.reverse()));
-  }, [state]);
+    });
+    setPostList(fetchPost.data.content.reverse());
+    fetchPost.data.content.length == postList.length && setMorePage(false);
+  }, [state, page]);
 
   return (
     <PostsViewContainer>
@@ -37,6 +41,23 @@ const DonationsPage = () => {
           return <PostCard key={id} data={post} />;
         })}
       </PostContainer>
+      <Box sx={{ display: "flex", justifyContent: "center", p: 1 }}>
+        {morePage ? (
+          <BaseButton
+            btnType="transparent"
+            text="더보기"
+            onClick={() => setPage(page + 1)}
+          />
+        ) : (
+          <BaseButton
+            btnType="transparent"
+            text="더이상 불러올 포스트가 없습니다. 
+            "
+            onClick={() => window.scrollTo(0, 0)}
+            width="auto"
+          />
+        )}
+      </Box>
       <Nav />
     </PostsViewContainer>
   );
@@ -46,6 +67,7 @@ export default DonationsPage;
 
 const PostsViewContainer = styled.div`
   margin-top: 5rem;
+  padding-bottom: 60px;
 `;
 
 const PostContainer = styled.div`
