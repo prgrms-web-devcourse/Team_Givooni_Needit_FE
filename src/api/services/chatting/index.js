@@ -13,38 +13,47 @@ export async function getMessageList(postId, postType, receiverId) {
 }
 
 export async function sendMessage(content, postId, postType, receiverId) {
-  console.log(content, postId, postType, receiverId);
   const result = await postRequest("chats", {
-    body: {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({
       postId,
       postType,
       receiverId,
       content,
-    },
-  });
-  return result;
-}
-
-export async function createContract(
-  postId,
-  postType,
-  receiverId,
-  contractDate
-) {
-  const result = await postRequest("contract", {
-    body: JSON.stringify({
-      postId,
-      postType,
-      receiverId,
-      contractDate,
     }),
   });
   return result;
 }
 
-export async function patchContract(id, contractType) {
+export async function createContract(
+  contractDate,
+  postId,
+  postType,
+  receiverId
+) {
+  const dataFormat = new Date(contractDate).toJSON();
+  const result = await postRequest("contract", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({
+      postId,
+      postType,
+      receiverId,
+      contractDate: dataFormat,
+    }),
+  });
+  return result;
+}
+
+export async function patchContract(id, contractStatus) {
   const result = await patchRequest(`contract/${id}`, {
-    body: JSON.stringify(contractType),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({ contractStatus }),
   });
   return result;
 }

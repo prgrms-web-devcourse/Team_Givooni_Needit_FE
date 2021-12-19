@@ -20,7 +20,7 @@ const Notify = ({ list = [], onClick }) => {
             <ListItemButton
               alignItems="flex-start"
               onClick={() => {
-                onClick(post.id);
+                onClick(post);
               }}
               onMouseEnter={() => setHoverId(post)}
             >
@@ -30,7 +30,7 @@ const Notify = ({ list = [], onClick }) => {
                     color: "primary.main",
                   }}
                 >
-                  <Typography variant="h5">기부 원해요</Typography>
+                  <Typography variant="h5">새로운 알람</Typography>
                 </ListItemText>
 
                 <ListItemText
