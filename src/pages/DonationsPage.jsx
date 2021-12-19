@@ -24,12 +24,12 @@ const DonationsPage = () => {
         category: state.selectedCategory,
         location: state.selectedTown,
       },
-    }).then((res) => setPostList(res.data.content));
+    }).then((res) => setPostList(res.data.content.reverse()));
   }, [state]);
 
   return (
     <PostsViewContainer>
-      <Header type="member" />
+      <Header type="member" fixed />
       <TagFilter />
       <PostFilter />
       <PostContainer>
@@ -44,7 +44,9 @@ const DonationsPage = () => {
 
 export default DonationsPage;
 
-const PostsViewContainer = styled.div``;
+const PostsViewContainer = styled.div`
+  margin-top: 5rem;
+`;
 
 const PostContainer = styled.div`
   display: flex;

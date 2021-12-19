@@ -29,7 +29,7 @@ const WishesPage = () => {
         category: state.selectedCategory,
         location: state.selectedTown,
       },
-    }).then((res) => setPostList(res.data.content));
+    }).then((res) => setPostList(res.data.content.reverse()));
   }, [state]);
 
   // const onIntersect = async ([entry], observer) => {
@@ -53,7 +53,7 @@ const WishesPage = () => {
 
   return (
     <PostsViewContainer>
-      <Header type="member" />
+      <Header type="member" fixed />
       <TagFilter />
       <PostFilter />
       <PostContainer>
@@ -69,7 +69,9 @@ const WishesPage = () => {
 
 export default WishesPage;
 
-const PostsViewContainer = styled.div``;
+const PostsViewContainer = styled.div`
+  margin-top: 5rem;
+`;
 
 const PostContainer = styled.div`
   display: flex;
