@@ -29,7 +29,7 @@ const WishesPage = () => {
         category: state.selectedCategory,
         location: state.selectedTown,
       },
-    }).then((res) => setPostList(res.data.content));
+    }).then((res) => setPostList(res.data.content.reverse()));
   }, [state]);
 
   // const onIntersect = async ([entry], observer) => {
