@@ -3,7 +3,6 @@ import BaseButton from "@/components/base/BaseButton";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import { useState, useContext, useEffect } from "react";
 import { StateContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
@@ -216,7 +215,8 @@ const Writes = () => {
 
     return isSame;
   };
-  console.log(tag, "!!!!!!!!!!!!!");
+  console.log(state.selectedTown);
+
   return (
     <>
       <MainContainer>
@@ -231,18 +231,18 @@ const Writes = () => {
               />
             </TitleContainer>
             <InformationContainer>
-              <LocationContainer>
-                <LocationButton>
-                  <div style={{ width: "69px", height: "15px" }}>
-                    {state.selectedTown}
-                  </div>
-                  <GpsFixedIcon
-                    sx={{ width: "15px", height: "15px" }}
-                    style={{ color: "#FD9F28", marginLeft: "4px" }}
-                  />
-                </LocationButton>
-              </LocationContainer>
-
+              <TagsContainer>
+                <CustomBaseButton
+                  text={
+                    tag.length === 0
+                      ? "태그설정: 최대 3개"
+                      : tag.map((val) => "#".concat(val.text)).join(" ")
+                  }
+                  onClick={() => {
+                    clickTagHandler();
+                  }}
+                />
+              </TagsContainer>
               <CustomSelect onChange={changeSelectHandler}>
                 <option value="카테고리" disabled selected hidden>
                   카테고리
@@ -255,18 +255,6 @@ const Writes = () => {
                 </option>
               </CustomSelect>
             </InformationContainer>
-            <TagsContainer>
-              <CustomBaseButton
-                text={
-                  tag.length === 0
-                    ? "태그설정: 최대 3개"
-                    : tag.map((val) => "#".concat(val.text)).join(" ")
-                }
-                onClick={() => {
-                  clickTagHandler();
-                }}
-              />
-            </TagsContainer>
             <ContentContainer>
               <ContentTextarea
                 multiline
@@ -401,47 +389,8 @@ const InformationContainer = styled.div`
   width: auto;
   height: 24px;
   display: flex;
-  justify-content: space-between;
-`;
-
-const LocationContainer = styled.div``;
-
-const LocationButton = styled.button`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
-  padding: 4px 7px;
-
-  position: static;
-  width: 104px;
-  height: 23px;
-  left: 0px;
-  top: 0px;
-
-  /* gray_light */
-
-  background: #f6f6f6;
-  /* gray */
-
-  border: 1px solid #e8e8e8;
-  box-sizing: border-box;
-  border-radius: 8px;
-
-  /* Inside Auto Layout */
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-
-  font-family: Spoqa Han Sans Neo;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 15px;
-  /* identical to box height */
-
-  color: #adadad;
+  justify-content: space-between;
 `;
 
 const CustomSelect = styled.select`
