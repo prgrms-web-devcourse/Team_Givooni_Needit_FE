@@ -18,6 +18,14 @@ const WishesPage = () => {
   const [page, setPage] = useState(1);
   const [morePage, setMorePage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [favoriteList, setFavoriteList] = useState("");
+
+  useEffect(async () => {
+    const userFavorite = await getRequest("users");
+    setFavoriteList(
+      userFavorite.data.myFavorite.map((center) => center.centerId)
+    );
+  }, []);
 
   useEffect(async () => {
     const fetchPost = await getRequest("wishes/search", {
@@ -39,11 +47,18 @@ const WishesPage = () => {
       <Header type="member" fixed />
       <TagFilter />
       <PostFilter />
-      {isLoading ? (
+      {isLoading && favoriteList ? (
         <>
           <PostContainer>
             {postList?.map((post, id) => {
-              return <PostCard key={id} data={post} isCenter />;
+              return (
+                <PostCard
+                  key={id}
+                  data={post}
+                  isFavorite={favoriteList?.includes(post.userId)}
+                  isWishes
+                />
+              );
             })}
           </PostContainer>
           <Box sx={{ display: "flex", justifyContent: "center", p: 1 }}>

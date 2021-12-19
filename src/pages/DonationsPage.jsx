@@ -17,15 +17,7 @@ const DonationsPage = () => {
   const [postList, setPostList] = useState([]);
   const [page, setPage] = useState(1);
   const [morePage, setMorePage] = useState(true);
-  const [favoriteList, setFavoriteList] = useState("");
-
-  useEffect(async () => {
-    const userFavorite = await getRequest("users");
-    setFavoriteList(
-      userFavorite.data.myFavorite.map((center) => center.centerId)
-    );
-  }, []);
-  console.log(favoriteList);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(async () => {
     const fetchPost = await getRequest("donations/search", {
@@ -39,6 +31,7 @@ const DonationsPage = () => {
     });
     setPostList(fetchPost.data.content.reverse());
     fetchPost.data.content.length == postList.length && setMorePage(false);
+    setIsLoading(true);
   }, [state, page]);
 
   return (
@@ -46,17 +39,11 @@ const DonationsPage = () => {
       <Header type="member" fixed />
       <TagFilter />
       <PostFilter />
-      {favoriteList && postList ? (
+      {isLoading ? (
         <>
           <PostContainer>
             {postList?.map((post, id) => {
-              return (
-                <PostCard
-                  key={id}
-                  data={post}
-                  isFavorite={favoriteList?.includes(post.userId)}
-                />
-              );
+              return <PostCard key={id} data={post} />;
             })}
           </PostContainer>
           <Box sx={{ display: "flex", justifyContent: "center", p: 1 }}>
