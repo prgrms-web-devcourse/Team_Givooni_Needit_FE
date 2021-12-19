@@ -14,11 +14,11 @@ import {
 import jwt_decode from "jwt-decode";
 
 const Nav = () => {
-  const [value, setValue] = useState(6);
+  const [value, setValue] = useState(5);
 
   useEffect(() => {
     const path = window.location.pathname?.split("/")[1];
-    if (["donations", "wishes", "review"].includes(path)) {
+    if (["", "donations", "wishes", "review"].includes(path)) {
       setValue(0);
     } else if (["schedule"].includes(path)) {
       setValue(1);
