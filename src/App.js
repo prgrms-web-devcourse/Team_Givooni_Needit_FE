@@ -20,13 +20,26 @@ import {
 } from "./pages";
 import PrivateRoute from "@/utils/PrivateRoute";
 import PublicRoute from "@/utils/PublicRoute";
-
+import jwt_decode from "jwt-decode";
+console.log(!!localStorage.getItem("needit_access_token"));
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/"
+            element={
+              !!localStorage.getItem("needit_access_token") &&
+              jwt_decode(localStorage.getItem("needit_access_token")).auth ===
+                "ROLE_CENTER" ? (
+                <Wishes />
+              ) : (
+                <Donations />
+              )
+            }
+          />
           <Route
             path="/login"
             element={
