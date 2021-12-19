@@ -9,8 +9,7 @@ import { useState, useContext, useEffect } from "react";
 import { StateContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
 import { useLocation } from "react-router-dom";
-import { getRequest } from "@/api/axios";
-import axios from "axios";
+import { getRequest, postRequest } from "@/api/axios";
 
 const subArea = [
   { id: 1, name: "아동 · 청소년" },
@@ -116,44 +115,44 @@ const Writes = () => {
       console.log("!");
     } else {
       const target = userRole === "CENTER" ? "wishes" : "donations";
-      console.log(userRole, target);
-      const formData = new FormData();
-      formData.append(
-        "request",
-        new Blob(
-          [
-            JSON.stringify({
-              category: "재능기부",
-              content: "기부할래요",
-              quality: "나쁨",
-              tags: [1, 2],
-              title: "재능 기부",
-            }),
-          ],
-          { type: "application/json" }
-        )
-      );
-      files.map((file) => {
-        formData.append("file", file);
-      });
+      if (category && content && title) {
+        const formData = new FormData();
+        formData.append(
+          "request",
+          new Blob(
+            [
+              JSON.stringify({
+                category,
+                content,
+                quality,
+                tags: apiTag,
+                title,
+              }),
+            ],
+            { type: "application/json" }
+          )
+        );
+        if (files.length === 0) {
+          formData.append("file", new Blob([JSON.stringify(" ")]), {
+            type: "application/json",
+          });
+        } else {
+          files.map((file) => {
+            formData.append("file", file);
+          });
+        }
 
-      await axios({
-        method: "post",
-        url: "https://www.needit.ml/donations",
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: bearerToken,
-        },
-      });
-      // const Result = await postRequest(`${target}`, {
-      //   data: form,
-      //   headers: {
-      //     Authorization: bearerToken,
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // });
-      // console.log(Result, "!!!!!!!!");
+        const Result = await postRequest(`${target}`, {
+          data: formData,
+          headers: {
+            Authorization: bearerToken,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(Result);
+      } else {
+        alert("글 작성에 필요한 값을 아직 작성하지 않았습니다");
+      }
     }
   };
 
@@ -174,7 +173,6 @@ const Writes = () => {
       reader.onload = () => {
         fileURLs[i] = reader.result;
         setImgs([...Imgs, fileURLs]);
-        console.log(e.target.files, "!!!!!!!!!!!!!!!!!!!");
         setFiles([...files, e.target.files[0]]);
       };
       reader.readAsDataURL(file);
