@@ -36,7 +36,6 @@ const Schedule = () => {
                 contractId,
                 donationStatus,
                 contractWith,
-                postContent,
                 postId,
                 postTitle,
                 postType,
@@ -117,7 +116,7 @@ const Schedule = () => {
                         height="2rem"
                         width="5.2rem"
                         style={{ fontSize: "0.65rem" }}
-                        text={postContent}
+                        text={postType === "WISH" ? "기부원해요" : "기부할래요"}
                       />
                       <BaseButton
                         height="2rem"
