@@ -1,22 +1,20 @@
 import axios from "axios";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
-const access_token = localStorage.getItem("needit_access_token");
-
-const instance = axios.create({
-  headers: {
-    Authorization: "Bearer " + access_token,
-  },
-});
+const instance = axios.create();
 
 instance.interceptors.request.use(
-  function (config) {
+  (config) => {
+    if (!config.headers.Authorization) {
+      const token = localStorage.getItem("needit_access_token");
+      if (token && token.length > 0) {
+        config.headers.Authorization = "Bearer " + token;
+      }
+    }
     return config;
   },
-  function (error) {
-    console.log(error);
-    return Promise.reject(error);
+  (error) => {
+    Promise.reject(error);
   }
 );
 
