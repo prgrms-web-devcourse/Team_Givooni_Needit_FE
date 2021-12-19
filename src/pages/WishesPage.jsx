@@ -43,7 +43,7 @@ const WishesPage = () => {
         <>
           <PostContainer>
             {postList?.map((post, id) => {
-              return <PostCard key={id} data={post} />;
+              return <PostCard key={id} data={post} isCenter />;
             })}
           </PostContainer>
           <Box sx={{ display: "flex", justifyContent: "center", p: 1 }}>

@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import BaseButton from "@/components/base/BaseButton";
 import PropTypes from "prop-types";
 // import { getRequest } from "@/api/axios";
-const PostCard = ({ data, isFavorite }) => {
+const PostCard = ({ data, isFavorite, isCenter }) => {
   // const [isFavorite, setIsFavorite] = useState(false);
   // useEffect(async () => {
   //   const userFavorite = await getRequest("users");
@@ -110,7 +110,9 @@ const PostCard = ({ data, isFavorite }) => {
                 >
                   {data.userName}
                 </Typography>
-                {isFavorite ? (
+                {isCenter ? (
+                  ""
+                ) : isFavorite ? (
                   <FavoriteIcon
                     sx={{ ml: "4px" }}
                     color="like"
@@ -182,6 +184,7 @@ PostCard.propTypes = {
   data: PropTypes.any.isRequired,
   history: PropTypes.any.isRequired,
   isFavorite: PropTypes.bool,
+  isCenter: PropTypes.bool,
 };
 
 const CardMainContainer = styled.div`
