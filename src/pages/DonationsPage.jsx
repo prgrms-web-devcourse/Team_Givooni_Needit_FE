@@ -29,7 +29,7 @@ const DonationsPage = () => {
 
   return (
     <PostsViewContainer>
-      <Header type="member" />
+      <Header type="member" fixed />
       <TagFilter />
       <PostFilter />
       <PostContainer>
@@ -44,7 +44,9 @@ const DonationsPage = () => {
 
 export default DonationsPage;
 
-const PostsViewContainer = styled.div``;
+const PostsViewContainer = styled.div`
+  margin-top: 5rem;
+`;
 
 const PostContainer = styled.div`
   display: flex;
