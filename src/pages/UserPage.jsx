@@ -54,7 +54,7 @@ const UserPage = () => {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {myProfile.introduction
+          {userData.myProfile.introduction
             ? userData.myProfile.introduction
             : "자기소개가 없습니다."}
         </Typography>
