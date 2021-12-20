@@ -45,7 +45,7 @@ const WishesPage = () => {
         location: state.selectedTown,
       },
     });
-    setPostList(fetchPost.data.content.reverse());
+    setPostList(fetchPost.data.content);
     fetchPost.data.content.length == postList.length && setMorePage(false);
     setIsLoading(true);
   }, [state, page]);
