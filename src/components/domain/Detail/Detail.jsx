@@ -175,9 +175,12 @@ const Detail = () => {
                   }}
                 />
               ) : followed ? (
-                <FavoriteIcon onClick={unfollow} />
+                <FavoriteIcon onClick={unfollow} sx={{ cursor: "pointer" }} />
               ) : (
-                <FavoriteBorderIcon onClick={follow} />
+                <FavoriteBorderIcon
+                  onClick={follow}
+                  sx={{ cursor: "pointer" }}
+                />
               )}
               {isClickMoreVert ? (
                 <>
