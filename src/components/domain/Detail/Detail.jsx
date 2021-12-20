@@ -54,6 +54,9 @@ const Detail = () => {
       ? "donations"
       : "wishes";
 
+  const bearerToken = "Bearer ".concat(
+    localStorage.getItem("needit_access_token")
+  );
   useEffect(async () => {
     //작성글에 대한 데이터 저장
     const noFilterWriteData = await getRequest(`${requestTarget}/${postId}`);
@@ -103,12 +106,20 @@ const Detail = () => {
   //기부 버튼 클릭시 동작
   const clickGiveCommentBtn = async () => {
     if (giveButton.text === "기부신청") {
-      await postRequest(`${requestTarget}/${postId}/comments`, {
+      console.log(requestTarget, postId, bearerToken);
+      const res = await postRequest(`${requestTarget}/${postId}/comments`, {
         data: {
-          comment: "기부신청",
+          comment: "기부희망",
+        },
+        headers: {
+          Authorization: bearerToken,
         },
       });
-      setGiveButton(giveComplete);
+      if (res && res.message === "success") {
+        setGiveButton(giveComplete);
+        const detailDataApi = await getRequest(`${requestTarget}/${postId}`);
+        setDetailData(detailDataApi.data);
+      }
     } else if (giveButton.text === "기부완료") {
       // 자신의 comment 삭제 이벤트
       setGiveButton(giveUncomplete);
@@ -117,11 +128,9 @@ const Detail = () => {
 
   const deleteMyComment = async (commentID) => {
     await deleteRequest(`${requestTarget}/${postId}/comments/${commentID}`);
-
-    const filterComments = detailData.comments.filter((comment) => {
-      return comment.userId !== loginUserId;
-    });
-    setDetailData({ ...detailData, comments: filterComments });
+    setGiveButton(giveUncomplete);
+    const detailDataApi = await getRequest(`${requestTarget}/${postId}`);
+    setDetailData(detailDataApi.data);
   };
 
   const clickDeleteWriteHandler = async () => {
@@ -161,7 +170,17 @@ const Detail = () => {
           <WriteContainer>
             <WriteSubContainer>
               <TextSliderAvatarContainer>
-                <Avatar sx={{ width: 50, height: 50 }} />
+                <Link
+                  to={`/${
+                    requestTarget === "donations" ? "member" : "center"
+                  }/${detailData.userId}`}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Avatar
+                    sx={{ width: 50, height: 50 }}
+                    src={detailData.userImage}
+                  />
+                </Link>
                 <TextSliderContainer>
                   <div>{detailData.userName}</div>
                   <Slider />
@@ -276,11 +295,25 @@ const Detail = () => {
                     <CardContainer key={i}>
                       <MemberDeleteContainer>
                         <MemberContainer>
-                          <Avatar
-                            sx={{ width: 30, height: 30 }}
-                            src={part.userImage}
-                          />
-                          <MemberName>{part.userName}</MemberName>
+                          <Link
+                            to={`/${
+                              requestTarget === "donations"
+                                ? "center"
+                                : "member"
+                            }/${part.userId}`}
+                            style={{
+                              cursor: "pointer",
+                              display: "flex",
+                              textDecoration: "none",
+                            }}
+                          >
+                            <Avatar
+                              sx={{ width: 30, height: 30 }}
+                              src={part.userImage}
+                            />
+
+                            <MemberName>{part.userName}</MemberName>
+                          </Link>
                         </MemberContainer>
                         {part.userId === loginUserId &&
                         ((requestTarget === "wishes" &&
@@ -292,7 +325,7 @@ const Detail = () => {
                               deleteMyComment(part.id);
                             }}
                           />
-                        ) : (
+                        ) : checkWriter() ? (
                           <Link
                             to={`/message/${postId}/${
                               requestTarget === "wishes" ? "WISH" : "DONATION"
@@ -304,6 +337,8 @@ const Detail = () => {
                               }}
                             />
                           </Link>
+                        ) : (
+                          <></>
                         )}
                       </MemberDeleteContainer>
                       <JoinCommentContainer>
@@ -481,5 +516,7 @@ const MemberDeleteContainer = styled.div`
 const MemberName = styled.div`
   ${theme.typography.subtitle1};
   margin-left: 8px;
+  color: ${theme.palette.primary.main};
+  text-decoration: none;
 `;
 export default Detail;
