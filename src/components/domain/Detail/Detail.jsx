@@ -169,7 +169,10 @@ const Detail = () => {
           <WriteContainer>
             <WriteSubContainer>
               <TextSliderAvatarContainer>
-                <Avatar sx={{ width: 50, height: 50 }} />
+                <Avatar
+                  sx={{ width: 50, height: 50 }}
+                  src={detailData.userImage}
+                />
                 <TextSliderContainer>
                   <div>{detailData.userName}</div>
                   <Slider
