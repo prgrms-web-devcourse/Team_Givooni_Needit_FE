@@ -8,6 +8,8 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { getRequest } from "@/api/axios";
 import { useCallback, useEffect, useState } from "react";
+import UserType from "@/utils/hooks/UserType";
+
 const Container = styled.div`
   position: ${({ fixed }) => fixed && "fixed"};
   top: 0;
@@ -111,6 +113,7 @@ const Header = ({ type, view, url, fixed }) => {
   const jwt = localStorage.getItem("needit_access_token");
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const updateNotify = async () => {
+    if (UserType() === "guest") return;
     const result = await getRequest("notification");
     const newLength = result.data.length;
     setLength(newLength);
