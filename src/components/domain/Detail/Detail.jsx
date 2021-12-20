@@ -55,16 +55,17 @@ const Detail = () => {
       : "wishes";
 
   useEffect(async () => {
+    //작성글에 대한 데이터 저장
+    const noFilterWriteData = await getRequest(`${requestTarget}/${postId}`);
+    const writeApiData = noFilterWriteData.data;
+    setDetailData(writeApiData);
+
+    if (!localStorage.getItem("needit_access_token")) return;
     //user의 고유Id 저장
     const noFilterUserData = await getRequest(`users`);
     const userApiData = noFilterUserData.data;
     setLoginUserId(userApiData.myProfile.id);
     setLoginUserRole(userApiData.myProfile.role);
-
-    //작성글에 대한 데이터 저장
-    const noFilterWriteData = await getRequest(`${requestTarget}/${postId}`);
-    const writeApiData = noFilterWriteData.data;
-    setDetailData(writeApiData);
 
     //comment가 이미 작성되었는지 확인
     isCommentExist(writeApiData, userApiData.myProfile.id);
@@ -174,9 +175,12 @@ const Detail = () => {
                   }}
                 />
               ) : followed ? (
-                <FavoriteIcon onClick={unfollow} />
+                <FavoriteIcon onClick={unfollow} sx={{ cursor: "pointer" }} />
               ) : (
-                <FavoriteBorderIcon onClick={follow} />
+                <FavoriteBorderIcon
+                  onClick={follow}
+                  sx={{ cursor: "pointer" }}
+                />
               )}
               {isClickMoreVert ? (
                 <>
