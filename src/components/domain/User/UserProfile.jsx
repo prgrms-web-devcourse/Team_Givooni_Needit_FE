@@ -16,7 +16,11 @@ const UserProfile = ({ data, mine = false }) => {
   return (
     <UserProfileContainer>
       <Avatar
-        src={data.image ? data.image : data.profileImageUrl}
+        src={
+          data.myProfile.image
+            ? data.myProfile.image
+            : data.myProfile.profileImageUrl
+        }
         sx={{
           width: "28vw",
           height: "28vw",
