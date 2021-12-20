@@ -29,7 +29,7 @@ const DonationsPage = () => {
         location: state.selectedTown,
       },
     });
-    setPostList(fetchPost.data.content.reverse());
+    setPostList(fetchPost.data.content);
     fetchPost.data.content.length == postList.length && setMorePage(false);
     setIsLoading(true);
   }, [state, page]);
@@ -56,9 +56,15 @@ const DonationsPage = () => {
             ) : (
               <BaseButton
                 btnType="transparent"
-                text="더이상 불러올 포스트가 없습니다. 
+                text="더이상 불러올 게시글이 없습니다. 
             "
-                onClick={() => window.scrollTo(0, 0)}
+                onClick={() =>
+                  window.scrollTo({
+                    behavior: "smooth",
+                    left: 0,
+                    top: 0,
+                  })
+                }
                 width="auto"
               />
             )}
