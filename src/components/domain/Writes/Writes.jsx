@@ -510,6 +510,7 @@ const CustomCameraLabel = styled.label`
   justify-content: center;
   align-items: center;
   background-color: #e8e8e8;
+  cursor: pointer;
 `;
 
 const SubmitContainer = styled.div`
