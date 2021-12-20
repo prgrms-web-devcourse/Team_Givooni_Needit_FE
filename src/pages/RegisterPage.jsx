@@ -46,14 +46,14 @@ const RegisterPage = () => {
   const [myCode, setCode] = useState("");
   const [emailValidated, setEmailValidated] = useState("");
   const [memberInfo, setMemberInfo] = useState({
-    address: "서울특별시 강남구" || state.selectedTown,
+    address: state.selectedTown || "서울특별시 강남구",
     contact: "",
     email: "",
     nickname: "",
     password: "",
   });
   const [centerInfo, setCenterInfo] = useState({
-    address: "서울특별시 강남구" || state.selectedTown,
+    address: state.selectedTown || "서울특별시 강남구",
     contact: "",
     email: "",
     name: "",
