@@ -18,11 +18,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
   const me = result.auth.split("_")[1].toLowerCase();
   return (
     <>
-      <List
-        sx={{
-          mb: "5rem",
-        }}
-      >
+      <List>
         {list.map((message) => {
           return message.contract === null ? (
             <ListItem
@@ -123,8 +119,9 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
                 }}
               >
                 <ListItemButton
-                  onClick={() => {
+                  onClick={(e) => {
                     contract(message.contract.contractId, "ACCEPTED");
+                    e.preventDefault();
                   }}
                   sx={{
                     backgroundColor: `${
@@ -150,8 +147,9 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
                   />
                 </ListItemButton>
                 <ListItemButton
-                  onClick={() => {
+                  onClick={(e) => {
                     contract(message.contract.contractId, "REFUSED");
+                    e.preventDefault();
                   }}
                   sx={{
                     backgroundColor: `${
@@ -180,9 +178,14 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
           );
         })}
       </List>
+      <div
+        style={{
+          height: "50px",
+        }}
+      ></div>
       <Container
         sx={{
-          wmessageIdth: "100%",
+          width: "100%",
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",

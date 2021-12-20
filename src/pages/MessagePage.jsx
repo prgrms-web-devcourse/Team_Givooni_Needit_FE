@@ -3,13 +3,13 @@ import MessageDetail from "@/components/domain/Message/MessageDetail";
 import Message from "@/components/domain/Message/Message";
 import Nav from "@/components/base/Nav";
 import { useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getUserList,
   getMessageList,
-  sendMessage,
   createContract,
   patchContract,
+  sendMessage,
 } from "@/api/services/chatting";
 
 const MessagePage = () => {
@@ -61,4 +61,4 @@ const MessagePage = () => {
   );
 };
 
-export default React.memo(MessagePage);
+export default MessagePage;

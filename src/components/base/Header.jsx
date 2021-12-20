@@ -4,7 +4,10 @@ import styled from "styled-components";
 import Input from "./Input";
 import PropTypes from "prop-types";
 import theme from "@/styles/theme";
-
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+import { getRequest } from "@/api/axios";
+import { useCallback, useEffect, useState } from "react";
 const Container = styled.div`
   position: ${({ fixed }) => fixed && "fixed"};
   top: 0;
@@ -104,6 +107,28 @@ const logo = (
 );
 
 const Header = ({ type, view, url, fixed }) => {
+  const [length, setLength] = useState(0);
+  const jwt = localStorage.getItem("needit_access_token");
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const updateNotify = async () => {
+    const result = await getRequest("notification");
+    const newLength = result.data.length;
+    setLength(newLength);
+  };
+  const connect = useCallback(() => {
+    const socket = new SockJS(`${API_BASE_URL}/stomp-handshake`);
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect({ Authorization: jwt }, function () {
+      stompClient.subscribe("/user/topic/notifications", () => {
+        updateNotify();
+      });
+    });
+  }, []);
+  useEffect(() => {
+    connect();
+    updateNotify();
+  }, []);
   switch (type) {
     case "plain":
       return (
@@ -141,9 +166,33 @@ const Header = ({ type, view, url, fixed }) => {
               <Input type="searchSmall" />
             </Link>
             <Link to="/notify">
-              <NotificationsIcon
-                style={{ fontSize: "1.9rem", color: "#FD9F28" }}
-              />
+              <div
+                style={{
+                  position: "relative",
+                }}
+              >
+                <NotificationsIcon
+                  style={{ fontSize: "1.9rem", color: "#FD9F28" }}
+                />
+                {length !== 0 && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "20px",
+                      height: "20px",
+                      borderRadius: "50%",
+                      backgroundColor: "red",
+                      color: "white",
+                      border: "none",
+                      textAlign: "center",
+                      top: "-6px",
+                      left: "0px",
+                    }}
+                  >
+                    {length}
+                  </div>
+                )}
+              </div>
             </Link>
           </RightContainer>
         </Container>
@@ -154,9 +203,33 @@ const Header = ({ type, view, url, fixed }) => {
           <Link to="/">{logo}</Link>
           <RightContainer>
             <Link to="/notify">
-              <NotificationsIcon
-                style={{ fontSize: "1.9rem", color: "#FD9F28" }}
-              />
+              <div
+                style={{
+                  position: "relative",
+                }}
+              >
+                <NotificationsIcon
+                  style={{ fontSize: "1.9rem", color: "#FD9F28" }}
+                />
+                {length !== 0 && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "20px",
+                      height: "20px",
+                      borderRadius: "50%",
+                      backgroundColor: "red",
+                      color: "white",
+                      border: "none",
+                      textAlign: "center",
+                      top: "-6px",
+                      left: "0px",
+                    }}
+                  >
+                    {length}
+                  </div>
+                )}
+              </div>
             </Link>
           </RightContainer>
         </Container>
@@ -190,9 +263,33 @@ const Header = ({ type, view, url, fixed }) => {
               <Input type="searchSmall" />
             </Link>
             <Link to="/notify">
-              <NotificationsIcon
-                style={{ fontSize: "1.9rem", color: "#FD9F28" }}
-              />
+              <div
+                style={{
+                  position: "relative",
+                }}
+              >
+                <NotificationsIcon
+                  style={{ fontSize: "1.9rem", color: "#FD9F28" }}
+                />
+                {length !== 0 && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "20px",
+                      height: "20px",
+                      borderRadius: "50%",
+                      backgroundColor: "red",
+                      color: "white",
+                      border: "none",
+                      textAlign: "center",
+                      top: "-6px",
+                      left: "0px",
+                    }}
+                  >
+                    {length}
+                  </div>
+                )}
+              </div>
             </Link>
           </RightContainer>
         </Container>
