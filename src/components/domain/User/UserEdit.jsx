@@ -17,8 +17,8 @@ const UserEdit = ({ myProfile }) => {
   const [previewImg, setPreviewImg] = useState(myProfile.image);
   const [contactInput, setContactInput] = useState(myProfile.contact);
   const [addressInput, setAddressInput] = useState(myProfile.address);
-  const [passwordInput, setPasswordInput] = useState("need1234");
-  const [passwordConfirmInput, setPasswordConfirmInput] = useState("need1234");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordConfirmInput, setPasswordConfirmInput] = useState("");
   const [introInput, setIntroInput] = useState(myProfile.introduction);
   const [imageFile, setImageFile] = useState(myProfile.image);
   const profileInput = useRef();
