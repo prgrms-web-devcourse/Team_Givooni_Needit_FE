@@ -81,7 +81,7 @@ function App() {
             }
           />
           <Route
-            path="/message/:postId/:postType/:recieverId"
+            path="/message/:postId/:postType/:receiverId"
             element={
               <PrivateRoute>
                 <Message />

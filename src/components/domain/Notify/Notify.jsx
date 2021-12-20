@@ -12,7 +12,7 @@ const Notify = ({ list = [], onClick }) => {
     <>
       <List>
         {list.map((post) => (
-          <ListItem key={post.id}>
+          <ListItem key={post.resourceId}>
             <ListItemButton
               alignItems="flex-start"
               onClick={() => {
