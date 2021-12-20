@@ -9,15 +9,19 @@ import UserPosts from "@/components/domain/User/UserPosts";
 import UserLikes from "@/components/domain/User/UserLikes";
 import { useParams } from "react-router";
 import { getRequest } from "@/api/axios";
+import LoadingCircular from "@/components/base/LoadingCircular";
 
 const CenterPage = () => {
   const { centerId } = useParams();
   const [centerData, setCenterData] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getRequest(`centers/${centerId}`).then((res) => setCenterData(res.data));
+    getRequest(`centers/${centerId}`).then((res) => {
+      setCenterData(res.data);
+      setIsLoading(true);
+    });
   }, []);
-  console.log(centerData);
 
   const buttonStyle = {
     display: "flex",
@@ -35,12 +39,11 @@ const CenterPage = () => {
     // ["UserPosts", "작성한 글"],
     ["UserIntro", "자기소개"],
   ];
-
   const userInpo = {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {centerData.introduction}
+          {centerData.myProfile.introduction}
         </Typography>
       </UserIntro>
     ),
@@ -51,34 +54,37 @@ const CenterPage = () => {
   return (
     <UserContainer>
       <Header type="plain" />
-
-      <Box sx={{ p: "16px" }}>
-        <UserProfile data={centerData} />
-        <Box
-          sx={{
-            display: "flex",
-            mx: "auto",
-            width: "95%",
-            gap: "10px",
-            justifyContent: "center",
-          }}
-        >
-          {buttonList.map((list, index) => {
-            // if (component !== list[0])
-            return (
-              <Button
-                key={index}
-                color="gray_dark"
-                sx={buttonStyle}
-                onClick={() => setComponent(list[0])}
-              >
-                {list[1]}
-              </Button>
-            );
-          })}
+      {isLoading ? (
+        <Box sx={{ p: "16px" }}>
+          <UserProfile data={centerData} />
+          <Box
+            sx={{
+              display: "flex",
+              mx: "auto",
+              width: "95%",
+              gap: "10px",
+              justifyContent: "center",
+            }}
+          >
+            {buttonList.map((list, index) => {
+              // if (component !== list[0])
+              return (
+                <Button
+                  key={index}
+                  color="gray_dark"
+                  sx={buttonStyle}
+                  onClick={() => setComponent(list[0])}
+                >
+                  {list[1]}
+                </Button>
+              );
+            })}
+          </Box>
+          {userInpo[component]}
         </Box>
-        {userInpo[component]}
-      </Box>
+      ) : (
+        <LoadingCircular />
+      )}
       <Nav />
     </UserContainer>
   );

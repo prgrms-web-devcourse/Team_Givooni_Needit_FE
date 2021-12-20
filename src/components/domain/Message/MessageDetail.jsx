@@ -210,7 +210,10 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
         />
         <Button
           variant="contained"
-          onClick={() => sendMessage(text)}
+          onClick={() => {
+            setText("");
+            sendMessage(text);
+          }}
           sx={{ ml: "8px", color: "white.main" }}
         >
           전송

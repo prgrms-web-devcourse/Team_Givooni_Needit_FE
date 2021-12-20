@@ -7,62 +7,96 @@ import TagFilter from "@/components/domain/Posts/TagFilter";
 import PostFilter from "@/components/domain/Posts/PostFilter";
 import { StateContext } from "@/context";
 import { getRequest } from "@/api/axios";
+import { Box } from "@mui/material";
+import BaseButton from "@/components/base/BaseButton";
+import LoadingCircular from "@/components/base/LoadingCircular";
+import jwt_decode from "jwt-decode";
 
 const WishesPage = () => {
   const state = useContext(StateContext);
   const tags = state.selectedTags.map((tag) => tag["id"]);
   const [postList, setPostList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [morePage, setMorePage] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [favoriteList, setFavoriteList] = useState("");
 
-  // const fetchBox = useRef();
+  useEffect(async () => {
+    if (
+      !localStorage.getItem("needit_access_token") ||
+      (!!localStorage.getItem("needit_access_token") &&
+        jwt_decode(localStorage.getItem("needit_access_token")).auth ===
+          "ROLE_CENTER")
+    )
+      return;
+    const userFavorite = await getRequest("users");
+    setFavoriteList(
+      userFavorite.data.myFavorite.map((center) => center.centerId)
+    );
+  }, []);
 
-  // const fetchPostList = () => {
-  //   setPostList([...postList]);
-  // };
-  // setLocation(state.userAddress);
-
-  useEffect(() => {
-    getRequest("wishes/search", {
+  useEffect(async () => {
+    const fetchPost = await getRequest("wishes/search", {
       params: {
         page: 1,
-        size: 5,
+        size: 10 * page,
         tags: tags.join(),
         category: state.selectedCategory,
         location: state.selectedTown,
       },
-    }).then((res) => setPostList(res.data.content.reverse()));
-  }, [state]);
-
-  // const onIntersect = async ([entry], observer) => {
-  //   if (entry.isIntersecting) {
-  //     observer.unobserve(entry.target);
-  //     await fetchPostList();
-  //     observer.observe(entry.target);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   let observer;
-  //   if (fetchBox.current) {
-  //     observer = new IntersectionObserver(onIntersect, {
-  //       threshold: 0.4,
-  //     });
-  //     observer.observe(fetchBox.current);
-  //   }
-  //   return () => observer && observer.disconnect();
-  // }, [postList]);
+    });
+    setPostList(fetchPost.data.content);
+    fetchPost.data.content.length == postList.length && setMorePage(false);
+    setIsLoading(true);
+  }, [state, page]);
 
   return (
     <PostsViewContainer>
       <Header type="member" fixed />
       <TagFilter />
       <PostFilter />
-      <PostContainer>
-        {postList?.map((post, id) => {
-          return <PostCard key={id} data={post} />;
-        })}
-      </PostContainer>
+      {isLoading ? (
+        <>
+          <PostContainer>
+            {postList?.map((post, id) => {
+              return (
+                <PostCard
+                  key={id}
+                  data={post}
+                  isFavorite={favoriteList?.includes(post.userId)}
+                  isWishes
+                />
+              );
+            })}
+          </PostContainer>
+          <Box sx={{ display: "flex", justifyContent: "center", p: 1 }}>
+            {morePage ? (
+              <BaseButton
+                btnType="transparent"
+                text="더보기"
+                onClick={() => setPage(page + 1)}
+              />
+            ) : (
+              <BaseButton
+                btnType="transparent"
+                text="더이상 불러올 게시글이 없습니다. 
+            "
+                onClick={() =>
+                  window.scrollTo({
+                    behavior: "smooth",
+                    left: 0,
+                    top: 0,
+                  })
+                }
+                width="auto"
+              />
+            )}
+          </Box>
+        </>
+      ) : (
+        <LoadingCircular />
+      )}
       <Nav />
-      {/* <LoadingContainer ref={fetchBox}></LoadingContainer> */}
     </PostsViewContainer>
   );
 };
@@ -71,6 +105,7 @@ export default WishesPage;
 
 const PostsViewContainer = styled.div`
   margin-top: 5rem;
+  padding-bottom: 60px;
 `;
 
 const PostContainer = styled.div`
@@ -79,9 +114,3 @@ const PostContainer = styled.div`
   padding: 16px;
   gap: 10px;
 `;
-
-// const LoadingContainer = styled.div`
-//   width: 100%;
-//   height: 200px;
-//   background-color: red;
-// `;

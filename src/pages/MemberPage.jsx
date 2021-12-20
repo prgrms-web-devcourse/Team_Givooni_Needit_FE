@@ -9,15 +9,19 @@ import UserPosts from "@/components/domain/User/UserPosts";
 import UserLikes from "@/components/domain/User/UserLikes";
 import { useParams } from "react-router";
 import { getRequest } from "@/api/axios";
+import LoadingCircular from "@/components/base/LoadingCircular";
 
 const MemberPage = () => {
   const { memberId } = useParams();
   const [memberData, setMemberData] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getRequest(`members/${memberId}`).then((res) => setMemberData(res.data));
+    getRequest(`members/${memberId}`).then((res) => {
+      setMemberData(res.data);
+      setIsLoading(true);
+    });
   }, []);
-  console.log(memberData);
 
   const buttonStyle = {
     display: "flex",
@@ -40,7 +44,7 @@ const MemberPage = () => {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {memberData.introduction}
+          {memberData.myProfile.introduction}
         </Typography>
       </UserIntro>
     ),
@@ -51,34 +55,37 @@ const MemberPage = () => {
   return (
     <UserContainer>
       <Header type="plain" />
-
-      <Box sx={{ p: "16px" }}>
-        <UserProfile data={memberData} />
-        <Box
-          sx={{
-            display: "flex",
-            mx: "auto",
-            width: "95%",
-            gap: "10px",
-            justifyContent: "center",
-          }}
-        >
-          {buttonList.map((list, index) => {
-            // if (component !== list[0])
-            return (
-              <Button
-                key={index}
-                color="gray_dark"
-                sx={buttonStyle}
-                onClick={() => setComponent(list[0])}
-              >
-                {list[1]}
-              </Button>
-            );
-          })}
+      {isLoading ? (
+        <Box sx={{ p: "16px" }}>
+          <UserProfile data={memberData} />
+          <Box
+            sx={{
+              display: "flex",
+              mx: "auto",
+              width: "95%",
+              gap: "10px",
+              justifyContent: "center",
+            }}
+          >
+            {buttonList.map((list, index) => {
+              // if (component !== list[0])
+              return (
+                <Button
+                  key={index}
+                  color="gray_dark"
+                  sx={buttonStyle}
+                  onClick={() => setComponent(list[0])}
+                >
+                  {list[1]}
+                </Button>
+              );
+            })}
+          </Box>
+          {userInpo[component]}
         </Box>
-        {userInpo[component]}
-      </Box>
+      ) : (
+        <LoadingCircular />
+      )}
       <Nav />
     </UserContainer>
   );

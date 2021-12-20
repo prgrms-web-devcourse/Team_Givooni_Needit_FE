@@ -10,11 +10,7 @@ const Notify = ({ list = [], onClick }) => {
 
   return (
     <>
-      <List
-        sx={{
-          mt: "5rem",
-        }}
-      >
+      <List>
         {list.map((post) => (
           <ListItem key={post.id}>
             <ListItemButton

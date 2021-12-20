@@ -16,7 +16,6 @@ const UserProfile = ({ data, mine = false }) => {
   return (
     <UserProfileContainer>
       <Avatar
-        alt={data.name ? data.name : data.nickname}
         src={data.image ? data.image : data.profileImageUrl}
         sx={{
           width: "28vw",
@@ -38,7 +37,11 @@ const UserProfile = ({ data, mine = false }) => {
               mb: "6px",
             }}
           >
-            <h5>{data.name ? data.name : data.nickname}</h5>
+            <h5>
+              {data.myProfile.name
+                ? data.myProfile.name
+                : data.myProfile.nickname}
+            </h5>
             {mine && (
               <BaseButton
                 width="5rem"
@@ -53,16 +56,17 @@ const UserProfile = ({ data, mine = false }) => {
               />
             )}
           </Box>
-          {data.nickname}
-          {data.contact && (
+          {data.myProfile.role === "CENTER" && (
             <Box>
               <Box display="flex" sx={{ mt: "14px" }}>
                 <CallIcon />
-                <Typography>{data.contact}</Typography>
+                <Typography>{data.myProfile.contact}</Typography>
               </Box>
               <Box display="flex">
                 <MapIcon />
-                <Typography display="inline">{data.address}</Typography>
+                <Typography display="inline">
+                  {data.myProfile.address}
+                </Typography>
               </Box>
             </Box>
           )}

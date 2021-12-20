@@ -9,11 +9,13 @@ import UserLikes from "@/components/domain/User/UserLikes";
 import UserProfile from "@/components/domain/User/UserProfile";
 import UserEdit from "@/components/domain/User/UserEdit";
 import { getRequest } from "@/api/axios";
+import LoadingCircular from "@/components/base/LoadingCircular";
 
 const UserPage = () => {
   const [userData, setUserData] = useState("");
   const [myProfile, setMyProfile] = useState("");
   const [onEdit, setOnEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getRequest("users").then((res) => {
@@ -25,6 +27,7 @@ const UserPage = () => {
         : getRequest(`centers/${res.data.myProfile.id}`).then((res) =>
             setMyProfile(res.data)
           );
+      setIsLoading(true);
     });
   }, []);
 
@@ -51,7 +54,7 @@ const UserPage = () => {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {myProfile.introduction}
+          {userData.myProfile.introduction}
         </Typography>
       </UserIntro>
     ),
@@ -59,7 +62,7 @@ const UserPage = () => {
     UserLikes: <UserLikes myFavorites={userData.myFavorite} />,
   };
 
-  return myProfile ? (
+  return isLoading ? (
     <UserContainer>
       {!onEdit ? (
         <>
@@ -78,7 +81,7 @@ const UserPage = () => {
           </Button>
 
           <Box sx={{ p: "16px" }}>
-            <UserProfile data={userData.myProfile} mine />
+            <UserProfile data={userData} mine />
             <Box
               sx={{
                 display: "flex",
@@ -109,12 +112,12 @@ const UserPage = () => {
       ) : (
         <UserEdit
           myProfile={userData.myProfile}
-          Intro={myProfile.intro ? myProfile.intro : myProfile.introduction}
+          Intro={myProfile.introduction}
         />
       )}
     </UserContainer>
   ) : (
-    <div>Loading...</div>
+    <LoadingCircular />
   );
 };
 

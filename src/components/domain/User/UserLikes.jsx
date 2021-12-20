@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import { deleteRequest } from "@/api/axios";
+import { Link } from "react-router-dom";
 
 const UserLikes = ({ myFavorites }) => {
   const [likes, setlikes] = useState(myFavorites);
@@ -20,19 +21,24 @@ const UserLikes = ({ myFavorites }) => {
         likes?.map((like, idx) => {
           return (
             <LikeProfile key={idx}>
-              <Box sx={{ display: "flex", gap: "10px" }}>
-                <Avatar src={like.profileImageUrl} />
-                <Typography
-                  color="primary"
-                  variant="subtitle1"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  {like.name}
-                </Typography>
-              </Box>
+              <Link
+                to={`/center/${like.centerId}`}
+                style={{ textDecoration: "none" }}
+              >
+                <Box sx={{ display: "flex", gap: "10px" }}>
+                  <Avatar src={like.profileImageUrl} />
+                  <Typography
+                    color="primary"
+                    variant="subtitle1"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {like.name}
+                  </Typography>
+                </Box>
+              </Link>
               <IconButton color="like" onClick={() => handleLike(idx)}>
                 <FavoriteIcon />
               </IconButton>
