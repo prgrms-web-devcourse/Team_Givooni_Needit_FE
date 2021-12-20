@@ -155,7 +155,7 @@ const Writes = () => {
           )
         );
         if (files.length === 0) {
-          formData.append("file", new Blob([JSON.stringify("")]), {
+          formData.append("file", new Blob([""]), {
             type: "application/json",
           });
         } else {
@@ -193,10 +193,9 @@ const Writes = () => {
           )
         );
         if (files.length === 0) {
-          formData.append("file", "", {
+          formData.append("file", new Blob([""]), {
             type: "application/json",
           });
-          console.log("~~~~");
         } else {
           files.map((file) => {
             formData.append("file", file);
