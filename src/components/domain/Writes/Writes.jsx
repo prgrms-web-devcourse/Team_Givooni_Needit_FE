@@ -461,6 +461,7 @@ const ScrollWrapContainer = styled.div`
   display: flex;
   overflow-x: scroll;
   white-space: nowrap;
+  max-width: 320px;
 `;
 
 const CustomImg = styled.img`
