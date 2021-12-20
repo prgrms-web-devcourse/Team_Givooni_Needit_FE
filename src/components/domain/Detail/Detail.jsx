@@ -106,7 +106,7 @@ const Detail = () => {
   const clickGiveCommentBtn = async () => {
     if (giveButton.text === "기부신청") {
       console.log(requestTarget, postId, bearerToken);
-      await postRequest(`${requestTarget}/${postId}/comments`, {
+      const res = await postRequest(`${requestTarget}/${postId}/comments`, {
         data: {
           comment: "기부희망",
         },
@@ -114,7 +114,11 @@ const Detail = () => {
           Authorization: bearerToken,
         },
       });
-      setGiveButton(giveComplete);
+      if (res && res.message === "success") {
+        setGiveButton(giveComplete);
+        const detailDataApi = await getRequest(`${requestTarget}/${postId}`);
+        setDetailData(detailDataApi.data);
+      }
     } else if (giveButton.text === "기부완료") {
       // 자신의 comment 삭제 이벤트
       setGiveButton(giveUncomplete);
@@ -123,11 +127,9 @@ const Detail = () => {
 
   const deleteMyComment = async (commentID) => {
     await deleteRequest(`${requestTarget}/${postId}/comments/${commentID}`);
-
-    const filterComments = detailData.comments.filter((comment) => {
-      return comment.userId !== loginUserId;
-    });
-    setDetailData({ ...detailData, comments: filterComments });
+    setGiveButton(giveUncomplete);
+    const detailDataApi = await getRequest(`${requestTarget}/${postId}`);
+    setDetailData(detailDataApi.data);
   };
 
   const clickDeleteWriteHandler = async () => {
