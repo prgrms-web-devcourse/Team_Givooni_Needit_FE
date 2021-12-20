@@ -182,7 +182,17 @@ const Detail = () => {
                   />
                 </Link>
                 <TextSliderContainer>
-                  <div>{detailData.userName}</div>
+                  <Link
+                    to={`/${
+                      requestTarget === "donations" ? "member" : "center"
+                    }/${detailData.userId}`}
+                    style={{
+                      cursor: "pointer",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <TestDiv>{detailData.userName}</TestDiv>
+                  </Link>
                   <Slider />
                 </TextSliderContainer>
               </TextSliderAvatarContainer>
@@ -392,6 +402,10 @@ const TextSliderContainer = styled.div`
   flex-direction: column;
   margin-left: 8px;
   font-weight: bold;
+`;
+
+const TestDiv = styled.div`
+  color: ${theme.palette.primary.main};
 `;
 
 const CustomDeleteOutlineIcon = styled(DeleteOutlineIcon)`
