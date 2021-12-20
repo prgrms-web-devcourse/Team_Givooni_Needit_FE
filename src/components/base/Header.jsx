@@ -8,7 +8,7 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { getRequest } from "@/api/axios";
 import { useCallback, useEffect, useState } from "react";
-import UserType from "@/utils/UserType";
+import UserType from "@/utils/hooks/UserType";
 
 const Container = styled.div`
   position: ${({ fixed }) => fixed && "fixed"};
