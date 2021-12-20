@@ -57,8 +57,8 @@ const Schedule = () => {
                         borderBottom: `1px solid ${theme.palette.gray.main}`,
                       }}
                       onClick={() => {
-                        if (postType === "WISH") navigate(`wishes/${postId}`);
-                        else navigate(`donations/${postId}`);
+                        if (postType === "WISH") navigate(`/wishes/${postId}`);
+                        else navigate(`/donations/${postId}`);
                       }}
                     >
                       <div
@@ -100,8 +100,8 @@ const Schedule = () => {
                     </div>
                     <div
                       onClick={() => {
-                        if (postType === "WISH") navigate(`wishes/${postId}`);
-                        else navigate(`donations/${postId}`);
+                        if (postType === "WISH") navigate(`/wishes/${postId}`);
+                        else navigate(`/donations/${postId}`);
                       }}
                       style={{
                         fontSize: "0.8rem",
