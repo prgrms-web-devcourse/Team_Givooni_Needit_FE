@@ -459,13 +459,14 @@ const ImageLabelText = styled.div`
 
 const ScrollWrapContainer = styled.div`
   display: flex;
-  overflow-x: auto;
+  overflow-x: scroll;
   white-space: nowrap;
 `;
 
 const CustomImg = styled.img`
   max-width: 180px;
-  height: 100px;
+  min-width: 100px;
+  height: 146px;
   object-fit: cover;
   background-color: #f6f6f6;
   border: 1px solid #e8e8e8;
