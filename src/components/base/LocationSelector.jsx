@@ -16,6 +16,13 @@ const LocationSelector = () => {
     setOpen(false);
   };
   const onDetail = (event) => {
+    if (event.target.innerText === "지역 필터링 해제") {
+      setCity("");
+      setDetail("");
+      handleSelectedTown("");
+      handleClose();
+      return;
+    }
     event.target.innerText
       ? setCity(event.target.innerText)
       : setCity(event.target.parentElement.parentElement.innerText);
@@ -29,7 +36,6 @@ const LocationSelector = () => {
     } else {
       setDetail(event.target.parentElement.parentElement.innerText);
     }
-    handleSelectedTown(`${city} ${detail}`);
     setOpenDetail(false);
   };
 
@@ -43,36 +49,43 @@ const LocationSelector = () => {
   };
 
   useEffect(() => {
-    if (city && detail) {
-      console.log(city, detail);
+    if (openDetail) return;
+    if (detail) {
       handleSelectedTown(`${city} ${detail}`);
     }
   }, [detail]);
 
   return (
     <div>
-      <Button onClick={handleOpen} endIcon={<MyLocationIcon />}>
+      <Button
+        color={state.selectedTown ? "primary" : "gray_dark"}
+        onClick={handleOpen}
+        endIcon={<MyLocationIcon />}
+        sx={{ fontWeight: "400" }}
+      >
         {state.selectedTown ? state.selectedTown : "지역선택"}
       </Button>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open}>
         <Box sx={style}>
           <Box sx={{ width: "100%", overflow: "auto" }}>
-            {openDetail
-              ? LocationData[city].map((city, idx) => {
-                  return (
-                    <>
-                      <Button
-                        sx={cityStyle}
-                        key={idx}
-                        onClick={addDetail}
-                        endIcon={<MyLocationIcon onClick={addDetail} />}
-                      >
-                        {city}
-                      </Button>
-                    </>
-                  );
-                })
-              : Object.keys(LocationData).map((city, idx) => {
+            {openDetail ? (
+              LocationData[city].map((city, idx) => {
+                return (
+                  <>
+                    <Button
+                      sx={cityStyle}
+                      key={idx}
+                      onClick={addDetail}
+                      endIcon={<MyLocationIcon onClick={addDetail} />}
+                    >
+                      {city}
+                    </Button>
+                  </>
+                );
+              })
+            ) : (
+              <>
+                {Object.keys(LocationData).map((city, idx) => {
                   return (
                     <>
                       <Button
@@ -86,6 +99,15 @@ const LocationSelector = () => {
                     </>
                   );
                 })}
+                <Button
+                  color="gray_dark"
+                  sx={{ width: "100%" }}
+                  onClick={onDetail}
+                >
+                  지역 필터링 해제
+                </Button>
+              </>
+            )}
           </Box>
         </Box>
       </Modal>
