@@ -36,7 +36,6 @@ const LocationSelector = () => {
     } else {
       setDetail(event.target.parentElement.parentElement.innerText);
     }
-    handleSelectedTown(`${city} ${detail}`);
     setOpenDetail(false);
   };
 
@@ -50,8 +49,8 @@ const LocationSelector = () => {
   };
 
   useEffect(() => {
-    if (city && detail) {
-      console.log(city, detail);
+    if (openDetail) return;
+    if (detail) {
       handleSelectedTown(`${city} ${detail}`);
     }
   }, [detail]);
@@ -66,7 +65,7 @@ const LocationSelector = () => {
       >
         {state.selectedTown ? state.selectedTown : "지역선택"}
       </Button>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open}>
         <Box sx={style}>
           <Box sx={{ width: "100%", overflow: "auto" }}>
             {openDetail ? (
