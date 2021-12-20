@@ -1,53 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import theme from "@/styles/theme";
+import { Box, BottomNavigation, BottomNavigationAction } from "@mui/material";
 import {
-  Box,
-  BottomNavigation,
-  BottomNavigationAction,
-  Menu,
-  MenuItem,
-  Fade,
-} from "@mui/material";
-import {
-  Menu as MenuIcon,
   BorderColor as BorderColorIcon,
   CalendarToday as CalendarTodayIcon,
   Message as MessageIcon,
   AccountCircle as AccountCircleIcon,
-  Assignment as AssignmentIcon,
+  // Assignment as AssignmentIcon,
   AccountBalance as AccountBalanceIcon,
   Favorite as FavoriteIcon,
 } from "@mui/icons-material";
+import jwt_decode from "jwt-decode";
 
 const Nav = () => {
-  const primary = theme.palette.primary.main;
-  const [value, setValue] = useState(6);
+  const [value, setValue] = useState(5);
 
   useEffect(() => {
     const path = window.location.pathname?.split("/")[1];
-    if (["donations", "wishes", "review"].includes(path)) {
+    if (["", "donations", "wishes", "review"].includes(path)) {
       setValue(0);
     } else if (["schedule"].includes(path)) {
-      setValue(2);
+      setValue(1);
     } else if (["writes"].includes(path)) {
-      setValue(3);
+      setValue(2);
     } else if (["message"].includes(path)) {
-      setValue(4);
+      setValue(3);
     } else if (["user", "center", "member"].includes(path)) {
-      setValue(5);
-    } else setValue(6);
+      setValue(4);
+    } else setValue(5);
   }, [window.location.pathname]);
-
-  // 메뉴 펼치기
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const isCenter =
+    !!localStorage.getItem("needit_access_token") &&
+    jwt_decode(localStorage.getItem("needit_access_token")).auth ===
+      "ROLE_CENTER";
 
   return (
     <Box
@@ -66,30 +52,13 @@ const Nav = () => {
         }}
       >
         <BottomNavigationAction
-          id="fade-button"
-          aria-controls="fade-menu"
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={handleClick}
-          label="게시판"
-          icon={<MenuIcon />}
+          component={Link}
+          to={isCenter ? "/donations" : "/wishes"}
+          label={isCenter ? "센터뷰" : "멤버뷰"}
+          icon={isCenter ? <AccountBalanceIcon /> : <FavoriteIcon />}
           sx={{ minWidth: "60px", p: 0.5 }}
         />
-
-        <Menu
-          id="fade-menu"
-          MenuListProps={{
-            "aria-labelledby": "fade-button",
-          }}
-          anchorEl={anchorEl}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          transformOrigin={{ vertical: "bottom", horizontal: "center" }}
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Fade}
-          sx={{ width: "25%" }}
-        >
-          <MenuItem
+        {/* <MenuItem
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -120,9 +89,9 @@ const Nav = () => {
           >
             <AccountBalanceIcon />
             센터뷰
-          </MenuItem>
+          </MenuItem> */}
 
-          <MenuItem
+        {/* <MenuItem
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -137,8 +106,7 @@ const Nav = () => {
           >
             <FavoriteIcon />
             멤버뷰
-          </MenuItem>
-        </Menu>
+          </MenuItem> */}
         <BottomNavigationAction
           component={Link}
           to="/schedule"
