@@ -40,15 +40,19 @@ const CenterPage = () => {
     ["UserIntro", "자기소개"],
   ];
   const userInpo = {
-    UserIntro: (
+    UserIntro: isLoading ? (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {centerData.myProfile.introduction}
+          {centerData.myProfile.introduction
+            ? centerData.myProfile.introduction
+            : "자기소개가 없습니다."}
         </Typography>
       </UserIntro>
+    ) : (
+      <LoadingCircular />
     ),
-    UserPosts: <UserPosts />,
-    UserLikes: <UserLikes />,
+    UserPosts: isLoading ? <UserPosts /> : <LoadingCircular />,
+    UserLikes: isLoading ? <UserLikes /> : <LoadingCircular />,
   };
 
   return (
