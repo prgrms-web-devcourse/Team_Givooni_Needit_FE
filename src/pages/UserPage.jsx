@@ -78,12 +78,12 @@ const UserPage = () => {
     <UserContainer>
       {!onEdit ? (
         <>
-          <Header type="plain" fixed />
+          <Header type="searchOut" fixed />
           <Button
             sx={{
               position: "fixed",
               top: "20px",
-              right: "20px",
+              right: "44px",
               zIndex: "10000",
               fontSize: "16px",
             }}
