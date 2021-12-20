@@ -81,7 +81,13 @@ const WishesPage = () => {
                 btnType="transparent"
                 text="더이상 불러올 포스트가 없습니다. 
             "
-                onClick={() => window.scrollTo(0, 0)}
+                onClick={() =>
+                  window.scrollTo({
+                    behavior: "smooth",
+                    left: 0,
+                    top: 0,
+                  })
+                }
                 width="auto"
               />
             )}
