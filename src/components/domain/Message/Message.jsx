@@ -12,27 +12,26 @@ const Message = ({ list }) => {
   function pushParams(postId, postType, recieverId) {
     navigate(`/message/${postId}/${postType}/${recieverId}`);
   }
-  const me = "MEMBER".toLowerCase();
-  const reciever = "CENTER".toLowerCase();
-
+  const token = localStorage.getItem("needit_access_token");
+  const base64 = token.split(".")[1];
+  const payLoad = Buffer.from(base64, "base64");
+  const result = JSON.parse(payLoad);
+  const me = result.auth.split("_")[1].toLowerCase();
+  const you = me === "center" ? "member" : "center";
   return (
     <>
       <List>
         {list.map((message) => (
           <ListItemButton
-            key={message.poistId + message[reciever]}
+            key={message.poistId + message[you]}
             onClick={() => {
-              pushParams(
-                message.postId,
-                message.postType,
-                message[reciever].id
-              );
+              pushParams(message.postId, message.postType, message[you].id);
             }}
           >
             <ListItemAvatar>
               <Avatar
-                alt={message[me].name}
-                src={message[me].profileImageUrl}
+                alt={message[you].name}
+                src={message[you].profileImageUrl}
               />
             </ListItemAvatar>
             <List>
@@ -42,9 +41,7 @@ const Message = ({ list }) => {
                   typography: "h3",
                 }}
               >
-                <Typography variant="h5">
-                  {message[me].name || message[me].name}
-                </Typography>
+                <Typography variant="h5">{message[you].name}</Typography>
               </ListItemText>
               <ListItemText
                 sx={{
