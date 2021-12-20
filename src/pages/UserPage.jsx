@@ -54,14 +54,13 @@ const UserPage = () => {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {myProfile.introduction}
+          {userData.myProfile.introduction}
         </Typography>
       </UserIntro>
     ),
     UserPosts: <UserPosts myPosts={userData.myPost} />,
     UserLikes: <UserLikes myFavorites={userData.myFavorite} />,
   };
-  console.log(myProfile);
 
   return isLoading ? (
     <UserContainer>

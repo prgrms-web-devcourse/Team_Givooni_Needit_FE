@@ -22,7 +22,6 @@ const MemberPage = () => {
       setIsLoading(true);
     });
   }, []);
-  console.log(memberData);
 
   const buttonStyle = {
     display: "flex",
@@ -45,7 +44,7 @@ const MemberPage = () => {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {memberData.introduction}
+          {memberData.myProfile.introduction}
         </Typography>
       </UserIntro>
     ),
