@@ -12,7 +12,7 @@ const Container = styled.div`
   display: flex;
   padding: 0rem 1rem;
   margin-bottom: 1rem;
-  z-index: 9999;
+  z-index: 500;
   box-sizing: border-box;
   justify-content: space-between;
   align-items: center;

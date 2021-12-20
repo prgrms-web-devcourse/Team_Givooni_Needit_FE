@@ -212,6 +212,9 @@ const CardContainer = styled.div`
   border: 1px solid ${theme.palette.gray.main};
   border-radius: 12.8px;
   background-color: ${theme.palette.gray.light};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const ModalDim = styled.div`

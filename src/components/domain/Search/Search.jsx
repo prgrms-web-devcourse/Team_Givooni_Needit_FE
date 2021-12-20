@@ -171,6 +171,9 @@ const Card = styled.li`
   gap: 1rem;
   align-items: center;
   font-size: 0.8rem;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const AlignContainer = styled.div`
