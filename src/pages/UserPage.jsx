@@ -54,7 +54,7 @@ const UserPage = () => {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {myProfile.introduction}
+          {userData.myProfile.introduction}
         </Typography>
       </UserIntro>
     ),
@@ -112,7 +112,7 @@ const UserPage = () => {
       ) : (
         <UserEdit
           myProfile={userData.myProfile}
-          Intro={myProfile.intro ? myProfile.intro : myProfile.introduction}
+          Intro={myProfile.introduction}
         />
       )}
     </UserContainer>

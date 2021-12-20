@@ -39,12 +39,11 @@ const CenterPage = () => {
     // ["UserPosts", "작성한 글"],
     ["UserIntro", "자기소개"],
   ];
-
   const userInpo = {
     UserIntro: (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {centerData.introduction}
+          {centerData.myProfile.introduction}
         </Typography>
       </UserIntro>
     ),
