@@ -79,7 +79,7 @@ const WishesPage = () => {
             ) : (
               <BaseButton
                 btnType="transparent"
-                text="더이상 불러올 포스트가 없습니다. 
+                text="더이상 불러올 게시글이 없습니다. 
             "
                 onClick={() =>
                   window.scrollTo({
