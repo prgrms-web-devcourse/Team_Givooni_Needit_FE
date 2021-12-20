@@ -16,7 +16,11 @@ const UserProfile = ({ data, mine = false }) => {
   return (
     <UserProfileContainer>
       <Avatar
-        src={data.image ? data.image : data.profileImageUrl}
+        src={
+          data.myProfile.image
+            ? data.myProfile.image
+            : data.myProfile.profileImageUrl
+        }
         sx={{
           width: "28vw",
           height: "28vw",
@@ -71,20 +75,6 @@ const UserProfile = ({ data, mine = false }) => {
             </Box>
           )}
         </Box>
-
-        {/* <Box sx={{ display: "flex", gap: "4px" }}>
-          <Chip icon={<MoodIcon />} label="11" variant="outlined" />
-          <Chip
-            icon={<SentimentSatisfiedIcon />}
-            label="5"
-            variant="outlined"
-          />
-          <Chip
-            icon={<SentimentVeryDissatisfiedIcon />}
-            label="3"
-            variant="outlined"
-          />
-        </Box> */}
       </Box>
     </UserProfileContainer>
   );
@@ -100,11 +90,3 @@ UserProfile.propTypes = {
 const UserProfileContainer = styled.div`
   display: flex;
 `;
-
-// const UserData = styled.div`
-//   border: none;
-//   width: 100%;
-//   height: auto;
-//   font-size: 12px;
-//   font-family: "Spoqa Han Sans Neo";
-// `;
