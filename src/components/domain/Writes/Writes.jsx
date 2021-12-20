@@ -122,7 +122,7 @@ const Writes = () => {
           )
         );
         if (files.length === 0) {
-          formData.append("file", new Blob([JSON.stringify(" ")]), {
+          formData.append("file", new Blob([""]), {
             type: "application/json",
           });
         } else {
@@ -161,7 +161,7 @@ const Writes = () => {
           )
         );
         if (files.length === 0) {
-          formData.append("file", new Blob([JSON.stringify(" ")]), {
+          formData.append("file", new Blob([""]), {
             type: "application/json",
           });
         } else {
