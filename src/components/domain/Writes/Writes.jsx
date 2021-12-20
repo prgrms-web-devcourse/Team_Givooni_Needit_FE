@@ -461,7 +461,6 @@ const ScrollWrapContainer = styled.div`
   display: flex;
   overflow-x: auto;
   white-space: nowrap;
-  cursor: pointer;
 `;
 
 const CustomImg = styled.img`
@@ -490,7 +489,7 @@ const CustomLabel = styled.label`
   font-weight: 400;
   font-size: 14px;
   line-height: 19px;
-  cursor: "pointer";
+  cursor: pointer;
 `;
 
 const PictureContainer = styled.div`
