@@ -61,6 +61,7 @@ const UserPage = () => {
     UserPosts: <UserPosts myPosts={userData.myPost} />,
     UserLikes: <UserLikes myFavorites={userData.myFavorite} />,
   };
+  console.log(myProfile);
 
   return isLoading ? (
     <UserContainer>
@@ -112,7 +113,7 @@ const UserPage = () => {
       ) : (
         <UserEdit
           myProfile={userData.myProfile}
-          Intro={myProfile.intro ? myProfile.intro : myProfile.introduction}
+          Intro={myProfile.introduction}
         />
       )}
     </UserContainer>
