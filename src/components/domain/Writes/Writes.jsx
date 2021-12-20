@@ -4,7 +4,7 @@ import Nav from "@/components/base/Nav";
 import styled from "styled-components";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useState, useContext, useEffect } from "react";
-import { StateContext } from "@/context/index";
+import { StateContext, DispatchContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
 import Modal from "@mui/material/Modal";
 import { useLocation } from "react-router-dom";
@@ -36,6 +36,7 @@ const Writes = () => {
   const [quality, setQuality] = useState("");
   const [userRole, setUserRole] = useState("");
   const [files, setFiles] = useState("");
+  const dispatch = useContext(DispatchContext);
 
   const location = useLocation();
   let preTitle,
@@ -58,6 +59,10 @@ const Writes = () => {
   }
 
   useEffect(() => {
+    dispatch({
+      type: "initTags",
+    });
+
     setTitle(preTitle);
     setContent(preContent);
     setTag(preTag);
@@ -104,11 +109,9 @@ const Writes = () => {
   //API에 필요한 6가지 항목
   const submitWrites = async () => {
     //writeId가 있으면 수정API요청 / writeId가 없으면 새로운 글쓰기 요청
-    console.log(title, content, category, tag, apiTag, quality, Imgs, writeId);
     //writeId (기존의 글쓰기가 존재한다면 수정API)
     const target = userRole === "CENTER" ? "wishes" : "donations";
     if (writeId) {
-      console.log("!");
       if (category && content && title) {
         const formData = new FormData();
         formData.append(
