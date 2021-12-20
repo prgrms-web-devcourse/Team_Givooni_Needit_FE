@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
@@ -10,20 +10,29 @@ import {
 } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import axios from "axios";
+import convertURLtoFile from "@/utils/ConvertUrlToFile";
 import { useNavigate } from "react-router";
 
-const UserEdit = ({ myProfile, Intro }) => {
+const UserEdit = ({ myProfile }) => {
   const [previewImg, setPreviewImg] = useState(myProfile.image);
   const [contactInput, setContactInput] = useState(myProfile.contact);
   const [addressInput, setAddressInput] = useState(myProfile.address);
   const [passwordInput, setPasswordInput] = useState("need1234");
-  const [passwordConfirmInput, setPasswordConfirmInput] = useState("");
-  const [introInput, setIntroInput] = useState(Intro);
+  const [passwordConfirmInput, setPasswordConfirmInput] = useState("need1234");
+  const [introInput, setIntroInput] = useState(myProfile.introduction);
   const [imageFile, setImageFile] = useState(myProfile.image);
   const profileInput = useRef();
   const navigate = useNavigate();
 
+  useEffect(async () => {
+    if (!previewImg) return;
+    const convertedImage = await convertURLtoFile(previewImg);
+    setImageFile(convertedImage);
+  }, [previewImg]);
+
   const uploadImage = () => {
+    setPreviewImg("");
+    setImageFile("");
     profileInput.current.click();
   };
   const handleFileChange = (e) => {
@@ -73,7 +82,9 @@ const UserEdit = ({ myProfile, Intro }) => {
       return;
     }
     const formData = new FormData();
-    formData.append("file", imageFile);
+    imageFile
+      ? formData.append("file", imageFile)
+      : formData.append("file", new Blob([""], { type: "application/json" }));
     formData.append(
       "request",
       new Blob([JSON.stringify(submitData)], { type: "application/json" })
@@ -207,7 +218,6 @@ export default UserEdit;
 
 UserEdit.propTypes = {
   myProfile: PropTypes.object,
-  Intro: PropTypes.string,
 };
 
 const UsernameContainer = styled.div``;
