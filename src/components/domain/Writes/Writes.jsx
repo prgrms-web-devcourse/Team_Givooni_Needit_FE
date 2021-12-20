@@ -44,7 +44,7 @@ const Writes = () => {
     preTag = [],
     preCategory = [],
     writeId,
-    preImageArr;
+    preImageArr = [];
   if (location.state) {
     preTitle = location.state.prewriteData.title;
     preContent = location.state.prewriteData.content;
@@ -98,7 +98,7 @@ const Writes = () => {
       });
     }
 
-    setFilesFunc();
+    if (preImageArr) setFilesFunc();
   }, []);
 
   const state = useContext(StateContext);
