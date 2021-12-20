@@ -56,15 +56,19 @@ const Writes = () => {
     writeId = location.state.prewriteData.id;
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     setTitle(preTitle);
     setContent(preContent);
     setTag(preTag);
     setCategory(preCategory);
     setQuality("좋음");
 
-    const userData = await getRequest(`users`);
-    setUserRole(userData.data.myProfile.role);
+    const getData = async () => {
+      const userData = await getRequest(`users`);
+      setUserRole(userData.data.myProfile.role);
+    };
+
+    getData();
   }, []);
 
   const state = useContext(StateContext);
@@ -215,7 +219,6 @@ const Writes = () => {
 
     return isSame;
   };
-  console.log(state.selectedTown);
 
   return (
     <>
@@ -458,6 +461,7 @@ const ScrollWrapContainer = styled.div`
   display: flex;
   overflow-x: auto;
   white-space: nowrap;
+  cursor: pointer;
 `;
 
 const CustomImg = styled.img`
@@ -486,6 +490,7 @@ const CustomLabel = styled.label`
   font-weight: 400;
   font-size: 14px;
   line-height: 19px;
+  cursor: "pointer";
 `;
 
 const PictureContainer = styled.div`
