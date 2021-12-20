@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import { getRequest, postRequest, putRequest } from "@/api/axios";
 import theme from "@/styles/theme";
 import { useNavigate } from "react-router";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const subArea = [
   { id: 1, name: "아동·청소년" },
@@ -192,9 +193,10 @@ const Writes = () => {
           )
         );
         if (files.length === 0) {
-          formData.append("file", new Blob([JSON.stringify(" ")]), {
+          formData.append("file", "", {
             type: "application/json",
           });
+          console.log("~~~~");
         } else {
           files.map((file) => {
             formData.append("file", file);
@@ -245,6 +247,17 @@ const Writes = () => {
     });
 
     return isSame;
+  };
+
+  const removeImgs = (idx) => {
+    const removeImgArr = Imgs.filter((_, imgIdx) => {
+      return idx !== imgIdx;
+    });
+    const removeFileArr = files.filter((_, imgIdx) => {
+      return idx !== imgIdx;
+    });
+    setImgs(removeImgArr);
+    setFiles(removeFileArr);
   };
 
   return (
@@ -311,7 +324,17 @@ const Writes = () => {
 
                 {Imgs &&
                   Imgs.map((link, i) => {
-                    return <CustomImg src={link} key={i} />;
+                    return (
+                      <div style={{ position: "relative" }} key={i}>
+                        <CustomImg src={link} key={i}></CustomImg>
+                        <CancelIcon
+                          onClick={() => {
+                            removeImgs(i);
+                          }}
+                          style={{ position: "absolute", left: 70, top: 5 }}
+                        />
+                      </div>
+                    );
                   })}
               </ScrollWrapContainer>
             </ImageWrapContainer>
@@ -488,8 +511,7 @@ const ScrollWrapContainer = styled.div`
 `;
 
 const CustomImg = styled.img`
-  max-width: 180px;
-  min-width: 100px;
+  width: 100px;
   height: 146px;
   object-fit: cover;
   background-color: #f6f6f6;
