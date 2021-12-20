@@ -173,6 +173,7 @@ const Detail = () => {
                   to={`/${
                     requestTarget === "donations" ? "member" : "center"
                   }/${detailData.userId}`}
+                  style={{ cursor: "pointer" }}
                 >
                   <Avatar
                     sx={{ width: 50, height: 50 }}
@@ -302,13 +303,19 @@ const Detail = () => {
                                 ? "center"
                                 : "member"
                             }/${part.userId}`}
+                            style={{
+                              cursor: "pointer",
+                              display: "flex",
+                              textDecoration: "none",
+                            }}
                           >
                             <Avatar
                               sx={{ width: 30, height: 30 }}
                               src={part.userImage}
                             />
+
+                            <MemberName>{part.userName}</MemberName>
                           </Link>
-                          <MemberName>{part.userName}</MemberName>
                         </MemberContainer>
                         {part.userId === loginUserId &&
                         ((requestTarget === "wishes" &&
@@ -511,5 +518,7 @@ const MemberDeleteContainer = styled.div`
 const MemberName = styled.div`
   ${theme.typography.subtitle1};
   margin-left: 8px;
+  color: ${theme.palette.primary.main};
+  text-decoration: none;
 `;
 export default Detail;
