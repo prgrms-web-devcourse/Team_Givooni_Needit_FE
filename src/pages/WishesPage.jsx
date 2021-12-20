@@ -10,6 +10,7 @@ import { getRequest } from "@/api/axios";
 import { Box } from "@mui/material";
 import BaseButton from "@/components/base/BaseButton";
 import LoadingCircular from "@/components/base/LoadingCircular";
+import jwt_decode from "jwt-decode";
 
 const WishesPage = () => {
   const state = useContext(StateContext);
@@ -21,6 +22,13 @@ const WishesPage = () => {
   const [favoriteList, setFavoriteList] = useState("");
 
   useEffect(async () => {
+    if (
+      !localStorage.getItem("needit_access_token") ||
+      (!!localStorage.getItem("needit_access_token") &&
+        jwt_decode(localStorage.getItem("needit_access_token")).auth ===
+          "ROLE_CENTER")
+    )
+      return;
     const userFavorite = await getRequest("users");
     setFavoriteList(
       userFavorite.data.myFavorite.map((center) => center.centerId)
@@ -47,7 +55,7 @@ const WishesPage = () => {
       <Header type="member" fixed />
       <TagFilter />
       <PostFilter />
-      {isLoading && favoriteList ? (
+      {isLoading ? (
         <>
           <PostContainer>
             {postList?.map((post, id) => {
