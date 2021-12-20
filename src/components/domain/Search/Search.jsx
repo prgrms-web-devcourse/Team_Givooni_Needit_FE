@@ -11,10 +11,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import PostCard from "../Posts/PostCard";
 
 const Search = () => {
+  const navigate = useNavigate();
   const [value, setValue] = useState("");
   const [centersResult, setCentersResult] = useState([]);
   const [donationsResult, setDonationsResult] = useState([]);
@@ -116,7 +118,7 @@ const Search = () => {
                     key={index}
                     onClick={(e) => {
                       e.preventDefault();
-                      console.log(centerId);
+                      navigate(`/center/${centerId}`);
                     }}
                   >
                     <Image src={profileImageUrl} />
@@ -176,7 +178,7 @@ const AlignContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0rem;
+  padding: 0rem 0rem 4rem 0rem;
   box-sizing: border-box;
   color: ${theme.palette.primary.main};
   gap: 0.5rem;
