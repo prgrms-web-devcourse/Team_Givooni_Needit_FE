@@ -21,6 +21,7 @@ const WishesPage = () => {
   const [favoriteList, setFavoriteList] = useState("");
 
   useEffect(async () => {
+    if (!localStorage.getItem("needit_access_token")) return;
     const userFavorite = await getRequest("users");
     setFavoriteList(
       userFavorite.data.myFavorite.map((center) => center.centerId)
@@ -47,7 +48,7 @@ const WishesPage = () => {
       <Header type="member" fixed />
       <TagFilter />
       <PostFilter />
-      {isLoading && favoriteList ? (
+      {isLoading ? (
         <>
           <PostContainer>
             {postList?.map((post, id) => {
