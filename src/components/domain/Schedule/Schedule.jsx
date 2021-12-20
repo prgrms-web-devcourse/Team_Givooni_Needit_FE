@@ -197,9 +197,9 @@ const AlignContainer = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 4.5rem;
-  padding: 1rem 0 0 0.5rem;
+  padding: 1rem 0 4rem 0.5rem;
   box-sizing: border-box;
-  width: 99vw;
+  width: 98vw;
 `;
 
 const CardContainer = styled.div`
