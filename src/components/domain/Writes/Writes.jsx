@@ -42,7 +42,7 @@ const Writes = () => {
   let preTitle,
     preContent,
     preTag = [],
-    preCategory = [],
+    preCategory = "",
     writeId,
     preImageArr = [];
   if (location.state) {
