@@ -57,8 +57,8 @@ const Schedule = () => {
                         borderBottom: `1px solid ${theme.palette.gray.main}`,
                       }}
                       onClick={() => {
-                        if (postType === "WISH") navigate(`wishes/${postId}`);
-                        else navigate(`donations/${postId}`);
+                        if (postType === "WISH") navigate(`/wishes/${postId}`);
+                        else navigate(`/donations/${postId}`);
                       }}
                     >
                       <div
@@ -100,8 +100,8 @@ const Schedule = () => {
                     </div>
                     <div
                       onClick={() => {
-                        if (postType === "WISH") navigate(`wishes/${postId}`);
-                        else navigate(`donations/${postId}`);
+                        if (postType === "WISH") navigate(`/wishes/${postId}`);
+                        else navigate(`/donations/${postId}`);
                       }}
                       style={{
                         fontSize: "0.8rem",
@@ -197,9 +197,9 @@ const AlignContainer = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 4.5rem;
-  padding: 1rem 0 0 0.5rem;
+  padding: 1rem 0 4rem 0.5rem;
   box-sizing: border-box;
-  width: 99vw;
+  width: 98vw;
 `;
 
 const CardContainer = styled.div`
