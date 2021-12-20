@@ -51,7 +51,7 @@ const UserPage = () => {
   !userData.myFavorite && buttonList.pop();
 
   const userInpo = {
-    UserIntro: (
+    UserIntro: isLoading ? (
       <UserIntro>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {userData.myProfile.introduction
@@ -59,9 +59,19 @@ const UserPage = () => {
             : "자기소개가 없습니다."}
         </Typography>
       </UserIntro>
+    ) : (
+      <LoadingCircular />
     ),
-    UserPosts: <UserPosts myPosts={userData.myPost} />,
-    UserLikes: <UserLikes myFavorites={userData.myFavorite} />,
+    UserPosts: isLoading ? (
+      <UserPosts myPosts={userData.myPost} />
+    ) : (
+      <LoadingCircular />
+    ),
+    UserLikes: isLoading ? (
+      <UserLikes myFavorites={userData.myFavorite} />
+    ) : (
+      <LoadingCircular />
+    ),
   };
 
   return isLoading ? (
