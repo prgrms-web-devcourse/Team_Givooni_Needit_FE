@@ -192,6 +192,7 @@ const Detail = () => {
                   onClick={() => {
                     setIsClickMoreVert(!isClickMoreVert);
                   }}
+                  sx={{ cursor: "pointer" }}
                 />
               ) : followed ? (
                 <FavoriteIcon onClick={unfollow} sx={{ cursor: "pointer" }} />
@@ -324,6 +325,7 @@ const Detail = () => {
                             onClick={() => {
                               deleteMyComment(part.id);
                             }}
+                            style={{ cursor: "pointer" }}
                           />
                         ) : checkWriter() ? (
                           <Link
@@ -335,6 +337,7 @@ const Detail = () => {
                               onClick={() => {
                                 console.log("메일보내기 기능");
                               }}
+                              style={{ cursor: "pointer" }}
                             />
                           </Link>
                         ) : (
