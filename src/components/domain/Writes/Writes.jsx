@@ -43,7 +43,8 @@ const Writes = () => {
     preContent,
     preTag = [],
     preCategory = [],
-    writeId;
+    writeId,
+    preImageArr;
   if (location.state) {
     preTitle = location.state.prewriteData.title;
     preContent = location.state.prewriteData.content;
@@ -56,6 +57,7 @@ const Writes = () => {
     });
     preCategory = location.state.prewriteData.category;
     writeId = location.state.prewriteData.id;
+    preImageArr = location.state.prewriteData.images;
   }
 
   useEffect(() => {
@@ -75,6 +77,28 @@ const Writes = () => {
     };
 
     getData();
+
+    setImgs(preImageArr);
+
+    async function setFilesFunc() {
+      const fileResult = await imageUrlToFile();
+      Promise.all(fileResult).then((values) => {
+        setFiles(values);
+      });
+    }
+
+    function imageUrlToFile() {
+      return preImageArr.map(async (url) => {
+        const response = await fetch(url);
+        const data = await response.blob();
+        const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+        const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+        const metadata = { type: `image/${ext}` };
+        return new File([data], filename, metadata);
+      });
+    }
+
+    setFilesFunc();
   }, []);
 
   const state = useContext(StateContext);
@@ -130,7 +154,7 @@ const Writes = () => {
           )
         );
         if (files.length === 0) {
-          formData.append("file", new Blob([JSON.stringify(" ")]), {
+          formData.append("file", new Blob([JSON.stringify("")]), {
             type: "application/json",
           });
         } else {
@@ -145,7 +169,6 @@ const Writes = () => {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(Result);
         navigate(`/${target}/${Result.data}`);
       } else {
         alert("글 작성에 필요한 값을 아직 작성하지 않았습니다");
