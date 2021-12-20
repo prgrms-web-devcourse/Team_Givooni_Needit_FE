@@ -169,10 +169,16 @@ const Detail = () => {
           <WriteContainer>
             <WriteSubContainer>
               <TextSliderAvatarContainer>
-                <Avatar
-                  sx={{ width: 50, height: 50 }}
-                  src={detailData.userImage}
-                />
+                <Link
+                  to={`/${
+                    requestTarget === "donations" ? "member" : "center"
+                  }/${detailData.userId}`}
+                >
+                  <Avatar
+                    sx={{ width: 50, height: 50 }}
+                    src={detailData.userImage}
+                  />
+                </Link>
                 <TextSliderContainer>
                   <div>{detailData.userName}</div>
                   <Slider
@@ -290,10 +296,18 @@ const Detail = () => {
                     <CardContainer key={i}>
                       <MemberDeleteContainer>
                         <MemberContainer>
-                          <Avatar
-                            sx={{ width: 30, height: 30 }}
-                            src={part.userImage}
-                          />
+                          <Link
+                            to={`/${
+                              requestTarget === "donations"
+                                ? "center"
+                                : "member"
+                            }/${part.userId}`}
+                          >
+                            <Avatar
+                              sx={{ width: 30, height: 30 }}
+                              src={part.userImage}
+                            />
+                          </Link>
                           <MemberName>{part.userName}</MemberName>
                         </MemberContainer>
                         {part.userId === loginUserId &&
