@@ -6,6 +6,7 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useState, useContext, useEffect } from "react";
 import { StateContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
+import Modal from "@mui/material/Modal";
 import { useLocation } from "react-router-dom";
 import { getRequest, postRequest, putRequest } from "@/api/axios";
 import theme from "@/styles/theme";
@@ -316,35 +317,31 @@ const Writes = () => {
         </WriteContainer>
         <Nav />
       </MainContainer>
-      {isModalOpen ? (
-        <CustomModal>
-          <CustomModalBody>
-            <ModalAreaContainer>
-              {subArea.map((t, i) => (
-                <ModalAreaItem key={i}>
-                  <Toggle
-                    id={t.id}
-                    text={t.name}
-                    toggleOn={() => {
-                      return isToggleOn(t.id);
-                    }}
-                  />
-                </ModalAreaItem>
-              ))}
-            </ModalAreaContainer>
-            <BaseButton
-              text="선택 완료"
-              width="200px"
-              height="50px"
-              onClick={() => {
-                clickButtonComplete();
-              }}
-            />
-          </CustomModalBody>
-        </CustomModal>
-      ) : (
-        <></>
-      )}
+      <Modal open={isModalOpen} style={{ zIndex: 10000 }}>
+        <CustomModalBody>
+          <ModalAreaContainer>
+            {subArea.map((t, i) => (
+              <ModalAreaItem key={i}>
+                <Toggle
+                  id={t.id}
+                  text={t.name}
+                  toggleOn={() => {
+                    return isToggleOn(t.id);
+                  }}
+                />
+              </ModalAreaItem>
+            ))}
+          </ModalAreaContainer>
+          <BaseButton
+            text="선택 완료"
+            width="200px"
+            height="50px"
+            onClick={() => {
+              clickButtonComplete();
+            }}
+          />
+        </CustomModalBody>
+      </Modal>
     </>
   );
 };
@@ -523,17 +520,6 @@ const SubmitContainer = styled.div`
 const LineBar = styled.div`
   width: 100%;
   border-bottom: 1px solid #e8e8e8;
-`;
-
-const CustomModal = styled.div`
-  position: absolute;
-  z-index: 10000;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  display: block;
-  background-color: rgba(0, 0, 0, 0.4);
 `;
 
 const CustomModalBody = styled.div`
