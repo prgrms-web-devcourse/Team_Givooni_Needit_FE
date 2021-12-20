@@ -19,7 +19,8 @@ import theme from "@/styles/theme";
 import { getRequest, postRequest, deleteRequest } from "@/api/axios";
 
 import { useParams, Link } from "react-router-dom";
-
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 const style = {
   position: "absolute",
   top: "50%",
@@ -41,7 +42,6 @@ const giveUncomplete = {
 };
 const Detail = () => {
   const [detailData, setDetailData] = useState({});
-  const [isClickMoreVert, setIsClickMoreVert] = useState(false);
   const [imgOpen, setImgOpen] = useState(false);
   const [giveButton, setGiveButton] = useState(giveUncomplete);
   const [modalImgLink, setModalImgLink] = useState("");
@@ -162,6 +162,15 @@ const Detail = () => {
     );
   };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <MainContainer>
@@ -197,23 +206,8 @@ const Detail = () => {
                 </TextSliderContainer>
               </TextSliderAvatarContainer>
               {/* 작성자 === 로그인유저이면 편집을 그외에는 관심하트를  */}
-              {checkWriter() ? (
-                <MoreVertIcon
-                  onClick={() => {
-                    setIsClickMoreVert(!isClickMoreVert);
-                  }}
-                  sx={{ cursor: "pointer" }}
-                />
-              ) : followed ? (
-                <FavoriteIcon onClick={unfollow} sx={{ cursor: "pointer" }} />
-              ) : (
-                <FavoriteBorderIcon
-                  onClick={follow}
-                  sx={{ cursor: "pointer" }}
-                />
-              )}
-              {isClickMoreVert ? (
-                <>
+              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                <MenuItem onClick={handleClose}>
                   <Link
                     to="/writes"
                     state={{
@@ -227,6 +221,8 @@ const Detail = () => {
                       }}
                     />
                   </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
                   <Link to={`/${requestTarget}`}>
                     <CustomDeleteOutlineIcon
                       onClick={() => {
@@ -234,9 +230,20 @@ const Detail = () => {
                       }}
                     />
                   </Link>
-                </>
+                </MenuItem>
+              </Menu>
+              {checkWriter() ? (
+                <MoreVertIcon
+                  onClick={handleClick}
+                  sx={{ cursor: "pointer" }}
+                />
+              ) : followed ? (
+                <FavoriteIcon onClick={unfollow} sx={{ cursor: "pointer" }} />
               ) : (
-                <></>
+                <FavoriteBorderIcon
+                  onClick={follow}
+                  sx={{ cursor: "pointer" }}
+                />
               )}
             </WriteSubContainer>
           </WriteContainer>
