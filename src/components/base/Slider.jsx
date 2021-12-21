@@ -9,7 +9,7 @@ const ToggleContainer = styled.label`
 `;
 
 const ToggleSwitch = styled.div`
-  width: 72px;
+  width: 76px;
   height: 26px;
   border-radius: 16px;
   background-color: #fd9f28;
@@ -21,9 +21,9 @@ const ToggleSwitch = styled.div`
     padding: 4px 4px;
     padding-left: 8px;
     box-sizing: border-box;
-    left: calc(100% - 60px);
+    left: calc(100% - 64px);
     display: block;
-    width: 60px;
+    width: 64px;
     height: 26px;
     font-size: 12px;
     border-radius: 16px;
