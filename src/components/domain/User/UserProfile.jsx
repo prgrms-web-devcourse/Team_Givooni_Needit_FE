@@ -62,11 +62,11 @@ const UserProfile = ({ data, mine = false }) => {
           </Box>
           {data.myProfile.role === "CENTER" && (
             <Box>
-              <Box display="flex" sx={{ mt: "14px" }}>
+              <Box display="flex" sx={{ gap: "4px", mt: "14px" }}>
                 <CallIcon />
                 <Typography>{data.myProfile.contact}</Typography>
               </Box>
-              <Box display="flex">
+              <Box display="flex" sx={{ gap: "4px" }}>
                 <MapIcon />
                 <Typography display="inline">
                   {data.myProfile.address}
