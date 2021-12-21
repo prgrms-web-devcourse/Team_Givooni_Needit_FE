@@ -190,6 +190,7 @@ const AlignContainer = styled.div`
 const ListContainer = styled.div`
   margin-top: 1rem;
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: 0.25rem;
 `;
