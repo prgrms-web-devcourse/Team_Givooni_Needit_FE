@@ -471,6 +471,7 @@ const CustomContent = styled.div`
   padding: 6px 10px;
   ${theme.typography.body1};
   font-size: 14px;
+  white-space: pre-wrap;
 `;
 const ImageWrapContainer = styled.div`
   margin-top: 9px;
