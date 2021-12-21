@@ -62,11 +62,11 @@ const Search = () => {
     <>
       <Header type="searchOut" fixed={true} />
       <AlignContainer>
-        <form type="search" style={{ width: "100%" }}>
+        <form type="search" style={{ width: "95vw" }}>
           <Input
             value={value}
             type="searchFull"
-            sx={{ width: "95vw" }}
+            onKeyPress={(e) => e.key === "Enter" && e.preventDefault()}
             onChange={(e) => {
               e.preventDefault();
               setValue(e.target.value);
