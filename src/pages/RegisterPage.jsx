@@ -4,16 +4,17 @@ import Header from "@/components/base/Header";
 import Input from "@/components/base/Input";
 import PasswordInput from "@/components/base/PasswordInput";
 import theme from "@/styles/theme";
-import { Checkbox } from "@mui/material";
+import { Button, Checkbox } from "@mui/material";
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import Cleave from "cleave.js/react";
 import "cleave.js/dist/addons/cleave-phone.kr";
-import { postRequest } from "@/api/axios";
+import { postRequest, putRequest } from "@/api/axios";
 import { useNavigate } from "react-router";
 import { StateContext } from "@/context/index";
+import { Box } from "@mui/system";
 
 const RegisterContainer = styled.div`
   margin-top: 5rem;
@@ -215,6 +216,18 @@ const RegisterPage = () => {
     },
   });
 
+  const emailRt = async (e) => {
+    e.target.innerText = "인증코드 전송중";
+    const response = await putRequest("email", {
+      data: { email: myEmail },
+    });
+    if (response.message === "success")
+      e.target.innerText = "인증코드 전송완료";
+    setTimeout(() => {
+      e.target.innerText = "인증코드 재전송";
+    }, 8000);
+  };
+
   return (
     <>
       <Header type="plain" fixed={true} />
@@ -252,11 +265,25 @@ const RegisterPage = () => {
               helperText={formik.touched.email && formik.errors.email}
             />
             <div style={{ display: "flex", gap: ".5rem" }}>
-              <Input
-                type="Email 인증 코드"
-                sx={{ width: "13.5rem" }}
-                onKeyUp={(e) => setCode(e.target.value)}
-              />
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Input
+                  type="Email 인증 코드"
+                  sx={{ width: "13.5rem" }}
+                  onKeyUp={(e) => setCode(e.target.value)}
+                />
+                {emailValidated && (
+                  <Button
+                    sx={{
+                      width: "7rem",
+                      height: "1.5rem",
+                      whiteSpace: "nowrap",
+                    }}
+                    onClick={emailRt}
+                  >
+                    인증코드 재전송
+                  </Button>
+                )}
+              </Box>
               {emailValidated === "success" ? (
                 <BaseButton
                   type="button"
