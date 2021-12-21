@@ -62,6 +62,7 @@ const BaseButton = ({
     borderRadius: height,
     fontSize: fontSize,
     fontWeight: fontWeight,
+    whiteSpace: "nowrap",
   };
 
   return (
