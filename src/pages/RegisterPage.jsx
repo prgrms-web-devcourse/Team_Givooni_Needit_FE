@@ -119,13 +119,14 @@ const RegisterPage = () => {
     //     alert("유효한 사업자 정보를 입력해주세요.");
     //   });
     setValidating(true);
+    setCenterValidated(true);
     const result = await postRequest("check-businesscode", {
       data: businessData,
     });
     // setValidateStatus(result);
 
-    if (result.data.valid === true) {
-      setCenterValidated(true);
+    if (result.data.valid === false) {
+      setCenterValidated(false);
     }
   };
 
