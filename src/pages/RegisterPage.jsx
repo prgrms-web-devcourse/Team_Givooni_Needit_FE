@@ -9,7 +9,6 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import axios from "axios";
 import Cleave from "cleave.js/react";
 import "cleave.js/dist/addons/cleave-phone.kr";
 import { postRequest } from "@/api/axios";
@@ -36,12 +35,13 @@ const AlignContainer = styled.div`
 const RegisterPage = () => {
   const state = useContext(StateContext);
   const navigate = useNavigate();
+  const [validating, setValidating] = useState(false);
   const [isCenter, setIsCenter] = useState(false);
   const [centerValidated, setCenterValidated] = useState(false);
   const [centerName, setCenterName] = useState("홍길동");
   const [centerNum, setCenterNum] = useState("0000000000");
   const [centerDate, setCenterDate] = useState("20000101");
-  const [validateStatus, setValidateStatus] = useState("");
+  // const [validateStatus, setValidateStatus] = useState("");
   const [myEmail, setEmail] = useState("");
   const [myCode, setCode] = useState("");
   const [emailValidated, setEmailValidated] = useState("");
@@ -82,41 +82,52 @@ const RegisterPage = () => {
   //   ref?.current.start();
   // };
 
-  const data = JSON.stringify({
-    businesses: [
-      {
-        b_no: centerNum,
-        start_dt: centerDate,
-        p_nm: centerName,
-        p_nm2: "",
-        b_nm: "",
-        corp_no: "",
-        b_sector: "",
-        b_type: "",
-      },
-    ],
-  });
+  const businessData =
+    // JSON.stringify({
+    // businesses: [
+    {
+      b_no: centerNum,
+      start_dt: centerDate,
+      p_nm: centerName,
+      // p_nm2: "",
+      // b_nm: "",
+      // corp_no: "",
+      // b_sector: "",
+      // b_type: "",
+    };
+  //],
+  //});
 
-  const request = {
-    method: "post",
-    url: "https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=w2MOw0zoOwMPgsdLpEtEKNVazsFgDfbNOxMb%2FkMMierdPUgPmj1coM%2Bgf0w%2FvA3xP6OFm8bk0GnLLUgXRoU3qQ%3D%3D",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: data,
+  // const request = {
+  //   method: "post",
+  //   url: "https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=w2MOw0zoOwMPgsdLpEtEKNVazsFgDfbNOxMb%2FkMMierdPUgPmj1coM%2Bgf0w%2FvA3xP6OFm8bk0GnLLUgXRoU3qQ%3D%3D",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   data: data,
+  // };
+
+  const validation = async () => {
+    // await axios(request)
+    //   .then(function (response) {
+    //     setValidateStatus(
+    //       JSON.stringify(response.data.data[0].valid).replaceAll('"', "")
+    //     ); // 유효한 정보인지 출력해보기 & 일치 확인 위해 따옴표 제거
+    //     console.log(response.data);
+    //   })
+    //   .catch(function () {
+    //     alert("유효한 사업자 정보를 입력해주세요.");
+    //   });
+    setValidating(true);
+    const result = await postRequest("check-businesscode", {
+      data: businessData,
+    });
+    // setValidateStatus(result);
+
+    if (result.data.valid === true) {
+      setCenterValidated(true);
+    }
   };
-
-  const validation = async () =>
-    await axios(request)
-      .then(function (response) {
-        setValidateStatus(
-          JSON.stringify(response.data.data[0].valid).replaceAll('"', "")
-        ); // 유효한 정보인지 출력해보기 & 일치 확인 위해 따옴표 제거
-        console.log(response.data);
-      })
-      .catch(function () {
-        alert("유효한 사업자 정보를 입력해주세요.");
-      });
 
   const emailValidation = async () => {
     const result = await postRequest("email", { data: { email: myEmail } });
@@ -181,7 +192,6 @@ const RegisterPage = () => {
     validationSchema: validationSchema,
     onSubmit: async () => {
       if (!isCenter && emailValidated === "success") {
-        console.log(memberInfo);
         const register_result = await postRequest("members/signup", {
           data: memberInfo,
         });
@@ -198,7 +208,6 @@ const RegisterPage = () => {
         });
         console.log(register_result2);
         if (register_result2.message === "success") {
-          console.log("회원가입 성공");
           navigate("/login");
         }
       }
@@ -397,21 +406,22 @@ const RegisterPage = () => {
                     marginTop: "1rem",
                   }}
                 >
-                  <BaseButton
-                    type="button"
-                    btnType={centerValidated ? undefined : "gray_dark"}
-                    text="기관 회원 인증"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      validation();
-                      if (validateStatus === "02")
-                        alert("유효하지 않은 사업자 정보입니다.");
-                      else if (validateStatus === "01") {
-                        setCenterValidated(true);
-                        alert("유효한 사업자 정보입니다.");
-                      }
-                    }}
-                  />
+                  {validating && centerValidated === false ? (
+                    <div style={{ marginBottom: "1rem", color: "red" }}>
+                      유효하지 않은 사업자 정보입니다.
+                    </div>
+                  ) : undefined}
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <BaseButton
+                      type="button"
+                      btnType={centerValidated ? undefined : "gray_dark"}
+                      text="기관 회원 인증"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        validation();
+                      }}
+                    />
+                  </div>
                 </div>
               </>
             ) : undefined}
@@ -423,7 +433,9 @@ const RegisterPage = () => {
                 marginTop: "3rem",
               }}
             >
-              <BaseButton text="회원가입" width="20rem" type="submit" />
+              <div>
+                <BaseButton text="회원가입" width="20rem" type="submit" />
+              </div>
             </div>
           </AlignContainer>
         </RegisterContainer>
