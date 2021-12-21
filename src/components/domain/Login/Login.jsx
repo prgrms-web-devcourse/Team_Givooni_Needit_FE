@@ -11,6 +11,7 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { postRequest } from "@/api/axios";
+import UserType from "@/utils/hooks/UserType";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -60,7 +61,7 @@ const Login = () => {
         const { accessToken } = data.data;
         const needit_token = accessToken;
         localStorage.setItem("needit_access_token", needit_token);
-        navigate("/wishes");
+        navigate(UserType("member") ? "/wishes" : "/donations");
       }
     },
   });
