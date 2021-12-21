@@ -24,7 +24,7 @@ const TagFilter = () => {
         height="20px"
         width="3rem"
         text="태그"
-        tag="primary"
+        tag="white"
         typography="body2"
         fontSize="14px"
       />
