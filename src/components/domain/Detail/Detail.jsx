@@ -28,6 +28,10 @@ const style = {
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
   boxShadow: 24,
+  width: "70%",
+  height: "70%",
+  maxWidth: "500px",
+  minWidth: "200px",
   p: 4,
 };
 const giveComplete = {
@@ -270,7 +274,10 @@ const Detail = () => {
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                  <img src={modalImgLink} />
+                  <img
+                    src={modalImgLink}
+                    style={{ width: "100%", height: "100%" }}
+                  />
                 </Box>
               </Modal>
             </ScrollWrapContainer>
