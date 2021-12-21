@@ -4,12 +4,14 @@ import Nav from "@/components/base/Nav";
 import styled from "styled-components";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useState, useContext, useEffect } from "react";
-import { StateContext } from "@/context/index";
+import { StateContext, DispatchContext } from "@/context/index";
 import Toggle from "@/components/base/Toggle";
+import Modal from "@mui/material/Modal";
 import { useLocation } from "react-router-dom";
 import { getRequest, postRequest, putRequest } from "@/api/axios";
 import theme from "@/styles/theme";
 import { useNavigate } from "react-router";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const subArea = [
   { id: 1, name: "아동·청소년" },
@@ -23,7 +25,6 @@ const subArea = [
   { id: 9, name: "환경" },
   { id: 10, name: "기타" },
 ];
-
 const Writes = () => {
   // API로 전송할 Data
   const [title, setTitle] = useState("");
@@ -35,13 +36,15 @@ const Writes = () => {
   const [quality, setQuality] = useState("");
   const [userRole, setUserRole] = useState("");
   const [files, setFiles] = useState("");
+  const dispatch = useContext(DispatchContext);
 
   const location = useLocation();
   let preTitle,
     preContent,
     preTag = [],
-    preCategory = [],
-    writeId;
+    preCategory = "",
+    writeId,
+    preImageArr = [];
   if (location.state) {
     preTitle = location.state.prewriteData.title;
     preContent = location.state.prewriteData.content;
@@ -54,38 +57,64 @@ const Writes = () => {
     });
     preCategory = location.state.prewriteData.category;
     writeId = location.state.prewriteData.id;
+    preImageArr = location.state.prewriteData.images;
   }
 
-  useEffect(async () => {
+  useEffect(() => {
+    dispatch({
+      type: "initTags",
+    });
+
     setTitle(preTitle);
     setContent(preContent);
     setTag(preTag);
     setCategory(preCategory);
     setQuality("좋음");
 
-    const userData = await getRequest(`users`);
-    setUserRole(userData.data.myProfile.role);
+    const getData = async () => {
+      const userData = await getRequest(`users`);
+      setUserRole(userData.data.myProfile.role);
+    };
+
+    getData();
+
+    setImgs(preImageArr);
+
+    async function setFilesFunc() {
+      const fileResult = await imageUrlToFile();
+      Promise.all(fileResult).then((values) => {
+        setFiles(values);
+      });
+    }
+
+    function imageUrlToFile() {
+      return preImageArr.map(async (url) => {
+        const response = await fetch(url);
+        const data = await response.blob();
+        const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+        const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+        const metadata = { type: `image/${ext}` };
+        return new File([data], filename, metadata);
+      });
+    }
+
+    if (preImageArr) setFilesFunc();
   }, []);
 
   const state = useContext(StateContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const writeTitle = ({ target }) => {
     setTitle(target.value);
   };
-
   const writeContent = ({ target }) => {
     setContent(target.value);
   };
-
   const clickTagHandler = () => {
     setIsModalOpen(true);
   };
-
   const changeSelectHandler = ({ target }) => {
     setCategory(target.value);
   };
-
   const clickButtonComplete = () => {
     if (state.selectedTags.length > 3) alert("3가지 이하로 선택해주세요");
     else {
@@ -94,16 +123,13 @@ const Writes = () => {
       setIsModalOpen(false);
     }
   };
-
   const navigate = useNavigate();
   //API에 필요한 6가지 항목
   const submitWrites = async () => {
     //writeId가 있으면 수정API요청 / writeId가 없으면 새로운 글쓰기 요청
-    console.log(title, content, category, tag, apiTag, quality, Imgs, writeId);
     //writeId (기존의 글쓰기가 존재한다면 수정API)
     const target = userRole === "CENTER" ? "wishes" : "donations";
     if (writeId) {
-      console.log("!");
       if (category && content && title) {
         const formData = new FormData();
         formData.append(
@@ -130,14 +156,12 @@ const Writes = () => {
             formData.append("file", file);
           });
         }
-
         const Result = await putRequest(`${target}/${writeId}`, {
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(Result);
         navigate(`/${target}/${Result.data}`);
       } else {
         alert("글 작성에 필요한 값을 아직 작성하지 않았습니다");
@@ -169,7 +193,6 @@ const Writes = () => {
             formData.append("file", file);
           });
         }
-
         const Result = await postRequest(`${target}`, {
           data: formData,
           headers: {
@@ -183,18 +206,13 @@ const Writes = () => {
       }
     }
   };
-
   const handleImageUpload = (e) => {
     // 추후 alert 창과 같은 최대 4장의 메세지 전송
     if (Imgs.length === 4) return;
-
     const fileArr = e.target.files;
-
     let fileURLs = [];
-
     let file;
     let filesLength = fileArr.length > 10 ? 10 : fileArr.length;
-
     for (let i = 0; i < filesLength; i++) {
       file = fileArr[i];
       let reader = new FileReader();
@@ -206,7 +224,6 @@ const Writes = () => {
       reader.readAsDataURL(file);
     }
   };
-
   const isToggleOn = (toggleId) => {
     let isSame = false;
     tag.map(({ id }) => {
@@ -215,7 +232,17 @@ const Writes = () => {
 
     return isSame;
   };
-  console.log(state.selectedTown);
+
+  const removeImgs = (idx) => {
+    const removeImgArr = Imgs.filter((_, imgIdx) => {
+      return idx !== imgIdx;
+    });
+    const removeFileArr = files.filter((_, imgIdx) => {
+      return idx !== imgIdx;
+    });
+    setImgs(removeImgArr);
+    setFiles(removeFileArr);
+  };
 
   return (
     <>
@@ -281,7 +308,17 @@ const Writes = () => {
 
                 {Imgs &&
                   Imgs.map((link, i) => {
-                    return <CustomImg src={link} key={i} />;
+                    return (
+                      <div style={{ position: "relative" }} key={i}>
+                        <CustomImg src={link} key={i}></CustomImg>
+                        <CancelIcon
+                          onClick={() => {
+                            removeImgs(i);
+                          }}
+                          style={{ position: "absolute", left: 70, top: 5 }}
+                        />
+                      </div>
+                    );
                   })}
               </ScrollWrapContainer>
             </ImageWrapContainer>
@@ -313,61 +350,52 @@ const Writes = () => {
         </WriteContainer>
         <Nav />
       </MainContainer>
-      {isModalOpen ? (
-        <CustomModal>
-          <CustomModalBody>
-            <ModalAreaContainer>
-              {subArea.map((t, i) => (
-                <ModalAreaItem key={i}>
-                  <Toggle
-                    id={t.id}
-                    text={t.name}
-                    toggleOn={() => {
-                      return isToggleOn(t.id);
-                    }}
-                  />
-                </ModalAreaItem>
-              ))}
-            </ModalAreaContainer>
-            <BaseButton
-              text="선택 완료"
-              width="200px"
-              height="50px"
-              onClick={() => {
-                clickButtonComplete();
-              }}
-            />
-          </CustomModalBody>
-        </CustomModal>
-      ) : (
-        <></>
-      )}
+      <Modal open={isModalOpen} style={{ zIndex: 10000 }}>
+        <CustomModalBody>
+          <ModalAreaContainer>
+            {subArea.map((t, i) => (
+              <ModalAreaItem key={i}>
+                <Toggle
+                  id={t.id}
+                  text={t.name}
+                  toggleOn={() => {
+                    return isToggleOn(t.id);
+                  }}
+                />
+              </ModalAreaItem>
+            ))}
+          </ModalAreaContainer>
+          <BaseButton
+            text="선택 완료"
+            width="200px"
+            height="50px"
+            onClick={() => {
+              clickButtonComplete();
+            }}
+          />
+        </CustomModalBody>
+      </Modal>
     </>
   );
 };
-
 const MainContainer = styled.div`
   padding-bottom: 75px;
 `;
-
 const WriteContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
 const ReactiveContainer = styled.div`
   min-width: 300px;
   max-width: 500px;
 `;
-
 const TitleContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 98px;
   margin-bottom: 10px;
 `;
-
 const TitleInput = styled.input`
   ${theme.typography.body1};
   background: #f6f6f6;
@@ -383,7 +411,6 @@ const TitleInput = styled.input`
     border: 1px solid #fd9f28;
   }
 `;
-
 const InformationContainer = styled.div`
   margin: 5px 0;
   width: auto;
@@ -392,7 +419,6 @@ const InformationContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-
 const CustomSelect = styled.select`
   ${theme.typography.body2};
   width: 4.5rem;
@@ -408,7 +434,6 @@ const CustomSelect = styled.select`
 const TagsContainer = styled.div`
   width: 100%;
 `;
-
 const CustomBaseButton = styled(BaseButton)`
   height: 24px;
   font-style: normal;
@@ -416,13 +441,11 @@ const CustomBaseButton = styled(BaseButton)`
   font-weight: 400;
   font-size: 12px;
 `;
-
 const ContentContainer = styled.div`
   display: flex;
   justify-content: center;
   margin: 14px 0;
 `;
-
 const ContentTextarea = styled.textarea`
   ${theme.typography.body1};
   border: 1px solid #e8e8e8;
@@ -439,14 +462,12 @@ const ContentTextarea = styled.textarea`
     border: 1px solid #fd9f28;
   }
 `;
-
 const ImageWrapContainer = styled.div`
   margin-top: 9px;
   margin-bottom: 11px;
   width: auto;
   white-space: nowrap;
 `;
-
 const ImageLabelText = styled.div`
   display: flex;
   justify-content: center;
@@ -456,20 +477,20 @@ const ImageLabelText = styled.div`
 
 const ScrollWrapContainer = styled.div`
   display: flex;
-  overflow-x: auto;
+  overflow-x: scroll;
   white-space: nowrap;
+  max-width: 320px;
 `;
 
 const CustomImg = styled.img`
-  max-width: 180px;
-  height: 100px;
+  width: 100px;
+  height: 146px;
   object-fit: cover;
   background-color: #f6f6f6;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   margin-right: 10px;
 `;
-
 const CustomLabel = styled.label`
   display: flex;
   justify-content: center;
@@ -481,11 +502,11 @@ const CustomLabel = styled.label`
   border-radius: 8px;
   border: 1px solid #e8e8e8;
   margin-right: 10px;
-
   color: #bdbdbd;
   font-weight: 400;
   font-size: 14px;
   line-height: 19px;
+  cursor: pointer;
 `;
 
 const PictureContainer = styled.div`
@@ -503,33 +524,21 @@ const PictureSubContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const CustomCameraLabel = styled.label`
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #e8e8e8;
+  cursor: pointer;
 `;
 
 const SubmitContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
-
 const LineBar = styled.div`
   width: 100%;
   border-bottom: 1px solid #e8e8e8;
-`;
-
-const CustomModal = styled.div`
-  position: absolute;
-  z-index: 10000;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  display: block;
-  background-color: rgba(0, 0, 0, 0.4);
 `;
 
 const CustomModalBody = styled.div`
@@ -544,7 +553,6 @@ const CustomModalBody = styled.div`
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
   transform: translateX(-50%) translateY(-50%);
 `;
-
 const ModalAreaContainer = styled.div`
   overflow-y: scroll;
   display: grid;
@@ -553,7 +561,6 @@ const ModalAreaContainer = styled.div`
   justify-content: center;
   height: 80vh;
 `;
-
 const ModalAreaItem = styled.div`
   display: flex;
   width: 130px;
@@ -570,5 +577,4 @@ const ModalAreaItem = styled.div`
   color: #fd9f28;
   padding: 10px;
 `;
-
 export default Writes;
