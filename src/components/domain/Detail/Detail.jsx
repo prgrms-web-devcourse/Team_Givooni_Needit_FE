@@ -9,7 +9,7 @@ import {
 } from "@mui/icons-material";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-
+import LoadingCircular from "@/components/base/LoadingCircular";
 import Nav from "@/components/base/Nav";
 import Header from "@/components/base/Header";
 import Slider from "@/components/base/Slider";
@@ -53,6 +53,7 @@ const Detail = () => {
   const [followed, setFollowed] = useState(false);
   const [loginUserId, setLoginUserId] = useState("");
   const [loginUserRole, setLoginUserRole] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const requestTarget =
     window.location.href.split("/").indexOf("donations") > -1
       ? "donations"
@@ -78,6 +79,8 @@ const Detail = () => {
     isCommentExist(writeApiData, userApiData.myProfile.id);
     //관심센터에 등록되어 있는지 확인
     IsFollow(writeApiData, userApiData.myFavorite);
+
+    setIsLoading(true);
   }, []);
 
   //comment가 로그인한 대상이 작성했는지 체크
@@ -179,204 +182,208 @@ const Detail = () => {
     <>
       <MainContainer>
         <Header type="plain" fixed={true} />
-        <DetailContainer>
-          <WriteContainer>
-            <WriteSubContainer>
-              <TextSliderAvatarContainer>
-                <Link
-                  to={`/${
-                    requestTarget === "donations" ? "member" : "center"
-                  }/${detailData.userId}`}
-                  style={{ cursor: "pointer" }}
-                >
-                  <Avatar
-                    sx={{ width: 50, height: 50 }}
-                    src={detailData.userImage}
-                  />
-                </Link>
-                <TextSliderContainer>
+        {isLoading ? (
+          <DetailContainer>
+            <WriteContainer>
+              <WriteSubContainer>
+                <TextSliderAvatarContainer>
                   <Link
                     to={`/${
                       requestTarget === "donations" ? "member" : "center"
                     }/${detailData.userId}`}
-                    style={{
-                      cursor: "pointer",
-                      textDecoration: "none",
-                    }}
+                    style={{ cursor: "pointer" }}
                   >
-                    <TestDiv>{detailData.userName}</TestDiv>
-                  </Link>
-                  <Slider />
-                </TextSliderContainer>
-              </TextSliderAvatarContainer>
-              {/* 작성자 === 로그인유저이면 편집을 그외에는 관심하트를  */}
-              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                <MenuItem onClick={handleClose}>
-                  <Link
-                    to="/writes"
-                    state={{
-                      prewriteData: detailData,
-                    }}
-                  >
-                    <CustomEditIcon
-                      onClick={() => {
-                        // 글쓰기 페이지 이동
-                        console.log("글쓰기 페이지 이동");
-                      }}
+                    <Avatar
+                      sx={{ width: 50, height: 50 }}
+                      src={detailData.userImage}
                     />
                   </Link>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Link to={`/${requestTarget}`}>
-                    <CustomDeleteOutlineIcon
-                      onClick={() => {
-                        clickDeleteWriteHandler();
+                  <TextSliderContainer>
+                    <Link
+                      to={`/${
+                        requestTarget === "donations" ? "member" : "center"
+                      }/${detailData.userId}`}
+                      style={{
+                        cursor: "pointer",
+                        textDecoration: "none",
                       }}
-                    />
-                  </Link>
-                </MenuItem>
-              </Menu>
-              {checkWriter() ? (
-                <MoreVertIcon
-                  onClick={handleClick}
-                  sx={{ cursor: "pointer" }}
-                />
-              ) : followed ? (
-                <FavoriteIcon onClick={unfollow} sx={{ cursor: "pointer" }} />
-              ) : (
-                <FavoriteBorderIcon
-                  onClick={follow}
-                  sx={{ cursor: "pointer" }}
-                />
-              )}
-            </WriteSubContainer>
-          </WriteContainer>
-          <TitleContainer>
-            <CustomTitle>{detailData.title}</CustomTitle>
-          </TitleContainer>
-          <ContentContainer>
-            <CustomContent>{detailData.content}</CustomContent>
-          </ContentContainer>
-          <ImageWrapContainer>
-            <ScrollWrapContainer>
-              {detailData.images &&
-                detailData.images.map((link, i) => {
-                  return (
-                    <>
-                      <CustomImg src={link} key={i} onClick={modalImgOpen} />
-                    </>
-                  );
-                })}
-              <Modal
-                open={imgOpen}
-                onClose={modalImgClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={style}>
-                  <img
-                    src={modalImgLink}
-                    style={{ width: "100%", height: "100%" }}
+                    >
+                      <TestDiv>{detailData.userName}</TestDiv>
+                    </Link>
+                    <Slider />
+                  </TextSliderContainer>
+                </TextSliderAvatarContainer>
+                {/* 작성자 === 로그인유저이면 편집을 그외에는 관심하트를  */}
+                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to="/writes"
+                      state={{
+                        prewriteData: detailData,
+                      }}
+                    >
+                      <CustomEditIcon
+                        onClick={() => {
+                          // 글쓰기 페이지 이동
+                          console.log("글쓰기 페이지 이동");
+                        }}
+                      />
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to={`/${requestTarget}`}>
+                      <CustomDeleteOutlineIcon
+                        onClick={() => {
+                          clickDeleteWriteHandler();
+                        }}
+                      />
+                    </Link>
+                  </MenuItem>
+                </Menu>
+                {checkWriter() ? (
+                  <MoreVertIcon
+                    onClick={handleClick}
+                    sx={{ cursor: "pointer" }}
                   />
-                </Box>
-              </Modal>
-            </ScrollWrapContainer>
-          </ImageWrapContainer>
-          <LineBar />
-          <CommentContainer>
-            <CommnentSubContainer>
-              <GroupContainer>
-                <ProfileContainer>
-                  <Profile
-                    width={20}
-                    height={20}
-                    comments={detailData.comments}
-                  />
-                  <CustomCommentNum>
-                    참여자 수 {detailData.userCnt}명
-                  </CustomCommentNum>
-                </ProfileContainer>
-                {/* 글쓴이 === 로그인 대상이 아니면 기부참여버튼 추가 */}
-                {checkIsExistButton() ? (
-                  <BaseButton
-                    width={80}
-                    height={28}
-                    fontWeight={500}
-                    fontSize={12}
-                    text={giveButton.text}
-                    tag={giveButton.tag}
-                    btnType={giveButton.btnType}
-                    onClick={() => {
-                      clickGiveCommentBtn();
-                    }}
-                  />
+                ) : followed ? (
+                  <FavoriteIcon onClick={unfollow} sx={{ cursor: "pointer" }} />
                 ) : (
-                  <></>
+                  <FavoriteBorderIcon
+                    onClick={follow}
+                    sx={{ cursor: "pointer" }}
+                  />
                 )}
-              </GroupContainer>
-              {detailData.comments &&
-                detailData.comments.map((part, i) => {
-                  return (
-                    <CardContainer key={i}>
-                      <MemberDeleteContainer>
-                        <MemberContainer>
-                          <Link
-                            to={`/${
-                              requestTarget === "donations"
-                                ? "center"
-                                : "member"
-                            }/${part.userId}`}
-                            style={{
-                              cursor: "pointer",
-                              display: "flex",
-                              textDecoration: "none",
-                            }}
-                          >
-                            <Avatar
-                              sx={{ width: 30, height: 30 }}
-                              src={part.userImage}
-                            />
+              </WriteSubContainer>
+            </WriteContainer>
+            <TitleContainer>
+              <CustomTitle>{detailData.title}</CustomTitle>
+            </TitleContainer>
+            <ContentContainer>
+              <CustomContent>{detailData.content}</CustomContent>
+            </ContentContainer>
+            <ImageWrapContainer>
+              <ScrollWrapContainer>
+                {detailData.images &&
+                  detailData.images.map((link, i) => {
+                    return (
+                      <>
+                        <CustomImg src={link} key={i} onClick={modalImgOpen} />
+                      </>
+                    );
+                  })}
+                <Modal
+                  open={imgOpen}
+                  onClose={modalImgClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <img
+                      src={modalImgLink}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </Box>
+                </Modal>
+              </ScrollWrapContainer>
+            </ImageWrapContainer>
+            <LineBar />
+            <CommentContainer>
+              <CommnentSubContainer>
+                <GroupContainer>
+                  <ProfileContainer>
+                    <Profile
+                      width={20}
+                      height={20}
+                      comments={detailData.comments}
+                    />
+                    <CustomCommentNum>
+                      참여자 수 {detailData.userCnt}명
+                    </CustomCommentNum>
+                  </ProfileContainer>
+                  {/* 글쓴이 === 로그인 대상이 아니면 기부참여버튼 추가 */}
+                  {checkIsExistButton() ? (
+                    <BaseButton
+                      width={80}
+                      height={28}
+                      fontWeight={500}
+                      fontSize={12}
+                      text={giveButton.text}
+                      tag={giveButton.tag}
+                      btnType={giveButton.btnType}
+                      onClick={() => {
+                        clickGiveCommentBtn();
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </GroupContainer>
+                {detailData.comments &&
+                  detailData.comments.map((part, i) => {
+                    return (
+                      <CardContainer key={i}>
+                        <MemberDeleteContainer>
+                          <MemberContainer>
+                            <Link
+                              to={`/${
+                                requestTarget === "donations"
+                                  ? "center"
+                                  : "member"
+                              }/${part.userId}`}
+                              style={{
+                                cursor: "pointer",
+                                display: "flex",
+                                textDecoration: "none",
+                              }}
+                            >
+                              <Avatar
+                                sx={{ width: 30, height: 30 }}
+                                src={part.userImage}
+                              />
 
-                            <MemberName>{part.userName}</MemberName>
-                          </Link>
-                        </MemberContainer>
-                        {part.userId === loginUserId &&
-                        ((requestTarget === "wishes" &&
-                          loginUserRole === "MEMBER") ||
-                          (requestTarget === "donations" &&
-                            loginUserRole === "CENTER")) ? (
-                          <DeleteOutlineIcon
-                            onClick={() => {
-                              deleteMyComment(part.id);
-                            }}
-                            style={{ cursor: "pointer" }}
-                          />
-                        ) : checkWriter() ? (
-                          <Link
-                            to={`/message/${postId}/${
-                              requestTarget === "wishes" ? "WISH" : "DONATION"
-                            }/${part.userId}`}
-                          >
-                            <CustomMailOutlineIcon
+                              <MemberName>{part.userName}</MemberName>
+                            </Link>
+                          </MemberContainer>
+                          {part.userId === loginUserId &&
+                          ((requestTarget === "wishes" &&
+                            loginUserRole === "MEMBER") ||
+                            (requestTarget === "donations" &&
+                              loginUserRole === "CENTER")) ? (
+                            <DeleteOutlineIcon
                               onClick={() => {
-                                console.log("메일보내기 기능");
+                                deleteMyComment(part.id);
                               }}
                               style={{ cursor: "pointer" }}
                             />
-                          </Link>
-                        ) : (
-                          <></>
-                        )}
-                      </MemberDeleteContainer>
-                      <JoinCommentContainer>
-                        <Comment>기부 참여할래요!</Comment>
-                      </JoinCommentContainer>
-                    </CardContainer>
-                  );
-                })}
-            </CommnentSubContainer>
-          </CommentContainer>
-        </DetailContainer>
+                          ) : checkWriter() ? (
+                            <Link
+                              to={`/message/${postId}/${
+                                requestTarget === "wishes" ? "WISH" : "DONATION"
+                              }/${part.userId}`}
+                            >
+                              <CustomMailOutlineIcon
+                                onClick={() => {
+                                  console.log("메일보내기 기능");
+                                }}
+                                style={{ cursor: "pointer" }}
+                              />
+                            </Link>
+                          ) : (
+                            <></>
+                          )}
+                        </MemberDeleteContainer>
+                        <JoinCommentContainer>
+                          <Comment>기부 참여할래요!</Comment>
+                        </JoinCommentContainer>
+                      </CardContainer>
+                    );
+                  })}
+              </CommnentSubContainer>
+            </CommentContainer>
+          </DetailContainer>
+        ) : (
+          <LoadingCircular />
+        )}
         <Nav />
       </MainContainer>
     </>
