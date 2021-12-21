@@ -132,9 +132,16 @@ const RegisterPage = () => {
   };
 
   const emailValidation = async () => {
-    const result = await postRequest("email", { data: { email: myEmail } });
-    if (result.message === "success") setEmailValidated("ing");
-    else console.log("email 전송 실패");
+    try {
+      const result = await postRequest("email", { data: { email: myEmail } });
+      if (result.message === "success") setEmailValidated("ing");
+    } catch (error) {
+      const result = await putRequest("email", {
+        data: { email: myEmail },
+      });
+      if (result.message === "success") setEmailValidated("ing");
+      else console.log("email 전송 실패");
+    }
   };
 
   const codeValidation = async () => {
