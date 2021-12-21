@@ -60,10 +60,14 @@ const Writes = () => {
     preImageArr = location.state.prewriteData.images;
   }
 
-  useEffect(() => {
+  const dispatchInitTags = () => {
     dispatch({
       type: "initTags",
     });
+  };
+
+  useEffect(() => {
+    dispatchInitTags();
 
     setTitle(preTitle);
     setContent(preContent);
@@ -162,6 +166,7 @@ const Writes = () => {
             "Content-Type": "multipart/form-data",
           },
         });
+        dispatchInitTags();
         navigate(`/${target}/${Result.data}`);
       } else {
         alert("글 작성에 필요한 값을 아직 작성하지 않았습니다");
@@ -199,7 +204,7 @@ const Writes = () => {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(Result);
+        dispatchInitTags();
         navigate(`/${target}/${Result.data}`);
       } else {
         alert("글 작성에 필요한 값을 아직 작성하지 않았습니다");
