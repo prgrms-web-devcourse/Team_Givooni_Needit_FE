@@ -66,6 +66,7 @@ const Search = () => {
           <Input
             value={value}
             type="searchFull"
+            onKeyPress={(e) => e.key === "Enter" && e.preventDefault()}
             onChange={(e) => {
               e.preventDefault();
               setValue(e.target.value);
