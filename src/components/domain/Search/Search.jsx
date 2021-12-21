@@ -62,7 +62,7 @@ const Search = () => {
     <>
       <Header type="searchOut" fixed={true} />
       <AlignContainer>
-        <form type="search">
+        <form type="search" style={{ width: "100%" }}>
           <Input
             value={value}
             type="searchFull"
