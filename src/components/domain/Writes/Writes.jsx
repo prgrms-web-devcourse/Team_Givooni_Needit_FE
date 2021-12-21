@@ -144,7 +144,7 @@ const Writes = () => {
                 category,
                 content,
                 quality,
-                tags: apiTag,
+                tags: apiTag.length === 0 ? [10] : apiTag,
                 title,
               }),
             ],

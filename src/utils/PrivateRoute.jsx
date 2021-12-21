@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 function PrivateRoute({ children }) {
   const isLogin = !!localStorage.getItem("needit_access_token");
-  console.log(isLogin);
 
   return isLogin ? children : <Navigate to="/login" />;
 }
