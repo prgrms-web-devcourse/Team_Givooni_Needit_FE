@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import jwt_decode from "jwt-decode";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const instance = axios.create();
 
@@ -14,6 +14,13 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
+    if (
+      localStorage.getItem("needit_access_token") &&
+      Math.floor(Date.now() / 1000) >
+        jwt_decode(localStorage.getItem("needit_access_token")).exp
+    ) {
+      localStorage.removeItem("needit_access_token");
+    }
     Promise.reject(error);
   }
 );
