@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import axios from "axios";
-import convertURLtoFile from "@/utils/ConvertUrlToFile";
+// import convertURLtoFile from "@/utils/ConvertUrlToFile";
 import { useNavigate } from "react-router";
 
 const UserEdit = ({ myProfile }) => {
@@ -20,15 +20,16 @@ const UserEdit = ({ myProfile }) => {
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordConfirmInput, setPasswordConfirmInput] = useState("");
   const [introInput, setIntroInput] = useState(myProfile.introduction);
-  const [imageFile, setImageFile] = useState(myProfile.image);
+  // const [imageFile, setImageFile] = useState(myProfile.image);
+  const [imageFile, setImageFile] = useState("");
   const profileInput = useRef();
   const navigate = useNavigate();
 
-  useEffect(async () => {
-    if (!previewImg) return;
-    const convertedImage = await convertURLtoFile(previewImg);
-    setImageFile(convertedImage);
-  }, [previewImg]);
+  // useEffect(async () => {
+  //   if (!previewImg) return;
+  //   const convertedImage = await convertURLtoFile(previewImg);
+  //   setImageFile(convertedImage);
+  // }, [previewImg]);
 
   const uploadImage = () => {
     setPreviewImg("");
