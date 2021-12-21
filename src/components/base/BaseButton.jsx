@@ -47,6 +47,12 @@ const BaseButton = ({
       backgroundColor = pallete.primary.main;
       break;
 
+    case "white":
+      color = pallete.primary.main;
+      backgroundColor = "white";
+      border = pallete.primary.main;
+      break;
+
     case "gray_dark":
       backgroundColor = pallete.gray.dark;
       break;
