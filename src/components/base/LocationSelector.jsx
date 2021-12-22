@@ -4,6 +4,7 @@ import { MyLocation as MyLocationIcon } from "@mui/icons-material";
 import LocationData from "@/utils/const/LocationData";
 import theme from "@/styles/theme";
 import { StateContext, DispatchContext } from "@/context";
+import styled from "styled-components";
 
 const LocationSelector = () => {
   const state = useContext(StateContext);
@@ -71,7 +72,7 @@ const LocationSelector = () => {
             {openDetail ? (
               LocationData[city].map((city, idx) => {
                 return (
-                  <>
+                  <ButtonContainer key={idx} onClick={addDetail}>
                     <Button
                       sx={cityStyle}
                       key={idx}
@@ -80,32 +81,29 @@ const LocationSelector = () => {
                     >
                       {city}
                     </Button>
-                  </>
+                  </ButtonContainer>
                 );
               })
             ) : (
               <>
                 {Object.keys(LocationData).map((city, idx) => {
                   return (
-                    <>
+                    <ButtonContainer key={idx} onClick={onDetail}>
                       <Button
                         sx={cityStyle}
                         key={idx}
-                        onClick={onDetail}
                         endIcon={<MyLocationIcon onClick={onDetail} />}
                       >
                         {city}
                       </Button>
-                    </>
+                    </ButtonContainer>
                   );
                 })}
-                <Button
-                  color="gray_dark"
-                  sx={{ width: "100%" }}
-                  onClick={onDetail}
-                >
-                  지역 필터링 해제
-                </Button>
+                <div onClick={onDetail}>
+                  <Button color="gray_dark" sx={{ width: "100%" }}>
+                    지역 필터링 해제
+                  </Button>
+                </div>
               </>
             )}
           </Box>
@@ -118,7 +116,6 @@ const LocationSelector = () => {
 export default LocationSelector;
 
 const cityStyle = {
-  width: "45%",
   textAlign: "center",
   color: theme.palette.text.secondary,
 };
@@ -135,3 +132,9 @@ const style = {
   p: "1vw",
   overflow: "auto",
 };
+
+const ButtonContainer = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  width: 45%;
+`;
