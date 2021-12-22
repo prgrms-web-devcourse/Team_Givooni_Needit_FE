@@ -1,4 +1,5 @@
 import axios from "axios";
+import validateTokenExp from "@/utils/validateTokenExp";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const instance = axios.create();
@@ -35,6 +36,7 @@ const getRequest = async (url = "", options = {}) => {
   })
     .then((response) => response.data)
     .catch((error) => {
+      validateTokenExp(error);
       console.log(error);
     });
   return returnResult;
@@ -48,6 +50,7 @@ const postRequest = async (url = "", options = {}) => {
   })
     .then((response) => response.data)
     .catch((error) => {
+      validateTokenExp(error);
       console.log(error);
     });
 
@@ -62,6 +65,7 @@ const putRequest = async (url = "", options = {}) => {
   })
     .then((response) => response.data)
     .catch((error) => {
+      validateTokenExp(error);
       console.log(error);
     });
 
@@ -76,6 +80,7 @@ const deleteRequest = async (url = "", options = {}) => {
   })
     .then((response) => response.data)
     .catch((error) => {
+      validateTokenExp(error);
       console.log(error);
     });
 
@@ -90,6 +95,7 @@ const patchRequest = async (url = "", options = {}) => {
   })
     .then((response) => response.data)
     .catch((error) => {
+      validateTokenExp(error);
       console.log(error);
     });
 
