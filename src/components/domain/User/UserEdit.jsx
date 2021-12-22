@@ -2,11 +2,18 @@ import React, { useRef, useState } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
 import styled from "styled-components";
-import { Box, Avatar, Button, Chip } from "@mui/material";
+import {
+  Box,
+  Avatar,
+  Button,
+  TextField,
+  InputAdornment,
+  Input,
+} from "@mui/material";
 import {
   Call as CallIcon,
   Map as MapIcon,
-  VpnKey as VpnKeyIcon,
+  Lock as LockIcon,
 } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -161,48 +168,100 @@ const UserEdit = ({ myProfile }) => {
               filter: "brightness(70%)",
             }}
           />
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
-                width: "60vw",
-                mb: "6px",
+                flexDirection: "column",
+                gap: "6px",
               }}
             >
-              <Box>
-                <Chip icon={<VpnKeyIcon />} label="비밀번호" />
-                <UserPasswordEdit
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "4px",
+                }}
+              >
+                <LockIcon color="primary" sx={{ mr: 0.5 }} />
+                <TextField
+                  primary
+                  label="비밀번호"
+                  defaultValue="Hello World"
                   value={passwordInput}
-                  type="password"
                   onChange={handlePasswordChange}
-                />
-              </Box>
-              <Box>
-                <Chip icon={<VpnKeyIcon />} label="비밀번호 확인" />
-                <UserPasswordEdit
-                  value={passwordConfirmInput}
+                  variant="outlined"
                   type="password"
-                  onChange={handlePasswordConfirmChange}
+                  size="small"
                 />
               </Box>
-            </Box>
-            <Box display="flex">
-              <CallIcon />
-              <UserDataEdit
-                value={contactInput}
-                onChange={handleContactChange}
-              />
-            </Box>
-            <Box display="flex">
-              <MapIcon />
-              <UserDataEdit
-                value={addressInput}
-                onChange={handleAddressChange}
-              />
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "4px",
+                }}
+              >
+                <LockIcon color="primary" sx={{ mr: 0.5 }} />
+                <TextField
+                  primary
+                  label="비밀번호 확인"
+                  defaultValue="Hello World"
+                  value={passwordConfirmInput}
+                  onChange={handlePasswordConfirmChange}
+                  helperText={
+                    passwordConfirmInput &&
+                    passwordConfirmInput !== passwordInput
+                      ? "비밀번호가 일치하지 않습니다"
+                      : ""
+                  }
+                  variant="outlined"
+                  type="password"
+                  size="small"
+                  style={{ fontSize: "2px" }}
+                />
+              </Box>
             </Box>
           </Box>
         </UserProfileContainer>
+        <Box
+          sx={{
+            my: 1,
+            mx: "auto",
+            display: "flex",
+            flexDirection: "column",
+            // justifyContent: "center",
+            width: "85vw",
+            gap: "10px",
+          }}
+        >
+          <Input
+            startAdornment={
+              <InputAdornment position="start">
+                <CallIcon color="primary" />
+              </InputAdornment>
+            }
+            value={contactInput}
+            onChange={handleContactChange}
+            sx={{ fontSize: "14px" }}
+          />
+          <Input
+            startAdornment={
+              <InputAdornment position="start">
+                <MapIcon color="primary" />
+              </InputAdornment>
+            }
+            value={addressInput}
+            onChange={handleAddressChange}
+            sx={{ fontSize: "14px" }}
+          />
+        </Box>
         <UserIntroEdit
           placeholder="자기소개를 입력하세요"
           value={introInput}
@@ -241,35 +300,20 @@ const UserIntroEdit = styled.textarea`
   }
 `;
 
-const UserPasswordEdit = styled.input`
-  border: 1px solid #e8e8e8;
-  border-radius: 8px;
-  box-sizing: border-box;
-  width: 100%;
-  height: auto;
-  font-size: 12px;
-  font-family: "Spoqa Han Sans Neo";
-  padding-left: 10px;
-  resize: none;
-  &:focus {
-    outline: #fd9f28;
-    border: 1px solid #fd9f28;
-  }
-`;
-
-const UserDataEdit = styled.textarea`
-  border: none;
-  box-sizing: border-box;
-  width: 100%;
-  height: auto;
-  font-size: 12px;
-  font-family: "Spoqa Han Sans Neo";
-  resize: none;
-  &:focus {
-    outline: none;
-  }
-`;
-
 const UserProfileContainer = styled.div`
   display: flex;
+  margin-bottom: 14px;
 `;
+
+// const UserDataEdit = {
+//   border: none,
+//   box-sizing: border-box;
+//   width: 100%;
+//   height: auto;
+//   font-size: 12px;
+//   font-family: "Spoqa Han Sans Neo";
+//   resize: none;
+//   &:focus {
+//     outline: none;
+//   }
+// }
