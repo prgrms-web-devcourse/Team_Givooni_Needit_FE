@@ -1,59 +1,146 @@
-## 🖐 프로젝트 설명
+<div align="center">
+<img src="https://user-images.githubusercontent.com/76410985/147069122-a98b55f0-3875-4a46-b96a-221da28a283d.png" width="250px" height="250px"/>
 
-한국 사회의 연 기부 금액은 14.5조원(2019년 기준)에 달하며 그 중 개인 기부 금액이 65%를 차지하고 있으나 기부 금액 혹은 물품이 적절한 사용처에서 제대로 사용되고 있는지를 개인이 파악하기 어려운 현황 속에서 개인이 직접 기관에서 필요로 하는 기부 물품 혹은 노동력을 GPS 기반으로 제공하고자 할 수 있도록 기관과 개인을 매칭시켜주는 양방향 플랫폼
+[Need It](https://need-it.netlify.app/)
+<br/>
+</div>
+  <div align="center">
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-0088CC?style=flat-square&logo=React&logoColor=white"/>
 
-## 🔍 프로젝트 개요
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e105da81-f9cc-46d9-998d-c028d52e90f0/deploy-status)](https://app.netlify.com/sites/need-it/deploys)
+<img src="https://img.shields.io/badge/MUI-5.2.2-007FFF.svg"/>
+<img src="https://img.shields.io/badge/React_Router_Dom-6.0.2-red.svg"/>
 
-[프로젝트 개요](https://www.notion.so/backend-devcourse/12-f41327b8ca6b4ec69487af702393c922?p=81006b1f5d364863ae96987d29f04b04)
+</div>
+<br/>
+
+
+## 📌 목차
+
+- [🖐 프로젝트 소개](#-프로젝트-소개)
+- [🔍 서비스 소개](#-서비스-소개)
+- [✨ 주요 기능](#-주요-기능)
+  - [🔑 회원가입](#-회원가입)
+  - [📝 게시글](#-게시글)
+  - [🔎 게시글 탐색](#-게시글-탐색)
+  - [🔔 알림/채팅](#-알림채팅)
+  - [🙋‍♂️ 유저정보](#%EF%B8%8F-유저정보)
+- [🌈 프로젝트 WireFrame & UI](#-프로젝트-wireframe--ui)
+- [⚒ 아키텍쳐](#-아키텍쳐)
+
+<br />
+
+## 🖐 프로젝트 소개
+
+- 개인이 직접 봉사기관에서 원하는 기부 물품 혹은 노동력을 제공할 수 있도록 **기관과 개인을 매칭시켜주는 양방향 기부 플랫폼**
+
+![title2](https://user-images.githubusercontent.com/76410985/147069049-b94237f4-6371-4538-b5e1-00c81e981ceb.png)
+
+<br/>
+
+## 📣 배포 링크
+
+[https://need-it.netlify.app/](https://need-it.netlify.app/)
+<br/>
+<br/>
+
+## 👨‍💻 팀원 소개
+
+| [김태중](https://github.com/te-ing) | [김형욱](https://github.com/khw970421) | [박규란](https://github.com/gyulhana) | [윤상준](https://github.com/alajillo) |
+
+<!-- | ----------------------------------- | -------------------------------------- | ------------------------------------- | ------------------------------------- |
+| 사진1                               | 사진2                                  | 사진3                                 | 사진4                                 | -->
+
+<br/>
+
+<br/>
+
+# 🔍 서비스 소개
+
+### 📕 개요
+
+- 기관에서 직접 기부를 받고싶은 물품 및 재능을 업로드하고 기부자들은 GPS를 기반으로 자신의 위치 주변의 기관과 기관에서 올린 게시물을 볼 수 있으며 기부자 역시 자신이 가진 물품과 재능을 업로드하여 기부를 희망하는 기관을 찾을 수 있도록 하는 양방향 기부 플랫폼
+
+
+### 📗 메인 타겟
+
+- 온라인 플랫폼 사용에 익숙하며 기부에 관심이 많은 사용자
+- 기부를 검증된 기관에게 하되 양방향 소통을 통해 필요한 자원을 나누고 싶어하는 사용자
+
+<br/>
+
+### 📘 기대 효과
+
+- 일반 사용자가 아닌 검증된 기관에게 기부를 함으로써 재판매 방지 등 안정성 보장
+- 공개적인 댓글을 이용해 공개적인 기부 물품/기부자 모집/참여를 통해 기부의 투명성 상승
+- GPS를 기반으로 주변에 있는 기부 기관/센터를 볼 수 잇으며 기부 게시물을 태그, 위치 등 다양한 필터링을 통해 볼 수 있게 하여 기부의 편의성 상승
+
+<br/>
+<br/>
+
+# ✨ 주요 기능
+
+### 🔑 회원가입
+
+<img src="https://user-images.githubusercontent.com/76410985/147071937-edcfd174-243c-44e6-8d02-75b91c25527a.gif" width="125px" height="270px" />
+
+- 이메일 인증을 통한 회원가입
+- GPS / 도로명주소 API를 이용한 주소설정 기능
+- 봉사기관의 경우 사업자등록정보 인증 후 가입가능
+<br/>
+
+### 📝 게시글
+<img src="https://user-images.githubusercontent.com/76410985/147072538-efffac80-bbc5-4ccb-a1e2-387dc884659d.gif" width="125px" height="270px" />
+
+- 이미지를 포함한 게시글 작성/수정 기능
+- 게시글 기부진행/기부마감 상태변경 기능
+- 기부신청 기능
+<br/>
+
+### 🔎 게시글 탐색
+<img src="https://user-images.githubusercontent.com/76410985/147073036-1450c1a1-8bcf-473f-8040-a2590b23591c.gif" width="125px" height="270px" />
+
+- 태그, 카테고리, 지역을 통한 게시글 필터링
+- 게시글명, 작성자명 검색기능
+<br/>
+
+### 🔔 알림/채팅
+<img src="https://user-images.githubusercontent.com/76410985/147072556-ee2e2ece-3663-498e-9e36-c23adb421229.gif" width="125px" height="270px" />
+
+- 웹소켓을 이용한 알림/채팅 기능
+- 채팅 중 약속기능을 통한 기부예약 기능
+<br/>
+
+### 🙋‍♂️ 유저정보
+<img src="https://user-images.githubusercontent.com/76410985/147073045-b4d5bb55-72e4-4e14-9766-eac9b8eb5e5f.gif" width="125px" height="270px" />
+
+- 가입정보 수정
+- 멤버/센터페이지 열람 기능
+- 내가 작성한 글 보기
+- (멤버) 관심센터(팔로우) 기능
+
+
+<br/>
+
+
+<br/>
 
 ## 🌈 프로젝트 WireFrame & UI
 
-[프로젝트 WireFrame](https://www.figma.com/file/m9ehXAKxDkuP2nMpe8h3rE/Gibooniz?node-id=0%3A1)
+[Figma 링크](https://www.figma.com/file/m9ehXAKxDkuP2nMpe8h3rE/Gibooniz?node-id=0%3A1)
 
-## 📝 Git commit rule
+<br/>
 
-**Branch Convention**
+## ⚒ 아키텍쳐
 
-- 기능 / 이슈번호 / 컴포넌트 명 혹은 구현 내용
-- ex) feature/28/input-component
-- ex) feature/30/login-page
-- ex) docs/19/readme
+<img width="620" alt="image" src="https://user-images.githubusercontent.com/59253551/146981957-f2c182e6-b315-4553-97ce-e6c7403203ca.png">
 
-**Commit Message Convention**
+<br />
 
-- feat : 새로운 기능에 대한 커밋
-- fix : 버그 수정에 대한 커밋
-- build : 빌드 관련 파일 수정에 대한 커밋
-- chore : 그 외 자잘한 수정에 대한 커밋
-- ci : CI관련 설정 수정에 대한 커밋
-- docs : 문서 수정에 대한 커밋
-- style : 코드 스타일 혹은 포맷 등에 관한 커밋
-- refactor : 코드 리팩토링에 대한 커밋
-- test : 테스트 코드 수정에 대한 커밋
+<br />
 
-**Gitmoji Rule**
-
-- 🎉: 프로젝트 시작 Begin a project.
-- ✨: sparkles: 새 기능 Introduce new features.
-- 🐛: 버그 수정 Fix a bug.
-- 🔖: 릴리즈/버전 태그 Release / Version tags.
-- 🎨: 코드의 구조/형태 개선 Improve structure / format of the code.
-- 👷: CI 빌드 시스템 추가/수정 Add or update CI build system.
-- 💚: CI 빌드 수정 Fix CI Build.
-- ✅: 테스트 추가/수정 Add or update tests.
-- ex) ✨ feat: 한글로 구현한 기능에 대한 내용 적기
-
-ref.
-[Github Commit Message](https://velog.io/@djh20/Git-%EC%A0%9C%EB%8C%80%EB%A1%9C-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90)
-[Gitmoji 사용하기](https://treasurebear.tistory.com/70)
-
-**Pull Request Rule**
-
-- 깃모지 타입: 간단한 기능설명 (뒤에 내용은 한글로 설명)
-- ex)✨ feat: 포스트 페이지 렌더링 및 포스트 기본 기능 구현
-- [참고 링크](https://www.notion.so/backend-devcourse/12-f41327b8ca6b4ec69487af702393c922?p=66d80d8082994c79926307e527504c37)
-
-## 📁 폴더 구조
+## 📁 폴더구조
 
 ```
 src
@@ -64,37 +151,35 @@ src
 │  │  axios.js
 │  │
 │  └─services
-│      ├─alarm
-│      ├─chatting
-│      ├─interest
-│      ├─login
-│      ├─register
-│      ├─search
-│      └─write
+│
 ├─assets
 │
 ├─components
-│  ├─base
-│  └─domain
 │      ├─Center
+│      ├─Detail
 │      ├─Login
-│      ├─Member
 │      ├─Message
 │      ├─Notify
+│      ├─Posts
 │      ├─Register
 │      ├─Schedule
-│      ├─Username
+│      ├─Search
+│      ├─User
 │      └─Writes
-├── contexts
 │
-├─hooks
-│      index.js
+├── context
+│
+├─utils
+│  ├─const
+│  └─hooks
 │
 ├─pages
 │
-├─styles
-│      GlobalStyle.js
-│      theme.js
-│
-└─utils
+└─styles
+     ├─  GlobalStyle.js
+     └─theme.js
 ```
+
+<br/>
+
+[☝ 맨 위로 가기](#)
