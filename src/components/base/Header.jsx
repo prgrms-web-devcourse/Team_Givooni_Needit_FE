@@ -213,22 +213,19 @@ const Header = ({ type, view, url, fixed }) => {
                   style={{ fontSize: "1.9rem", color: "#FD9F28" }}
                 />
                 {length !== 0 && (
-                  // <div
-                  //   style={{
-                  //     position: "absolute",
-                  //     width: "20px",
-                  //     height: "20px",
-                  //     borderRadius: "50%",
-                  //     backgroundColor: "red",
-                  //     color: "white",
-                  //     border: "none",
-                  //     textAlign: "center",
-                  //     top: "-6px",
-                  //     left: "0px",
-                  //   }}
-                  // >
-                  // </div>
-                  <Avatar>{length}</Avatar>
+                  <Avatar
+                    style={{
+                      position: "absolute",
+                      width: "12px",
+                      height: "12px",
+                      backgroundColor: "red",
+                      top: "-1px",
+                      left: "1px",
+                      fontSize: "4px",
+                    }}
+                  >
+                    {length}
+                  </Avatar>
                 )}
               </div>
             </Link>
