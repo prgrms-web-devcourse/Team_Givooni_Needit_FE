@@ -2,6 +2,7 @@ import Header from "@/components/base/Header";
 import MessageDetail from "@/components/domain/Message/MessageDetail";
 import Message from "@/components/domain/Message/Message";
 import Nav from "@/components/base/Nav";
+import { Box, Typography } from "@mui/material";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useParams } from "react-router-dom";
@@ -82,6 +83,12 @@ const MessagePage = () => {
             setMessageList(nextList);
           }}
         />
+      ) : userList.length === 0 ? (
+        <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
+          <Typography color="primary" variant="subtitle1" marginTop="16px">
+            주고 받은 메시지가 없습니다
+          </Typography>
+        </Box>
       ) : (
         <Message list={userList} />
       )}
