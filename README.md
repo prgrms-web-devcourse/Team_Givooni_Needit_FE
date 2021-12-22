@@ -4,14 +4,18 @@
   <div align="center">
 <img src="https://img.shields.io/badge/React-17.0.2-blue.svg"/>
 <img src="https://img.shields.io/badge/React_Router_Dom-6.0.2-red.svg"/>
-<img src="https://img.shields.io/badge/MUI-5.2.2-007FFF.svg"/>
-<img src="https://img.shields.io/badge/craco-6.4.2-9a9c9e.svg"/>
 <img src="https://img.shields.io/badge/styled_components-5.3.3-dd6f93.svg"/>
+<img src="https://img.shields.io/badge/MUI-5.2.2-007FFF.svg"/>
+<br/>
+  <img src="https://img.shields.io/badge/craco-6.4.2-9a9c9e.svg"/>
+<img src="https://img.shields.io/badge/yarn-1.22.10-25799F.svg"/>
+  <img src="https://img.shields.io/badge/ESLint-7.20.0-9F94DA.svg"/>
+  <img src="https://img.shields.io/badge/Prettier-2.3.2-F7B93E.svg"/>
 </div>
 
 ## 🖐 프로젝트 소개
 
-- 개인이 직접 기관에서 필요로 하는 기부 물품 혹은 노동력을 GPS 기반으로 제공하고자 할 수 있도록 기관과 개인을 매칭시켜주는 양방향 플랫폼
+- 개인이 직접 기관에서 필요로 하는 기부 물품 혹은 노동력을 GPS 기반으로 제공하고자 할 수 있도록 **기관과 개인을 매칭시켜주는 양방향 플랫폼**
 
 ## 👨‍💻 팀원 소개
 
@@ -35,6 +39,8 @@
 - 일반 사용자가 아닌 검증된 기관에게 기부를 함으로써 재판매 방지 등 안정성 보장
 - 공개적인 댓글을 이용해 공개적인 기부 물품/기부자 모집/참여를 통해 기부의 투명성 상승
 - GPS를 기반으로 주변에 있는 기부 기관/센터를 볼 수 잇으며 기부 게시물을 태그, 위치 등 다양한 필터링을 통해 볼 수 있게 하여 기부의 편의성 상승
+
+<hr/>
 
 ## 🌈 프로젝트 WireFrame & UI
 
