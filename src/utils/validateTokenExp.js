@@ -9,10 +9,10 @@ function validateTokenExp(error) {
       jwt_decode(localStorage.getItem("needit_access_token")).exp
   ) {
     localStorage.removeItem("needit_access_token");
+    history.pushState(null, null, "/login");
+    location.reload();
+    alert("로그인 유효시간이 만료되었습니다. \n로그인 화면으로 이동합니다");
   }
-  alert("로그인 유효시간이 만료되었습니다. \n로그인 화면으로 이동합니다");
-  history.pushState(null, null, "/login");
-  location.reload();
 }
 
 export default validateTokenExp;

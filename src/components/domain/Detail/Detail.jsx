@@ -21,6 +21,7 @@ import { getRequest, postRequest, deleteRequest } from "@/api/axios";
 import { useParams, Link } from "react-router-dom";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import UserType from "@/utils/hooks/UserType";
 const style = {
   position: "absolute",
   top: "50%",
@@ -68,7 +69,10 @@ const Detail = () => {
     const writeApiData = noFilterWriteData.data;
     setDetailData(writeApiData);
 
-    if (!localStorage.getItem("needit_access_token")) return;
+    if (!localStorage.getItem("needit_access_token")) {
+      setIsLoading(true);
+      return;
+    }
     //user의 고유Id 저장
     const noFilterUserData = await getRequest(`users`);
     const userApiData = noFilterUserData.data;
@@ -149,7 +153,7 @@ const Detail = () => {
     await deleteRequest(`favorites/${detailData.userId}`);
   };
   const follow = async () => {
-    setFollowed(true);
+    UserType() === "member" && setFollowed(true);
     await postRequest(`favorites/${detailData.userId}`);
   };
 
