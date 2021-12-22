@@ -17,6 +17,7 @@ const LocationSelector = () => {
     setOpen(false);
   };
   const onDetail = (event) => {
+    event.preventDefault();
     if (event.target.innerText === "지역 필터링 해제") {
       setCity("");
       setDetail("");
@@ -31,6 +32,7 @@ const LocationSelector = () => {
   };
 
   const addDetail = (event) => {
+    event.preventDefault();
     handleClose();
     if (event.target.innerText) {
       setDetail(event.target.innerText);
