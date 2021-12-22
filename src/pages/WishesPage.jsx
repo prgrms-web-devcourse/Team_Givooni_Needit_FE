@@ -71,16 +71,11 @@ const WishesPage = () => {
           </PostContainer>
           <Box sx={{ display: "flex", justifyContent: "center", p: 1 }}>
             {morePage ? (
-              <BaseButton
-                btnType="transparent"
-                text="더보기"
-                onClick={() => setPage(page + 1)}
-              />
+              <div onClick={() => setPage(page + 1)}>
+                <BaseButton btnType="transparent" text="더보기" />
+              </div>
             ) : (
-              <BaseButton
-                btnType="transparent"
-                text="더이상 불러올 게시글이 없습니다. 
-            "
+              <div
                 onClick={() =>
                   window.scrollTo({
                     behavior: "smooth",
@@ -88,8 +83,14 @@ const WishesPage = () => {
                     top: 0,
                   })
                 }
-                width="auto"
-              />
+              >
+                <BaseButton
+                  btnType="transparent"
+                  text="더이상 불러올 게시글이 없습니다. 
+            "
+                  width="auto"
+                />
+              </div>
             )}
           </Box>
         </>

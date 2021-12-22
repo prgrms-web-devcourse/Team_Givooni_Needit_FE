@@ -76,8 +76,7 @@ const LocationSelector = () => {
                     <Button
                       sx={cityStyle}
                       key={idx}
-                      onClick={addDetail}
-                      endIcon={<MyLocationIcon onClick={addDetail} />}
+                      endIcon={<MyLocationIcon />}
                     >
                       {city}
                     </Button>
@@ -92,7 +91,7 @@ const LocationSelector = () => {
                       <Button
                         sx={cityStyle}
                         key={idx}
-                        endIcon={<MyLocationIcon onClick={onDetail} />}
+                        endIcon={<MyLocationIcon />}
                       >
                         {city}
                       </Button>
