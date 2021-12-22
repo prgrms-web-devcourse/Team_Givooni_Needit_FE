@@ -426,6 +426,7 @@ const TextSliderContainer = styled.div`
 `;
 
 const TestDiv = styled.div`
+  white-space: nowrap;
   color: ${theme.palette.primary.main};
 `;
 
