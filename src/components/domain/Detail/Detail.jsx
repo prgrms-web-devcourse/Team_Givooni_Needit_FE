@@ -21,6 +21,7 @@ import { getRequest, postRequest, deleteRequest } from "@/api/axios";
 import { useParams, Link } from "react-router-dom";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import UserType from "@/utils/hooks/UserType";
 const style = {
   position: "absolute",
   top: "50%",
@@ -152,7 +153,7 @@ const Detail = () => {
     await deleteRequest(`favorites/${detailData.userId}`);
   };
   const follow = async () => {
-    setFollowed(true);
+    UserType() === "member" && setFollowed(true);
     await postRequest(`favorites/${detailData.userId}`);
   };
 
