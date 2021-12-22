@@ -68,7 +68,10 @@ const Detail = () => {
     const writeApiData = noFilterWriteData.data;
     setDetailData(writeApiData);
 
-    if (!localStorage.getItem("needit_access_token")) return;
+    if (!localStorage.getItem("needit_access_token")) {
+      setIsLoading(true);
+      return;
+    }
     //user의 고유Id 저장
     const noFilterUserData = await getRequest(`users`);
     const userApiData = noFilterUserData.data;
