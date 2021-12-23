@@ -37,7 +37,7 @@ function Toggle({ id, text, toggleOn = false }) {
         label={text}
         color="primary"
         checked={checked}
-        style={{ height: "20px", fontSize: "14px" }}
+        style={{ height: "20px", fontSize: "14px", cursor: "pointer" }}
       />
     </button>
   );
