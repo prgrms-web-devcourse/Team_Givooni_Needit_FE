@@ -304,16 +304,3 @@ const UserProfileContainer = styled.div`
   display: flex;
   margin-bottom: 14px;
 `;
-
-// const UserDataEdit = {
-//   border: none,
-//   box-sizing: border-box;
-//   width: 100%;
-//   height: auto;
-//   font-size: 12px;
-//   font-family: "Spoqa Han Sans Neo";
-//   resize: none;
-//   &:focus {
-//     outline: none;
-//   }
-// }

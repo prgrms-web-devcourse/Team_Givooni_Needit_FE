@@ -1,12 +1,16 @@
 import React from "react";
 import PostCard from "@/components/domain/Posts/PostCard";
 import { Typography, Box } from "@mui/material";
-import styled from "styled-components";
 import PropTypes from "prop-types";
 
+const PostContainerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+};
 const UserPosts = ({ myPosts }) => {
   return (
-    <PostContainer>
+    <Box sx={{ PostContainerStyle }}>
       {myPosts[0] ? (
         myPosts.map((post, id) => {
           return <PostCard key={id} data={post} />;
@@ -18,7 +22,7 @@ const UserPosts = ({ myPosts }) => {
           </Typography>
         </Box>
       )}
-    </PostContainer>
+    </Box>
   );
 };
 
@@ -27,9 +31,3 @@ export default UserPosts;
 UserPosts.propTypes = {
   myPosts: PropTypes.object,
 };
-
-const PostContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;

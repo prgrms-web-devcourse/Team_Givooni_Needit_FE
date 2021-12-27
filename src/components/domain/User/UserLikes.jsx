@@ -1,10 +1,23 @@
 import React, { useState } from "react";
 import { Typography, Box, Avatar, IconButton } from "@mui/material";
-import styled from "styled-components";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import { deleteRequest } from "@/api/axios";
 import { Link } from "react-router-dom";
+
+const LikeProfileContainerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+  height: "50vh",
+  mt: "12px",
+  padding: "4px",
+  overflow: "auto",
+};
+const LikeProfileStyle = {
+  display: "flex",
+  justifyContent: "spaceBetween",
+};
 
 const UserLikes = ({ myFavorites }) => {
   const [likes, setlikes] = useState(myFavorites);
@@ -16,11 +29,11 @@ const UserLikes = ({ myFavorites }) => {
   };
 
   return (
-    <LikeProfileContainer>
+    <Box sx={{ LikeProfileContainerStyle }}>
       {likes[0] ? (
         likes?.map((like, idx) => {
           return (
-            <LikeProfile key={idx}>
+            <Box sx={{ LikeProfileStyle }} key={idx}>
               <Link
                 to={`/center/${like.centerId}`}
                 style={{ textDecoration: "none" }}
@@ -42,11 +55,11 @@ const UserLikes = ({ myFavorites }) => {
               <IconButton color="like" onClick={() => handleLike(idx)}>
                 <FavoriteIcon />
               </IconButton>
-            </LikeProfile>
+            </Box>
           );
         })
       ) : (
-        <LikeProfile>
+        <Box sx={{ LikeProfileStyle }}>
           <Box
             sx={{ display: "flex", width: "100%", justifyContent: "center" }}
           >
@@ -54,9 +67,9 @@ const UserLikes = ({ myFavorites }) => {
               등록된 관심센터가 없습니다
             </Typography>
           </Box>
-        </LikeProfile>
+        </Box>
       )}
-    </LikeProfileContainer>
+    </Box>
   );
 };
 
@@ -65,17 +78,3 @@ export default UserLikes;
 UserLikes.propTypes = {
   myFavorites: PropTypes.object,
 };
-
-const LikeProfileContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  height: 50vh;
-  margin-top: 12px;
-  padding: 4px;
-  overflow: auto;
-`;
-const LikeProfile = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
