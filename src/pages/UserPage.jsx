@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/base/Header";
 import Nav from "@/components/base/Nav";
-import styled from "styled-components";
 import { Button, Box, Typography } from "@mui/material";
 import theme from "@/styles/theme";
 import UserPosts from "@/components/domain/User/UserPosts";
@@ -41,6 +40,17 @@ const UserPage = () => {
     border: `1px solid ${theme.palette.gray.main}`,
     borderRadius: "20px",
   };
+
+  const userIntroStyle = {
+    background: "#f6f6f6",
+    border: "1px solid #e8e8e8",
+    boxSizing: "borderBox",
+    borderRadius: " 8px",
+    height: "170px",
+    padding: "10px",
+    overflow: "auto",
+  };
+
   const [component, setComponent] = useState("UserIntro");
 
   let buttonList = [
@@ -52,13 +62,13 @@ const UserPage = () => {
 
   const userInpo = {
     UserIntro: isLoading ? (
-      <UserIntro>
+      <Box sx={{ userIntroStyle }}>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {userData.myProfile.introduction
             ? userData.myProfile.introduction
             : "자기소개가 없습니다."}
         </Typography>
-      </UserIntro>
+      </Box>
     ) : (
       <LoadingCircular />
     ),
@@ -75,7 +85,7 @@ const UserPage = () => {
   };
 
   return isLoading ? (
-    <UserContainer>
+    <Box sx={{ pt: "6rem" }}>
       {!onEdit ? (
         <>
           <Header type="searchOut" fixed />
@@ -127,24 +137,10 @@ const UserPage = () => {
           Intro={myProfile.introduction}
         />
       )}
-    </UserContainer>
+    </Box>
   ) : (
     <LoadingCircular />
   );
 };
 
 export default UserPage;
-
-const UserContainer = styled.div`
-  padding-top: 6rem;
-`;
-
-const UserIntro = styled.div`
-  background: #f6f6f6;
-  border: 1px solid #e8e8e8;
-  box-sizing: border-box;
-  border-radius: 8px;
-  height: 170px;
-  padding: 10px;
-  overflow: auto;
-`;

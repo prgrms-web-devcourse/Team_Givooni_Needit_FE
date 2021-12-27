@@ -1,6 +1,5 @@
 import React from "react";
 import BaseButton from "@/components/base/BaseButton";
-import styled from "styled-components";
 import { Box, Avatar, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { Call as CallIcon, Map as MapIcon } from "@mui/icons-material";
@@ -14,7 +13,7 @@ const UserProfile = ({ data, mine = false }) => {
   };
 
   return (
-    <UserProfileContainer>
+    <Box display="flex">
       <Avatar
         src={
           data.myProfile.image
@@ -76,7 +75,7 @@ const UserProfile = ({ data, mine = false }) => {
           )}
         </Box>
       </Box>
-    </UserProfileContainer>
+    </Box>
   );
 };
 
@@ -86,7 +85,3 @@ UserProfile.propTypes = {
   data: PropTypes.object,
   mine: PropTypes.bool,
 };
-
-const UserProfileContainer = styled.div`
-  display: flex;
-`;
