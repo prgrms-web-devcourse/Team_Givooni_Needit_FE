@@ -18,6 +18,7 @@ import {
 import PropTypes from "prop-types";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import MediaQueryStyle from "@/styles/MediaQueryStyle";
 import UserType from "@/utils/hooks/UserType";
 
 const avatarStyle = {
@@ -130,126 +131,128 @@ const UserEdit = ({ myProfile }) => {
   return (
     <Box>
       <Header type="searchOut" fixed />
-      <Button
-        sx={{
-          position: "fixed",
-          top: "20px",
-          right: "44px",
-          zIndex: "10000",
-          fontSize: "16px",
-        }}
-        onClick={handleSubmit}
-      >
-        완료
-      </Button>
-      <Box sx={{ p: "16px" }}>
-        <form
-          form
-          name="file"
-          encType="multipart/form-data"
-          onSubmit={handleSubmit}
+      <MediaQueryStyle>
+        <Button
+          sx={{
+            position: "fixed",
+            top: "20px",
+            right: "44px",
+            zIndex: "10000",
+            fontSize: "16px",
+          }}
+          onClick={handleSubmit}
         >
-          <input
-            ref={profileInput}
-            type="file"
-            accept=".jpg, .png"
-            style={{ display: "none" }}
-            onChange={handleFileChange}
-          />
-        </form>
-        <Box sx={userProfileContainerStyle}>
-          <Avatar onClick={uploadImage} src={previewImg} sx={avatarStyle} />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
+          완료
+        </Button>
+        <Box sx={{ p: "16px" }}>
+          <form
+            form
+            name="file"
+            encType="multipart/form-data"
+            onSubmit={handleSubmit}
           >
+            <input
+              ref={profileInput}
+              type="file"
+              accept=".jpg, .png"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+          </form>
+          <Box sx={userProfileContainerStyle}>
+            <Avatar onClick={uploadImage} src={previewImg} sx={avatarStyle} />
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "6px",
+                justifyContent: "center",
               }}
             >
               <Box
                 sx={{
                   display: "flex",
-                  alignItems: "center",
-                  fontSize: "4px",
+                  flexDirection: "column",
+                  gap: "6px",
                 }}
               >
-                <LockIcon color="primary" sx={{ mr: 0.5 }} />
-                <TextField
-                  primary
-                  label="비밀번호"
-                  defaultValue="Hello World"
-                  value={passwordInput}
-                  onChange={handlePasswordChange}
-                  variant="outlined"
-                  type="password"
-                  size="small"
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  fontSize: "4px",
-                }}
-              >
-                <LockIcon color="primary" sx={{ mr: 0.5 }} />
-                <TextField
-                  primary
-                  label="비밀번호 확인"
-                  defaultValue="Hello World"
-                  value={passwordConfirmInput}
-                  onChange={handlePasswordConfirmChange}
-                  helperText={
-                    passwordConfirmInput &&
-                    passwordConfirmInput !== passwordInput
-                      ? "비밀번호가 일치하지 않습니다"
-                      : ""
-                  }
-                  variant="outlined"
-                  type="password"
-                  size="small"
-                  style={{ fontSize: "2px" }}
-                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: "4px",
+                  }}
+                >
+                  <LockIcon color="primary" sx={{ mr: 0.5 }} />
+                  <TextField
+                    primary
+                    label="비밀번호"
+                    defaultValue="Hello World"
+                    value={passwordInput}
+                    onChange={handlePasswordChange}
+                    variant="outlined"
+                    type="password"
+                    size="small"
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: "4px",
+                  }}
+                >
+                  <LockIcon color="primary" sx={{ mr: 0.5 }} />
+                  <TextField
+                    primary
+                    label="비밀번호 확인"
+                    defaultValue="Hello World"
+                    value={passwordConfirmInput}
+                    onChange={handlePasswordConfirmChange}
+                    helperText={
+                      passwordConfirmInput &&
+                      passwordConfirmInput !== passwordInput
+                        ? "비밀번호가 일치하지 않습니다"
+                        : ""
+                    }
+                    variant="outlined"
+                    type="password"
+                    size="small"
+                    style={{ fontSize: "2px" }}
+                  />
+                </Box>
               </Box>
             </Box>
           </Box>
+          <Box sx={editInputStyle}>
+            <Input
+              startAdornment={
+                <InputAdornment position="start">
+                  <CallIcon color="primary" />
+                </InputAdornment>
+              }
+              value={contactInput}
+              onChange={handleContactChange}
+              sx={{ fontSize: "14px" }}
+            />
+            <Input
+              startAdornment={
+                <InputAdornment position="start">
+                  <MapIcon color="primary" />
+                </InputAdornment>
+              }
+              value={addressInput}
+              onChange={handleAddressChange}
+              sx={{ fontSize: "14px" }}
+            />
+          </Box>
+          <UserIntroEdit
+            placeholder="자기소개를 입력하세요"
+            value={introInput}
+            onChange={handleIntroChange}
+          ></UserIntroEdit>
+          <Box sx={{ my: "8px" }}></Box>
         </Box>
-        <Box sx={editInputStyle}>
-          <Input
-            startAdornment={
-              <InputAdornment position="start">
-                <CallIcon color="primary" />
-              </InputAdornment>
-            }
-            value={contactInput}
-            onChange={handleContactChange}
-            sx={{ fontSize: "14px" }}
-          />
-          <Input
-            startAdornment={
-              <InputAdornment position="start">
-                <MapIcon color="primary" />
-              </InputAdornment>
-            }
-            value={addressInput}
-            onChange={handleAddressChange}
-            sx={{ fontSize: "14px" }}
-          />
-        </Box>
-        <UserIntroEdit
-          placeholder="자기소개를 입력하세요"
-          value={introInput}
-          onChange={handleIntroChange}
-        ></UserIntroEdit>
-        <Box sx={{ my: "8px" }}></Box>
-      </Box>
+      </MediaQueryStyle>
       <Nav />
     </Box>
   );
