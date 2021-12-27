@@ -17,9 +17,33 @@ import {
 } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import axios from "axios";
-// import convertURLtoFile from "@/utils/ConvertUrlToFile";
 import { useNavigate } from "react-router";
 import MediaQueryStyle from "@/styles/MediaQueryStyle";
+import UserType from "@/utils/hooks/UserType";
+
+const avatarStyle = {
+  width: "28vw",
+  height: "28vw",
+  maxWidth: "140px",
+  maxHeight: "140px",
+  mr: "2vw",
+  cursor: "pointer",
+  filter: "brightness(70%)",
+};
+
+const editInputStyle = {
+  my: 1,
+  mx: "auto",
+  display: "flex",
+  flexDirection: "column",
+  width: "85vw",
+  gap: "10px",
+};
+
+const userProfileContainerStyle = {
+  display: "flex",
+  marginBottom: "14px",
+};
 
 const UserEdit = ({ myProfile }) => {
   const [previewImg, setPreviewImg] = useState(myProfile.image);
@@ -28,16 +52,9 @@ const UserEdit = ({ myProfile }) => {
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordConfirmInput, setPasswordConfirmInput] = useState("");
   const [introInput, setIntroInput] = useState(myProfile.introduction);
-  // const [imageFile, setImageFile] = useState(myProfile.image);
   const [imageFile, setImageFile] = useState("");
   const profileInput = useRef();
   const navigate = useNavigate();
-
-  // useEffect(async () => {
-  //   if (!previewImg) return;
-  //   const convertedImage = await convertURLtoFile(previewImg);
-  //   setImageFile(convertedImage);
-  // }, [previewImg]);
 
   const uploadImage = () => {
     setPreviewImg("");
@@ -64,26 +81,17 @@ const UserEdit = ({ myProfile }) => {
     setIntroInput(e.target.value);
   };
 
-  let submitData;
-  myProfile.role === "MEMBER"
-    ? (submitData = {
-        address: addressInput,
-        contact: contactInput,
-        email: myProfile.email,
-        nickname: myProfile.name,
-        password: passwordInput,
-        introduction: introInput,
-      })
-    : (submitData = {
-        address: addressInput,
-        contact: contactInput,
-        email: myProfile.email,
-        name: myProfile.name,
-        password: passwordInput,
-        introduction: introInput,
-        owner: myProfile.owner,
-        registrationCode: myProfile.registrationCode,
-      });
+  const submitData = {
+    address: addressInput,
+    contact: contactInput,
+    email: myProfile.email,
+    password: passwordInput,
+    introduction: introInput,
+    nickname: myProfile.name,
+    name: myProfile.name,
+    owner: myProfile.owner,
+    registrationCode: myProfile.registrationCode,
+  };
 
   const handleSubmit = () => {
     if (!passwordInput || passwordInput !== passwordConfirmInput) {
@@ -100,9 +108,7 @@ const UserEdit = ({ myProfile }) => {
     );
     axios({
       method: "put",
-      url: `${process.env.REACT_APP_API_BASE_URL}/${
-        myProfile.role === "MEMBER" ? "members" : "centers"
-      }`,
+      url: `${process.env.REACT_APP_API_BASE_URL}/${UserType()}s`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -111,6 +117,7 @@ const UserEdit = ({ myProfile }) => {
     }).then(navigate(0));
   };
 
+  // 업로드 이미지 미리보기
   const preview = (image) => {
     if (!image || !image.type.match("image.*")) return false;
     let reader = new FileReader();
@@ -121,12 +128,8 @@ const UserEdit = ({ myProfile }) => {
     profileInput.current.backgroundImage = `url(${reader.result})`;
   };
 
-  const editUserData = () => {
-    handleSubmit();
-  };
-
   return (
-    <UsernameContainer>
+    <Box>
       <Header type="searchOut" fixed />
       <MediaQueryStyle>
         <Button
@@ -137,7 +140,7 @@ const UserEdit = ({ myProfile }) => {
             zIndex: "10000",
             fontSize: "16px",
           }}
-          onClick={editUserData}
+          onClick={handleSubmit}
         >
           완료
         </Button>
@@ -156,20 +159,8 @@ const UserEdit = ({ myProfile }) => {
               onChange={handleFileChange}
             />
           </form>
-          <UserProfileContainer>
-            <Avatar
-              onClick={uploadImage}
-              src={previewImg}
-              sx={{
-                width: "28vw",
-                height: "28vw",
-                maxWidth: "140px",
-                maxHeight: "140px",
-                mr: "2vw",
-                cursor: "pointer",
-                filter: "brightness(70%)",
-              }}
-            />
+          <Box sx={userProfileContainerStyle}>
+            <Avatar onClick={uploadImage} src={previewImg} sx={avatarStyle} />
             <Box
               sx={{
                 display: "flex",
@@ -231,18 +222,8 @@ const UserEdit = ({ myProfile }) => {
                 </Box>
               </Box>
             </Box>
-          </UserProfileContainer>
-          <Box
-            sx={{
-              my: 1,
-              mx: "auto",
-              display: "flex",
-              flexDirection: "column",
-              // justifyContent: "center",
-              width: "85vw",
-              gap: "10px",
-            }}
-          >
+          </Box>
+          <Box sx={editInputStyle}>
             <Input
               startAdornment={
                 <InputAdornment position="start">
@@ -251,7 +232,7 @@ const UserEdit = ({ myProfile }) => {
               }
               value={contactInput}
               onChange={handleContactChange}
-              sx={{ fontSize: "14px", maxWidth: "500px" }}
+              sx={{ fontSize: "14px" }}
             />
             <Input
               startAdornment={
@@ -261,7 +242,7 @@ const UserEdit = ({ myProfile }) => {
               }
               value={addressInput}
               onChange={handleAddressChange}
-              sx={{ fontSize: "14px", maxWidth: "500px" }}
+              sx={{ fontSize: "14px" }}
             />
           </Box>
           <UserIntroEdit
@@ -273,7 +254,7 @@ const UserEdit = ({ myProfile }) => {
         </Box>
       </MediaQueryStyle>
       <Nav />
-    </UsernameContainer>
+    </Box>
   );
 };
 
@@ -282,8 +263,6 @@ export default UserEdit;
 UserEdit.propTypes = {
   myProfile: PropTypes.object,
 };
-
-const UsernameContainer = styled.div``;
 
 const UserIntroEdit = styled.textarea`
   background: #f6f6f6;
@@ -302,21 +281,3 @@ const UserIntroEdit = styled.textarea`
     outline: none;
   }
 `;
-
-const UserProfileContainer = styled.div`
-  display: flex;
-  margin-bottom: 14px;
-`;
-
-// const UserDataEdit = {
-//   border: none,
-//   box-sizing: border-box;
-//   width: 100%;
-//   height: auto;
-//   font-size: 12px;
-//   font-family: "Spoqa Han Sans Neo";
-//   resize: none;
-//   &:focus {
-//     outline: none;
-//   }
-// }
