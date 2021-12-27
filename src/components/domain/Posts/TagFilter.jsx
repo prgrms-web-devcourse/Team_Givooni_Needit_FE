@@ -44,7 +44,6 @@ TagFilter.propTypes = {
 const TagContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
   padding: 8px 4px;
   border-bottom: 1px solid ${theme.palette.gray.main};
   overflow: auto;
