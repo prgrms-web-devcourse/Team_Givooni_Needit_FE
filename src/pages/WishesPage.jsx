@@ -11,6 +11,7 @@ import { Box } from "@mui/material";
 import BaseButton from "@/components/base/BaseButton";
 import LoadingCircular from "@/components/base/LoadingCircular";
 import jwt_decode from "jwt-decode";
+import MediaQueryStyle from "@/styles/MediaQueryStyle";
 
 const WishesPage = () => {
   const state = useContext(StateContext);
@@ -53,50 +54,52 @@ const WishesPage = () => {
   return (
     <PostsViewContainer>
       <Header type="member" fixed />
-      <TagFilter />
-      <PostFilter />
-      {isLoading ? (
-        <>
-          <PostContainer>
-            {postList?.map((post, id) => {
-              return (
-                <PostCard
-                  key={id}
-                  data={post}
-                  isFavorite={favoriteList?.includes(post.userId)}
-                  isWishes
-                />
-              );
-            })}
-          </PostContainer>
-          <Box sx={{ display: "flex", justifyContent: "center", p: 1 }}>
-            {morePage ? (
-              <div onClick={() => setPage(page + 1)}>
-                <BaseButton btnType="transparent" text="더보기" />
-              </div>
-            ) : (
-              <div
-                onClick={() =>
-                  window.scrollTo({
-                    behavior: "smooth",
-                    left: 0,
-                    top: 0,
-                  })
-                }
-              >
-                <BaseButton
-                  btnType="transparent"
-                  text="더이상 불러올 게시글이 없습니다. 
+      <MediaQueryStyle>
+        <TagFilter />
+        <PostFilter />
+        {isLoading ? (
+          <>
+            <PostContainer>
+              {postList?.map((post, id) => {
+                return (
+                  <PostCard
+                    key={id}
+                    data={post}
+                    isFavorite={favoriteList?.includes(post.userId)}
+                    isWishes
+                  />
+                );
+              })}
+            </PostContainer>
+            <Box sx={{ display: "flex", justifyContent: "center", p: 1 }}>
+              {morePage ? (
+                <div onClick={() => setPage(page + 1)}>
+                  <BaseButton btnType="transparent" text="더보기" />
+                </div>
+              ) : (
+                <div
+                  onClick={() =>
+                    window.scrollTo({
+                      behavior: "smooth",
+                      left: 0,
+                      top: 0,
+                    })
+                  }
+                >
+                  <BaseButton
+                    btnType="transparent"
+                    text="더이상 불러올 게시글이 없습니다. 
             "
-                  width="auto"
-                />
-              </div>
-            )}
-          </Box>
-        </>
-      ) : (
-        <LoadingCircular />
-      )}
+                    width="auto"
+                  />
+                </div>
+              )}
+            </Box>
+          </>
+        ) : (
+          <LoadingCircular />
+        )}
+      </MediaQueryStyle>
       <Nav />
     </PostsViewContainer>
   );

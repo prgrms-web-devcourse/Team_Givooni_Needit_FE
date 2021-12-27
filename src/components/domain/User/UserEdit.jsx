@@ -19,6 +19,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 // import convertURLtoFile from "@/utils/ConvertUrlToFile";
 import { useNavigate } from "react-router";
+import MediaQueryStyle from "@/styles/MediaQueryStyle";
 
 const UserEdit = ({ myProfile }) => {
   const [previewImg, setPreviewImg] = useState(myProfile.image);
@@ -127,148 +128,150 @@ const UserEdit = ({ myProfile }) => {
   return (
     <UsernameContainer>
       <Header type="searchOut" fixed />
-      <Button
-        sx={{
-          position: "fixed",
-          top: "20px",
-          right: "44px",
-          zIndex: "10000",
-          fontSize: "16px",
-        }}
-        onClick={editUserData}
-      >
-        완료
-      </Button>
-      <Box sx={{ p: "16px" }}>
-        <form
-          form
-          name="file"
-          encType="multipart/form-data"
-          onSubmit={handleSubmit}
+      <MediaQueryStyle>
+        <Button
+          sx={{
+            position: "fixed",
+            top: "20px",
+            right: "44px",
+            zIndex: "10000",
+            fontSize: "16px",
+          }}
+          onClick={editUserData}
         >
-          <input
-            ref={profileInput}
-            type="file"
-            accept=".jpg, .png"
-            style={{ display: "none" }}
-            onChange={handleFileChange}
-          />
-        </form>
-        <UserProfileContainer>
-          <Avatar
-            onClick={uploadImage}
-            src={previewImg}
-            sx={{
-              width: "28vw",
-              height: "28vw",
-              maxWidth: "140px",
-              maxHeight: "140px",
-              mr: "2vw",
-              cursor: "pointer",
-              filter: "brightness(70%)",
-            }}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
+          완료
+        </Button>
+        <Box sx={{ p: "16px" }}>
+          <form
+            form
+            name="file"
+            encType="multipart/form-data"
+            onSubmit={handleSubmit}
           >
+            <input
+              ref={profileInput}
+              type="file"
+              accept=".jpg, .png"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+          </form>
+          <UserProfileContainer>
+            <Avatar
+              onClick={uploadImage}
+              src={previewImg}
+              sx={{
+                width: "28vw",
+                height: "28vw",
+                maxWidth: "140px",
+                maxHeight: "140px",
+                mr: "2vw",
+                cursor: "pointer",
+                filter: "brightness(70%)",
+              }}
+            />
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "6px",
+                justifyContent: "center",
               }}
             >
               <Box
                 sx={{
                   display: "flex",
-                  alignItems: "center",
-                  fontSize: "4px",
+                  flexDirection: "column",
+                  gap: "6px",
                 }}
               >
-                <LockIcon color="primary" sx={{ mr: 0.5 }} />
-                <TextField
-                  primary
-                  label="비밀번호"
-                  defaultValue="Hello World"
-                  value={passwordInput}
-                  onChange={handlePasswordChange}
-                  variant="outlined"
-                  type="password"
-                  size="small"
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  fontSize: "4px",
-                }}
-              >
-                <LockIcon color="primary" sx={{ mr: 0.5 }} />
-                <TextField
-                  primary
-                  label="비밀번호 확인"
-                  defaultValue="Hello World"
-                  value={passwordConfirmInput}
-                  onChange={handlePasswordConfirmChange}
-                  helperText={
-                    passwordConfirmInput &&
-                    passwordConfirmInput !== passwordInput
-                      ? "비밀번호가 일치하지 않습니다"
-                      : ""
-                  }
-                  variant="outlined"
-                  type="password"
-                  size="small"
-                  style={{ fontSize: "2px" }}
-                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: "4px",
+                  }}
+                >
+                  <LockIcon color="primary" sx={{ mr: 0.5 }} />
+                  <TextField
+                    primary
+                    label="비밀번호"
+                    defaultValue="Hello World"
+                    value={passwordInput}
+                    onChange={handlePasswordChange}
+                    variant="outlined"
+                    type="password"
+                    size="small"
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: "4px",
+                  }}
+                >
+                  <LockIcon color="primary" sx={{ mr: 0.5 }} />
+                  <TextField
+                    primary
+                    label="비밀번호 확인"
+                    defaultValue="Hello World"
+                    value={passwordConfirmInput}
+                    onChange={handlePasswordConfirmChange}
+                    helperText={
+                      passwordConfirmInput &&
+                      passwordConfirmInput !== passwordInput
+                        ? "비밀번호가 일치하지 않습니다"
+                        : ""
+                    }
+                    variant="outlined"
+                    type="password"
+                    size="small"
+                    style={{ fontSize: "2px" }}
+                  />
+                </Box>
               </Box>
             </Box>
+          </UserProfileContainer>
+          <Box
+            sx={{
+              my: 1,
+              mx: "auto",
+              display: "flex",
+              flexDirection: "column",
+              // justifyContent: "center",
+              width: "85vw",
+              gap: "10px",
+            }}
+          >
+            <Input
+              startAdornment={
+                <InputAdornment position="start">
+                  <CallIcon color="primary" />
+                </InputAdornment>
+              }
+              value={contactInput}
+              onChange={handleContactChange}
+              sx={{ fontSize: "14px", maxWidth: "500px" }}
+            />
+            <Input
+              startAdornment={
+                <InputAdornment position="start">
+                  <MapIcon color="primary" />
+                </InputAdornment>
+              }
+              value={addressInput}
+              onChange={handleAddressChange}
+              sx={{ fontSize: "14px", maxWidth: "500px" }}
+            />
           </Box>
-        </UserProfileContainer>
-        <Box
-          sx={{
-            my: 1,
-            mx: "auto",
-            display: "flex",
-            flexDirection: "column",
-            // justifyContent: "center",
-            width: "85vw",
-            gap: "10px",
-          }}
-        >
-          <Input
-            startAdornment={
-              <InputAdornment position="start">
-                <CallIcon color="primary" />
-              </InputAdornment>
-            }
-            value={contactInput}
-            onChange={handleContactChange}
-            sx={{ fontSize: "14px" }}
-          />
-          <Input
-            startAdornment={
-              <InputAdornment position="start">
-                <MapIcon color="primary" />
-              </InputAdornment>
-            }
-            value={addressInput}
-            onChange={handleAddressChange}
-            sx={{ fontSize: "14px" }}
-          />
+          <UserIntroEdit
+            placeholder="자기소개를 입력하세요"
+            value={introInput}
+            onChange={handleIntroChange}
+          ></UserIntroEdit>
+          <Box sx={{ my: "8px" }}></Box>
         </Box>
-        <UserIntroEdit
-          placeholder="자기소개를 입력하세요"
-          value={introInput}
-          onChange={handleIntroChange}
-        ></UserIntroEdit>
-        <Box sx={{ my: "8px" }}></Box>
-      </Box>
+      </MediaQueryStyle>
       <Nav />
     </UsernameContainer>
   );

@@ -14,6 +14,7 @@ import {
   createContract,
   patchContract,
 } from "@/api/services/chatting";
+import MediaQueryStyle from "@/styles/MediaQueryStyle";
 
 const MessagePage = () => {
   const jwt = localStorage.getItem("needit_access_token");
@@ -72,53 +73,54 @@ const MessagePage = () => {
   return (
     <>
       <Header type="main" />
-      {isLoading ? (
-        postId ? (
-          <MessageDetail
-            list={messageList}
-            sendMessage={async (text) => {
-              await sendMessage(text, postId, postType, receiverId);
-              const nextList = await getMessageList(
-                postId,
-                postType,
-                receiverId
-              );
-              setMessageList(nextList);
-            }}
-            reserveDonation={async (date) => {
-              await createContract(date, postId, postType, receiverId);
-              const nextList = await getMessageList(
-                postId,
-                postType,
-                receiverId
-              );
-              setMessageList(nextList);
-            }}
-            contract={async (id, contractStatus) => {
-              await patchContract(id, contractStatus);
-              const nextList = await getMessageList(
-                postId,
-                postType,
-                receiverId
-              );
-              setMessageList(nextList);
-            }}
-          />
-        ) : userList.length === 0 ? (
-          <Box
-            sx={{ display: "flex", width: "100%", justifyContent: "center" }}
-          >
-            <Typography color="primary" variant="subtitle1" marginTop="16px">
-              주고 받은 메시지가 없습니다
-            </Typography>
-          </Box>
+      <MediaQueryStyle>
+        {isLoading ? (
+          postId ? (
+            <MessageDetail
+              list={messageList}
+              sendMessage={async (text) => {
+                await sendMessage(text, postId, postType, receiverId);
+                const nextList = await getMessageList(
+                  postId,
+                  postType,
+                  receiverId
+                );
+                setMessageList(nextList);
+              }}
+              reserveDonation={async (date) => {
+                await createContract(date, postId, postType, receiverId);
+                const nextList = await getMessageList(
+                  postId,
+                  postType,
+                  receiverId
+                );
+                setMessageList(nextList);
+              }}
+              contract={async (id, contractStatus) => {
+                await patchContract(id, contractStatus);
+                const nextList = await getMessageList(
+                  postId,
+                  postType,
+                  receiverId
+                );
+                setMessageList(nextList);
+              }}
+            />
+          ) : userList.length === 0 ? (
+            <Box
+              sx={{ display: "flex", width: "100%", justifyContent: "center" }}
+            >
+              <Typography color="primary" variant="subtitle1" marginTop="16px">
+                주고 받은 메시지가 없습니다
+              </Typography>
+            </Box>
+          ) : (
+            <Message list={userList} />
+          )
         ) : (
-          <Message list={userList} />
-        )
-      ) : (
-        <LoadingCircular></LoadingCircular>
-      )}
-
+          <LoadingCircular></LoadingCircular>
+        )}
+      </MediaQueryStyle>
       {postId ? "" : <Nav />}
     </>
   );

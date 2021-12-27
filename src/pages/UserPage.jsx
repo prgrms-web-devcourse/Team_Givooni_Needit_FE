@@ -10,6 +10,7 @@ import UserProfile from "@/components/domain/User/UserProfile";
 import UserEdit from "@/components/domain/User/UserEdit";
 import { getRequest } from "@/api/axios";
 import LoadingCircular from "@/components/base/LoadingCircular";
+import MediaQueryStyle from "@/styles/MediaQueryStyle";
 
 const UserPage = () => {
   const [userData, setUserData] = useState("");
@@ -79,46 +80,48 @@ const UserPage = () => {
       {!onEdit ? (
         <>
           <Header type="searchOut" fixed />
-          <Button
-            sx={{
-              position: "fixed",
-              top: "20px",
-              right: "44px",
-              zIndex: "10000",
-              fontSize: "16px",
-            }}
-            onClick={() => setOnEdit(true)}
-          >
-            편집
-          </Button>
-
-          <Box sx={{ p: "16px" }}>
-            <UserProfile data={userData} mine />
-            <Box
+          <MediaQueryStyle>
+            <Button
               sx={{
-                display: "flex",
-                mx: "auto",
-                width: "95%",
-                gap: "10px",
-                justifyContent: "center",
+                position: "fixed",
+                top: "20px",
+                right: "44px",
+                zIndex: "10000",
+                fontSize: "16px",
               }}
+              onClick={() => setOnEdit(true)}
             >
-              {buttonList.map((list, index) => {
-                if (component !== list[0])
-                  return (
-                    <Button
-                      key={index}
-                      color="gray_dark"
-                      sx={buttonStyle}
-                      onClick={() => setComponent(list[0])}
-                    >
-                      {list[1]}
-                    </Button>
-                  );
-              })}
+              편집
+            </Button>
+
+            <Box sx={{ p: "16px" }}>
+              <UserProfile data={userData} mine />
+              <Box
+                sx={{
+                  display: "flex",
+                  mx: "auto",
+                  width: "95%",
+                  gap: "10px",
+                  justifyContent: "center",
+                }}
+              >
+                {buttonList.map((list, index) => {
+                  if (component !== list[0])
+                    return (
+                      <Button
+                        key={index}
+                        color="gray_dark"
+                        sx={buttonStyle}
+                        onClick={() => setComponent(list[0])}
+                      >
+                        {list[1]}
+                      </Button>
+                    );
+                })}
+              </Box>
+              {userInpo[component]}
             </Box>
-            {userInpo[component]}
-          </Box>
+          </MediaQueryStyle>
           <Nav />
         </>
       ) : (
