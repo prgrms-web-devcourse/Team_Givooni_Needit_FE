@@ -52,6 +52,7 @@ const postRequest = async (url = "", options = {}) => {
     .catch((error) => {
       validateTokenExp(error);
       console.log(error);
+      return error;
     });
 
   return returnResult;
