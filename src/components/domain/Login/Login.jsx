@@ -36,6 +36,7 @@ const Login = () => {
   const [open, setOpen] = React.useState(true);
   const handleOpen = () => setOpen(false);
   // const handleClose = () => setOpen(true);
+  const [errorText, setErrorEext] = React.useState("");
 
   const validationSchema = yup.object({
     email: yup
@@ -44,7 +45,7 @@ const Login = () => {
       .required("유효한 형식의 이메일을 입력해주세요."),
     password: yup
       .string("비밀번호를 입력해주세요.")
-      .min(8, "")
+      .min(8, "비밀번호를 확인해주세요.")
       .required("비밀번호를 입력해주세요."),
   });
 
@@ -63,6 +64,15 @@ const Login = () => {
         localStorage.setItem("needit_access_token", needit_token);
         navigate(UserType("member") ? "/wishes" : "/donations");
       }
+      if (data.response.status === 404) {
+        console.log("등록된 회원정보가 없습니다");
+        setErrorEext("등록된 회원정보가 없습니다");
+      }
+      if (data.response.status === 401) {
+        console.log("비밀번호가 일치하지 않습니다");
+        setErrorEext("비밀번호가 일치하지 않습니다");
+      }
+      console.log();
     },
   });
 
@@ -185,8 +195,16 @@ const Login = () => {
               id="password"
               name="password"
               onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              error={
+                errorText
+                  ? Boolean(errorText)
+                  : formik.touched.password && Boolean(formik.errors.password)
+              }
+              helperText={
+                errorText
+                  ? errorText
+                  : formik.touched.password && formik.errors.password
+              }
             />
             <BaseButton
               type="submit"
