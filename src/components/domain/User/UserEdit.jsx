@@ -94,7 +94,7 @@ const UserEdit = ({ myProfile }) => {
   };
 
   const handleSubmit = () => {
-    if (!passwordInput || passwordInput !== passwordConfirmInput) {
+    if (passwordInput.length < 7 || passwordInput !== passwordConfirmInput) {
       alert("비밀번호를 확인해주세요");
       return;
     }
@@ -209,8 +209,9 @@ const UserEdit = ({ myProfile }) => {
                     value={passwordConfirmInput}
                     onChange={handlePasswordConfirmChange}
                     helperText={
-                      passwordConfirmInput &&
-                      passwordConfirmInput !== passwordInput
+                      passwordConfirmInput.length < 7
+                        ? "8자리 이상 입력해주세요"
+                        : passwordConfirmInput !== passwordInput
                         ? "비밀번호가 일치하지 않습니다"
                         : ""
                     }
