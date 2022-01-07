@@ -75,7 +75,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
                     }`,
                     borderRadius: "8px",
                     whiteSpace: "pre-wrap",
-                    maxWidth: "50%",
+                    maxWidth: "100%",
                     boxShadow: 2,
                   }}
                 />
@@ -186,6 +186,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
       <Container
         sx={{
           width: "100%",
+          maxWidth: "540px",
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
