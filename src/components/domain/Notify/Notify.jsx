@@ -4,12 +4,13 @@ import { List } from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
 import { ListItem } from "@mui/material";
 import Proptypes from "prop-types";
+import MediaQueryStyle from "@/styles/MediaQueryStyle";
 
 const Notify = ({ list = [], onClick }) => {
   const [hoverId, setHoverId] = useState("");
 
   return (
-    <>
+    <MediaQueryStyle>
       <List>
         {list.map((post) => (
           <ListItem key={post.resourceId}>
@@ -43,7 +44,7 @@ const Notify = ({ list = [], onClick }) => {
           </ListItem>
         ))}
       </List>
-    </>
+    </MediaQueryStyle>
   );
 };
 

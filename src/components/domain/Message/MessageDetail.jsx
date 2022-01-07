@@ -186,6 +186,7 @@ const MessageDetail = ({ list, sendMessage, reserveDonation, contract }) => {
       <Container
         sx={{
           width: "100%",
+          maxWidth: "540px",
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
