@@ -8,7 +8,6 @@ import MediaQueryStyle from "@/styles/MediaQueryStyle";
 
 const Notify = ({ list = [], onClick }) => {
   const [hoverId, setHoverId] = useState("");
-  console.log(list);
 
   return (
     <MediaQueryStyle>
