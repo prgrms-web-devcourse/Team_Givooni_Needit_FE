@@ -233,7 +233,7 @@ const UserEdit = ({ myProfile }) => {
               }
               value={contactInput}
               onChange={handleContactChange}
-              sx={{ fontSize: "14px" }}
+              sx={{ fontSize: "14px", maxWidth: "500px" }}
             />
             <Input
               startAdornment={
@@ -243,7 +243,7 @@ const UserEdit = ({ myProfile }) => {
               }
               value={addressInput}
               onChange={handleAddressChange}
-              sx={{ fontSize: "14px" }}
+              sx={{ fontSize: "14px", maxWidth: "500px" }}
             />
           </Box>
           <UserIntroEdit
