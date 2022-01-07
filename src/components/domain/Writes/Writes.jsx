@@ -12,6 +12,7 @@ import { getRequest, postRequest, putRequest } from "@/api/axios";
 import theme from "@/styles/theme";
 import { useNavigate } from "react-router";
 import CancelIcon from "@mui/icons-material/Cancel";
+import MediaQueryStyle from "@/styles/MediaQueryStyle";
 
 const subArea = [
   { id: 1, name: "아동·청소년" },
@@ -253,106 +254,114 @@ const Writes = () => {
     <>
       <MainContainer>
         <Header type="plain" fixed={true} />
-        <WriteContainer>
-          <ReactiveContainer>
-            <TitleContainer>
-              <TitleInput
-                placeholder="게시글 제목"
-                onChange={writeTitle}
-                value={title}
-              />
-            </TitleContainer>
-            <InformationContainer>
-              <TagsContainer>
-                <CustomBaseButton
-                  text={
-                    tag.length === 0
-                      ? "태그설정: 최대 3개"
-                      : tag.map((val) => "#".concat(val.text)).join(" ")
-                  }
-                  onClick={() => {
-                    clickTagHandler();
-                  }}
+        <MediaQueryStyle>
+          <WriteContainer>
+            <ReactiveContainer>
+              <TitleContainer>
+                <TitleInput
+                  placeholder="게시글 제목"
+                  onChange={writeTitle}
+                  value={title}
                 />
-              </TagsContainer>
-              <CustomSelect onChange={changeSelectHandler}>
-                <option value="카테고리" disabled selected hidden>
-                  카테고리
-                </option>
-                <option value="물품나눔" selected={preCategory === "물품나눔"}>
-                  물품나눔
-                </option>
-                <option value="재능기부" selected={preCategory === "재능기부"}>
-                  재능기부
-                </option>
-              </CustomSelect>
-            </InformationContainer>
-            <ContentContainer>
-              <ContentTextarea
-                multiline
-                placeholder="물품소개"
-                onChange={writeContent}
-                value={content}
-              />
-            </ContentContainer>
-            <LineBar />
-            <ImageWrapContainer>
-              <ScrollWrapContainer>
-                <input
-                  id="file"
-                  type="file"
-                  multiple
-                  accept="image/jpg,image/png,image/jpeg,image/gif"
-                  onChange={handleImageUpload}
-                  style={{ display: "none" }}
+              </TitleContainer>
+              <InformationContainer>
+                <TagsContainer>
+                  <CustomBaseButton
+                    text={
+                      tag.length === 0
+                        ? "태그설정: 최대 3개"
+                        : tag.map((val) => "#".concat(val.text)).join(" ")
+                    }
+                    onClick={() => {
+                      clickTagHandler();
+                    }}
+                  />
+                </TagsContainer>
+                <CustomSelect onChange={changeSelectHandler}>
+                  <option value="카테고리" disabled selected hidden>
+                    카테고리
+                  </option>
+                  <option
+                    value="물품나눔"
+                    selected={preCategory === "물품나눔"}
+                  >
+                    물품나눔
+                  </option>
+                  <option
+                    value="재능기부"
+                    selected={preCategory === "재능기부"}
+                  >
+                    재능기부
+                  </option>
+                </CustomSelect>
+              </InformationContainer>
+              <ContentContainer>
+                <ContentTextarea
+                  multiline
+                  placeholder="물품소개"
+                  onChange={writeContent}
+                  value={content}
                 />
-                <CustomLabel htmlFor="file">
-                  <ImageLabelText>물품사진</ImageLabelText>
-                  <ImageLabelText>(최대 4장)</ImageLabelText>
-                </CustomLabel>
+              </ContentContainer>
+              <LineBar />
+              <ImageWrapContainer>
+                <ScrollWrapContainer>
+                  <input
+                    id="file"
+                    type="file"
+                    multiple
+                    accept="image/jpg,image/png,image/jpeg,image/gif"
+                    onChange={handleImageUpload}
+                    style={{ display: "none" }}
+                  />
+                  <CustomLabel htmlFor="file">
+                    <ImageLabelText>물품사진</ImageLabelText>
+                    <ImageLabelText>(최대 4장)</ImageLabelText>
+                  </CustomLabel>
 
-                {Imgs &&
-                  Imgs.map((link, i) => {
-                    return (
-                      <div style={{ position: "relative" }} key={i}>
-                        <CustomImg src={link} key={i}></CustomImg>
-                        <CancelIcon
-                          onClick={() => {
-                            removeImgs(i);
-                          }}
-                          style={{ position: "absolute", left: 70, top: 5 }}
-                        />
-                      </div>
-                    );
-                  })}
-              </ScrollWrapContainer>
-            </ImageWrapContainer>
-            <LineBar />
-            <PictureContainer>
-              <PictureSubContainer>
-                <input
-                  id="file"
-                  name="photo"
-                  accept="image/*"
-                  capture="camera"
-                  onChange={handleImageUpload}
-                  style={{ display: "none" }}
+                  {Imgs &&
+                    Imgs.map((link, i) => {
+                      return (
+                        <div style={{ position: "relative" }} key={i}>
+                          <CustomImg src={link} key={i}></CustomImg>
+                          <CancelIcon
+                            onClick={() => {
+                              removeImgs(i);
+                            }}
+                            style={{ position: "absolute", left: 70, top: 5 }}
+                          />
+                        </div>
+                      );
+                    })}
+                </ScrollWrapContainer>
+              </ImageWrapContainer>
+              <LineBar />
+              <PictureContainer>
+                <PictureSubContainer>
+                  <input
+                    id="file"
+                    name="photo"
+                    accept="image/*"
+                    capture="camera"
+                    onChange={handleImageUpload}
+                    style={{ display: "none" }}
+                  />
+                  <CustomCameraLabel htmlFor="file">
+                    <CameraAltIcon />
+                  </CustomCameraLabel>
+                </PictureSubContainer>
+              </PictureContainer>
+              <SubmitContainer>
+                <BaseButton
+                  text="작성 완료"
+                  width="300px"
+                  height="50px"
+                  onClick={submitWrites}
                 />
-                <CustomCameraLabel htmlFor="file">
-                  <CameraAltIcon />
-                </CustomCameraLabel>
-              </PictureSubContainer>
-            </PictureContainer>
-            <SubmitContainer>
-              <BaseButton
-                text="작성 완료"
-                width="300px"
-                height="50px"
-                onClick={submitWrites}
-              />
-            </SubmitContainer>
-          </ReactiveContainer>
-        </WriteContainer>
+              </SubmitContainer>
+            </ReactiveContainer>
+          </WriteContainer>
+        </MediaQueryStyle>
         <Nav />
       </MainContainer>
       <Modal open={isModalOpen} style={{ zIndex: 10000 }}>
@@ -390,10 +399,10 @@ const WriteContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 10px;
 `;
 const ReactiveContainer = styled.div`
-  min-width: 300px;
-  max-width: 500px;
+  width: 100%;
 `;
 const TitleContainer = styled.div`
   display: flex;
@@ -407,7 +416,7 @@ const TitleInput = styled.input`
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   box-sizing: border-box;
-  width: 20rem;
+  width: 100%;
   height: 2.1rem;
   padding: 10px;
   font-size: 14px;
@@ -457,7 +466,7 @@ const ContentTextarea = styled.textarea`
   background: #f6f6f6;
   border-radius: 8px;
   box-sizing: border-box;
-  width: 20rem;
+  width: 100%;
   min-height: 180px;
   padding: 10px;
   font-size: 14px;
@@ -484,7 +493,6 @@ const ScrollWrapContainer = styled.div`
   display: flex;
   overflow-x: scroll;
   white-space: nowrap;
-  max-width: 320px;
 `;
 
 const CustomImg = styled.img`
@@ -550,7 +558,6 @@ const CustomModalBody = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 300px;
   padding: 10px;
   text-align: center;
   background-color: rgb(255, 255, 255);
