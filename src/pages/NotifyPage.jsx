@@ -30,7 +30,6 @@ const NotifyPage = () => {
     const stompClient = Stomp.over(socket);
 
     stompClient.connect({ Authorization: jwt }, function () {
-      console.log("연결완료");
       stompClient.subscribe("/user/topic/notifications", (res) => {
         const data = JSON.parse(res.body);
         updateList(data);
@@ -57,7 +56,6 @@ const NotifyPage = () => {
       <Notify
         list={list}
         onClick={async (post) => {
-          console.log(deleteAlarm);
           await deleteAlarm(post.id);
           checkType(post);
         }}
